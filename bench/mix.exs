@@ -18,7 +18,9 @@ defmodule NxIREEBench.MixProject do
     [
       {:nx_iree, path: ".."},
       {:exla, "~> 1.0"},
-      {:nx, "~> 1.0"}
+      {:nx, "~> 1.0"},
+      {:axon, "~> 0.9"},
+      {:bumblebee, "~> 0.8"}
     ]
   end
 end
