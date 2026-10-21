@@ -62,6 +62,7 @@ defmodule NxIREE.Compiler do
       |> default_flag("--iree-input-type", "stablehlo_xla")
       |> default_flag("--iree-execution-model", "async-internal")
       |> default_vulkan_features(backend)
+      |> default_cpu_target(backend, output_mode)
       |> default_f64_flags(backend)
 
     ensure_f64_supported!(vars, iree_compiler_flags, backend)
@@ -148,6 +149,26 @@ defmodule NxIREE.Compiler do
   end
 
   defp default_vulkan_features(flags, _backend), do: flags
+
+  # Functions compiled for a call run on this machine, so they can use its
+  # CPU features; bytecode for export/3 runs elsewhere and targets a generic
+  # CPU of the triple. Either way IREE is told, rather than warning and
+  # falling back to a generic CPU.
+  defp default_cpu_target(flags, "llvm-cpu", output_mode) do
+    chosen? =
+      Enum.any?(flags, fn flag ->
+        String.starts_with?(flag, "--iree-llvmcpu-target-cpu") or
+          String.starts_with?(flag, "--iree-llvmcpu-target-triple")
+      end)
+
+    cond do
+      chosen? -> flags
+      output_mode == :bytecode -> flags ++ ["--iree-llvmcpu-target-cpu=generic"]
+      true -> flags ++ ["--iree-llvmcpu-target-cpu=host"]
+    end
+  end
+
+  defp default_cpu_target(flags, _backend, _output_mode), do: flags
 
   @demote_f64 "--iree-input-demote-f64-to-f32"
 

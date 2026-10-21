@@ -163,6 +163,21 @@ defmodule NxIREE.BackendTest do
     end
   end
 
+  test "exported CPU modules target a generic CPU unless one is chosen" do
+    t = Nx.template({4}, :f32)
+    flags = @flags ++ ["--iree-hal-target-backends=llvm-cpu"]
+
+    {:ok, module} = NxIREE.Compiler.to_bytecode(&Nx.exp/1, [t], iree_compiler_flags: flags)
+    assert "--iree-llvmcpu-target-cpu=generic" in module.compilation_flags
+
+    chosen = flags ++ ["--iree-llvmcpu-target-cpu=x86-64-v2"]
+    {:ok, module} = NxIREE.Compiler.to_bytecode(&Nx.exp/1, [t], iree_compiler_flags: chosen)
+
+    assert Enum.filter(module.compilation_flags, &(&1 =~ "target-cpu")) == [
+             "--iree-llvmcpu-target-cpu=x86-64-v2"
+           ]
+  end
+
   # On Vulkan, a u8 tensor read by a batch matmul dispatch needs 8-bit storage
   test "u8 mask added to a batch matmul on the default device" do
     fun = fn q, k, mask ->

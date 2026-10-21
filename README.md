@@ -86,6 +86,11 @@ model = NxIREE.load_exported(File.read!("model.bin"), device: "vulkan://...")
 NxIREE.run(model, [params, input])
 ```
 
+Exports for the CPU target a generic CPU of the host's architecture unless
+told otherwise; for another device pass its triple and CPU, for example
+`--iree-llvmcpu-target-triple=aarch64-linux-gnu --iree-llvmcpu-target-cpu=cortex-a57`.
+Functions compiled for calls on the CPU use the host CPU's features.
+
 ## Nerves
 
 Cross-compiling is automatic when `CROSSCOMPILE` is set, as in a Nerves
