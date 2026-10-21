@@ -19,6 +19,11 @@
   * Compiled defn functions are cached and their modules are loaded once per
     device.
   * Functions jitted for the CPU use the host CPU's features.
+  * `:iree_module_cache`: modules compiled on a host are found by devices
+    running the same defn code without EXLA or the IREE compiler.
+  * Named io_calls without a hook are removed before lowering, so
+    Bumblebee text generation compiles; host calls that would run Elixir
+    code raise a clear error.
 
 ### Fixed
 
