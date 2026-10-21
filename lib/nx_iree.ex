@@ -55,10 +55,15 @@ defmodule NxIREE do
 
     phases_dir = tmpfile <> ".phases"
 
+    # Large constants are elided from the dumps, which leaves the module as is
     phase_flags =
       if Enum.any?(flags, &String.starts_with?(&1, "--dump-compilation-phases-to")),
         do: [],
-        else: ["--dump-compilation-phases-to=#{phases_dir}"]
+        else: [
+          "--dump-compilation-phases-to=#{phases_dir}",
+          "--mlir-elide-elementsattrs-if-larger=16",
+          "--mlir-elide-resource-strings-if-larger=16"
+        ]
 
     try do
       case System.cmd(compiler_path, flags ++ phase_flags ++ ["-o", outfile, tmpfile],
