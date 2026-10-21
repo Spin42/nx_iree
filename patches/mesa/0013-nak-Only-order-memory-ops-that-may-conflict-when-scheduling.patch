@@ -1,0 +1,216 @@
+From: Marc Lainez <marc.lainez@gmail.com>
+Date: Wed, 21 Oct 2026 12:00:00 +0200
+Subject: [PATCH] nak: Only order memory ops that may conflict when scheduling
+
+Both schedulers chained every memory instruction to the previous one, so
+a global load could not move above an unrelated shared load.  In tiled
+matmul shaders that left the next tile's global loads after all FMAs
+with their latency exposed, or forced every shared-memory fragment to be
+loaded up front.  Order memory instructions only when they access the
+same space and at least one writes, or both are strong at GPU or system
+scope; anything else stays a full fence.
+
+An IREE 64x64x16 f32 matmul on GM20B drops from 240 to 128 GPRs and
+issues its global loads ahead of the FMAs.
+
+Assisted-by: Claude:claude-opus-5-5
+---
+diff --git a/src/nouveau/compiler/nak/opt_instr_sched_common.rs b/src/nouveau/compiler/nak/opt_instr_sched_common.rs
+--- a/src/nouveau/compiler/nak/opt_instr_sched_common.rs
++++ b/src/nouveau/compiler/nak/opt_instr_sched_common.rs
+@@ -71,8 +71,8 @@
+ 
+     /// Instruction reads or writes memory
+     ///
+-    /// This will be serialized with respect to other
+-    /// SideEffect::Memory instructions
++    /// This is ordered against other SideEffect::Memory instructions that may
++    /// conflict with it, see MemoryDeps
+     Memory,
+ 
+     /// This instcuction is a full code motion barrier
+@@ -81,6 +81,127 @@
+     Barrier,
+ }
+ 
++#[derive(Clone, Copy, Eq, PartialEq)]
++enum MemSpaceClass {
++    Global,
++    Local,
++    Shared,
++}
++
++/// How a SideEffect::Memory instruction touches memory
++#[derive(Clone, Copy)]
++enum MemClass {
++    /// Accesses a single address space. Global, local and shared memory never
++    /// alias each other.
++    Access {
++        space: MemSpaceClass,
++        write: bool,
++        strong: bool,
++    },
++    /// Ordered against every other memory instruction
++    Fence,
++}
++
++fn space_class(space: &MemSpace) -> MemSpaceClass {
++    match space {
++        MemSpace::Global(_) => MemSpaceClass::Global,
++        MemSpace::Local => MemSpaceClass::Local,
++        MemSpace::Shared => MemSpaceClass::Shared,
++    }
++}
++
++fn mem_class(op: &Op) -> MemClass {
++    let access = |space, write, strong| MemClass::Access {
++        space,
++        write,
++        strong,
++    };
++    match op {
++        // Shared loads are always emitted as Strong(CTA) since shared memory
++        // is coherent within a CTA, so only wider scopes mark loads that
++        // other invocations may be writing concurrently.
++        Op::Ld(ld) => access(
++            space_class(&ld.access.space),
++            false,
++            matches!(
++                ld.access.order,
++                MemOrder::Strong(MemScope::GPU | MemScope::System)
++            ),
++        ),
++        Op::St(st) => access(space_class(&st.access.space), true, true),
++        Op::Atom(atom) => access(space_class(&atom.mem_space), true, true),
++        Op::Ldsm(_) => access(MemSpaceClass::Shared, false, false),
++        // Textures and surfaces live in global memory
++        Op::Tex(_)
++        | Op::Tld(_)
++        | Op::Tld4(_)
++        | Op::Tmml(_)
++        | Op::Txd(_)
++        | Op::Txq(_)
++        | Op::SuLd(_)
++        | Op::SuLdGa(_) => access(MemSpaceClass::Global, false, false),
++        Op::SuSt(_) | Op::SuAtom(_) | Op::SuStGa(_) => {
++            access(MemSpaceClass::Global, true, true)
++        }
++        _ => MemClass::Fence,
++    }
++}
++
++fn mem_conflict(a: MemClass, b: MemClass) -> bool {
++    match (a, b) {
++        (
++            MemClass::Access {
++                space: sa,
++                write: wa,
++                strong: ra,
++            },
++            MemClass::Access {
++                space: sb,
++                write: wb,
++                strong: rb,
++            },
++        ) => {
++            // Loads may pass each other unless both are strong, which keeps
++            // read-read coherence on the same location.
++            sa == sb && (wa || wb || (ra && rb))
++        }
++        _ => true,
++    }
++}
++
++/// Tracks memory instructions in scheduling order and reports which earlier
++/// ones a new instruction has to stay ordered with.
++#[derive(Default)]
++pub struct MemoryDeps {
++    last_fence: Option<usize>,
++    since_fence: Vec<(usize, MemClass)>,
++}
++
++impl MemoryDeps {
++    /// Records the SideEffect::Memory instruction `ip` and returns the
++    /// previously recorded instructions it must not be reordered with.
++    pub fn add(&mut self, ip: usize, op: &Op) -> Vec<usize> {
++        let class = mem_class(op);
++        let mut deps: Vec<usize> = self.last_fence.into_iter().collect();
++        match class {
++            MemClass::Fence => {
++                deps.extend(self.since_fence.drain(..).map(|(p, _)| p));
++                self.last_fence = Some(ip);
++            }
++            MemClass::Access { .. } => {
++                deps.extend(
++                    self.since_fence
++                        .iter()
++                        .filter(|(_, c)| mem_conflict(*c, class))
++                        .map(|(p, _)| *p),
++                );
++                self.since_fence.push((ip, class));
++            }
++        }
++        deps
++    }
++}
++
+ pub fn side_effect_type(op: &Op) -> SideEffect {
+     match op {
+         // Float ALU
+diff --git a/src/nouveau/compiler/nak/opt_instr_sched_prepass.rs b/src/nouveau/compiler/nak/opt_instr_sched_prepass.rs
+--- a/src/nouveau/compiler/nak/opt_instr_sched_prepass.rs
++++ b/src/nouveau/compiler/nak/opt_instr_sched_prepass.rs
+@@ -6,7 +6,7 @@
+ use crate::liveness::{BlockLiveness, LiveSet, Liveness, SimpleLiveness};
+ use crate::opt_instr_sched_common::{
+     calc_statistics, estimate_variable_latency, side_effect_type, DepGraph,
+-    EdgeLabel, FutureReadyInstr, ReadyInstr, SideEffect,
++    EdgeLabel, FutureReadyInstr, MemoryDeps, ReadyInstr, SideEffect,
+ };
+ use rustc_hash::FxHashMap;
+ use std::cmp::Reverse;
+@@ -70,7 +70,7 @@
+ 
+     let mut defs = FxHashMap::<SSAValue, (usize, usize)>::default();
+ 
+-    let mut last_memory_op = None;
++    let mut memory_deps = MemoryDeps::default();
+     let mut last_barrier_op = None;
+     let mut last_carry_op = None;
+ 
+@@ -91,10 +91,9 @@
+                 last_barrier_op = Some(ip);
+             }
+             SideEffect::Memory => {
+-                if let Some(mem_ip) = last_memory_op {
++                for mem_ip in memory_deps.add(ip, &instr.op) {
+                     g.add_edge(mem_ip, ip, EdgeLabel { latency: 0 });
+                 }
+-                last_memory_op = Some(ip);
+             }
+         }
+ 
+diff --git a/src/nouveau/compiler/nak/opt_instr_sched_postpass.rs b/src/nouveau/compiler/nak/opt_instr_sched_postpass.rs
+--- a/src/nouveau/compiler/nak/opt_instr_sched_postpass.rs
++++ b/src/nouveau/compiler/nak/opt_instr_sched_postpass.rs
+@@ -40,7 +40,7 @@
+     let mut uses: Box<RegTracker<RegUse<(usize, usize)>>> =
+         Box::new(RegTracker::new_with(&|| RegUse::new()));
+ 
+-    let mut last_memory_op = None;
++    let mut memory_deps = MemoryDeps::default();
+     let mut last_barrier_op = None;
+ 
+     for ip in (0..instrs.len()).rev() {
+@@ -60,10 +60,9 @@
+                 last_barrier_op = Some(ip);
+             }
+             SideEffect::Memory => {
+-                if let Some(mem_ip) = last_memory_op {
++                for mem_ip in memory_deps.add(ip, &instr.op) {
+                     g.add_edge(ip, mem_ip, EdgeLabel { latency: 0 });
+                 }
+-                last_memory_op = Some(ip);
+             }
+         }
+ 
