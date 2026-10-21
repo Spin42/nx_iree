@@ -114,7 +114,9 @@ defmodule NxIREE do
 
     input_refs =
       Enum.map(inputs, fn
-        %Nx.Tensor{data: %NxIREE.Backend{ref: ref}} ->
+        # Buffers are only valid on the device that allocated them; tensors
+        # on other devices are copied by allocate_buffer below
+        %Nx.Tensor{data: %NxIREE.Backend{ref: ref, device: ^device_ref}} ->
           ref
 
         fun when is_function(fun, 0) ->
