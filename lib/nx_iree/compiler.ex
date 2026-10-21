@@ -61,6 +61,7 @@ defmodule NxIREE.Compiler do
       iree_compiler_flags
       |> default_flag("--iree-input-type", "stablehlo_xla")
       |> default_flag("--iree-execution-model", "async-internal")
+      |> default_vulkan_features(backend)
       |> default_f64_flags(backend)
 
     ensure_f64_supported!(vars, iree_compiler_flags, backend)
@@ -132,6 +133,21 @@ defmodule NxIREE.Compiler do
       do: flags,
       else: flags ++ ["#{name}=#{value}"]
   end
+
+  # IREE's default Vulkan target has no 8-bit storage, and IREE 3.13 then
+  # misreads i8 tensors consumed by vectorized dispatches (e.g. an attention
+  # mask fused into a batch matmul): each byte is read 4 bytes apart. Unless a
+  # target or feature set is chosen, declare 8-bit storage on top of the
+  # baseline; Vulkan 1.2+ desktop and Jetson drivers all provide it.
+  @vulkan_baseline_with_int8 "spirv:v1.3,cap:Shader,cap:StorageBuffer8BitAccess,cap:Int8,ext:SPV_KHR_8bit_storage"
+
+  defp default_vulkan_features(flags, "vulkan-spirv") do
+    if Enum.any?(flags, &String.starts_with?(&1, "--iree-vulkan-target")),
+      do: flags,
+      else: flags ++ ["--iree-vulkan-target-features=#{@vulkan_baseline_with_int8}"]
+  end
+
+  defp default_vulkan_features(flags, _backend), do: flags
 
   @demote_f64 "--iree-input-demote-f64-to-f32"
 

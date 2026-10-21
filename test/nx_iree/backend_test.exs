@@ -121,6 +121,25 @@ defmodule NxIREE.BackendTest do
     end
   end
 
+  # On Vulkan, a u8 tensor read by a batch matmul dispatch needs 8-bit storage
+  test "u8 mask added to a batch matmul on the default device" do
+    fun = fn q, k, mask ->
+      scores = Nx.dot(q, [2], [0], k, [2], [0])
+      bias = Nx.select(Nx.not_equal(mask, 0), 0.0, -1.0e9) |> Nx.reshape({1, 1, 8})
+      Nx.add(scores, bias)
+    end
+
+    q = Nx.iota({2, 4, 8}, type: :f32, backend: Nx.BinaryBackend) |> Nx.divide(64)
+    k = Nx.iota({2, 8, 8}, type: :f32, backend: Nx.BinaryBackend) |> Nx.divide(128)
+    mask = Nx.tensor([1, 1, 1, 1, 1, 0, 0, 0], type: :u8, backend: Nx.BinaryBackend)
+
+    expected = Nx.Defn.jit_apply(fun, [q, k, mask], compiler: Nx.Defn.Evaluator) |> host()
+    result = Nx.Defn.jit_apply(fun, [q, k, mask]) |> host()
+
+    diff = Nx.subtract(result, expected) |> Nx.abs() |> Nx.reduce_max() |> Nx.to_number()
+    assert diff < 1.0e-3
+  end
+
   test "indexed_put with a list of indices" do
     t = Nx.iota({4}, type: :f32)
     idx = Nx.tensor([[0], [2]])

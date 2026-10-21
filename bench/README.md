@@ -20,10 +20,11 @@ IREE 3.13's SPIR-V backend misreads an i8 tensor that a batch matmul
 dispatch consumes from memory when the Vulkan target has no 8-bit storage
 (the default `vp_android_baseline_2022` profile), which makes BERT's masked
 attention weights uniform. `vulkan_i8_mask_repro.mlir` is the standalone
-StableHLO reproducer for `iree-compile`/`iree-run-module`; passing
-`--iree-vulkan-target=<device arch>` or
+StableHLO reproducer for `iree-compile`/`iree-run-module`. NxIREE.Compiler
+avoids it by declaring
 `--iree-vulkan-target-features=spirv:v1.3,cap:Shader,cap:StorageBuffer8BitAccess,cap:Int8,ext:SPV_KHR_8bit_storage`
-through `NXIREE_FLAGS` avoids it.
+unless the flags choose a `--iree-vulkan-target`; device targets such as
+`pascal` and `rdna3` include 8-bit storage.
 
 | Script | Checks |
 | --- | --- |
