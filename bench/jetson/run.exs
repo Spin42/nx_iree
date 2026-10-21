@@ -1,0 +1,76 @@
+# Runs host-compiled nx_iree modules on the Jetson GPU through NVK.
+# The nx_iree application is not started (its .app lists exla); the runtime is
+# initialised directly. Helpers live in a module so they run compiled rather
+# than through the evaluator.
+root = Path.dirname(__ENV__.file)
+for app <- ~w(complex telemetry nx nx_iree), do: Code.append_path(Path.join([root, "lib", app, "ebin"]))
+{:ok, _} = Application.ensure_all_started(:nx)
+
+defmodule Bench do
+  def log(msg), do: File.write!("/root/nxiree.log", "#{msg}\n", [:append])
+
+  def uniform(shape) do
+    n = shape |> Tuple.to_list() |> Enum.product()
+    bin = for _ <- 1..n, into: <<>>, do: <<:rand.uniform()::float-32-native>>
+    bin |> Nx.from_binary(:f32) |> Nx.reshape(shape)
+  end
+
+  def time(f, reps) do
+    f.()
+    t0 = System.monotonic_time(:microsecond)
+    for _ <- 1..reps, do: f.()
+    (System.monotonic_time(:microsecond) - t0) / reps
+  end
+
+  def run(root) do
+    :ok = NxIREE.Device.init()
+    {:ok, _} = NxIREE.VM.create_instance()
+
+    for file <- root |> Path.join("jetson-modules*.bin") |> Path.wildcard() |> Enum.sort() do
+      run_file(file)
+    end
+  end
+
+  def run_file(file) do
+    %{modules: modules, callback_pid_size: pid_size, target: target} =
+      file |> File.read!() |> :erlang.binary_to_term()
+
+    {:ok, [device | _]} = NxIREE.list_devices("vulkan")
+    log("device #{device.uri}, modules compiled for #{target}")
+
+    to_dev = fn t -> Nx.backend_transfer(t, {NxIREE.Backend, device: device}) end
+    pid_inputs = if pid_size > 0, do: [to_dev.(Nx.broadcast(Nx.tensor(0, type: :u8), {pid_size}))], else: []
+
+    loaded = Map.new(modules, fn {k, m} -> {:ok, l} = NxIREE.load(m, device: device); {k, l} end)
+
+    call = fn key, inputs ->
+      {:ok, out} = NxIREE.call(loaded[key], pid_inputs ++ inputs, device: device)
+      out
+    end
+
+    x = to_dev.(Nx.iota({256}, type: :f32))
+    lat = time(fn -> call.({:add, 256}, [x]) end, 50)
+    lat_rb = time(fn -> call.({:add, 256}, [x]) |> Nx.to_binary() end, 50)
+    log("tiny add: #{Float.round(lat, 1)} us per call, #{Float.round(lat_rb, 1)} us with readback")
+
+    a = uniform({256, 256})
+    b = uniform({256, 256})
+    gpu = call.({:matmul, 256}, [to_dev.(a), to_dev.(b)]) |> Nx.backend_transfer(Nx.BinaryBackend)
+    diff = Nx.subtract(gpu, Nx.dot(a, b)) |> Nx.abs() |> Nx.reduce_max() |> Nx.to_number()
+    log("matmul 256 max |gpu - cpu| = #{diff}")
+
+    for n <- [256, 512, 1024, 2048] do
+      da = to_dev.(uniform({n, n}))
+      db = to_dev.(uniform({n, n}))
+      reps = if n >= 1024, do: 3, else: 10
+      us = time(fn -> call.({:matmul, n}, [da, db]) end, reps)
+      log("matmul #{n}: #{Float.round(2 * n * n * n / us / 1000, 1)} GFLOPS (#{Float.round(us / 1000, 2)} ms)")
+    end
+
+    dx = to_dev.(uniform({4_000_000}))
+    us = time(fn -> call.({:chain, 4_000_000}, [dx]) |> Nx.to_number() end, 5)
+    log("chain on 4M floats: #{Float.round(us / 1000, 2)} ms")
+  end
+end
+
+Bench.run(root)
