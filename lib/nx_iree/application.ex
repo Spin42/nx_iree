@@ -6,7 +6,7 @@ defmodule NxIREE.Application do
   def start(_type, _args) do
     children = []
 
-    :ok = NxIREE.Device.init()
+    # Devices are created on first use, see NxIREE.Device
     {:ok, _instance} = NxIREE.VM.create_instance()
     NxIREE.Compiler.create_cache()
 

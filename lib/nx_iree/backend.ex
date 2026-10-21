@@ -54,7 +54,7 @@ defmodule NxIREE.Backend do
 
   @impl true
   def from_binary(out, binary, opts) do
-    {:ok, %NxIREE.Device{ref: device_ref, uri: device_uri}} = NxIREE.Device.get(opts[:device])
+    %NxIREE.Device{ref: device_ref, uri: device_uri} = NxIREE.Device.fetch!(opts[:device])
 
     {:ok, ref} = NxIREE.VM.allocate_buffer(binary, device_ref, out.shape, out.type)
 

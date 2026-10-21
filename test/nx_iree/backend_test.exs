@@ -41,6 +41,12 @@ defmodule NxIREE.BackendTest do
   end
 
   describe "devices" do
+    test "unknown devices raise with the available ones" do
+      assert_raise ArgumentError, ~r/unknown IREE device "nope:\/\/".*local-sync:\/\//, fn ->
+        Nx.backend_transfer(Nx.iota({2}), {NxIREE.Backend, device: "nope://"})
+      end
+    end
+
     test "backend_transfer honours :device" do
       device = cpu()
       t = Nx.backend_transfer(Nx.iota({4}), {NxIREE.Backend, device: device})

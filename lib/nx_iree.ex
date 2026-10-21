@@ -108,8 +108,8 @@ defmodule NxIREE do
   def load(%NxIREE.Module{bytecode: bytecode} = module, opts \\ []) do
     opts = Keyword.validate!(opts, device: nil)
 
-    {:ok, %NxIREE.Device{driver_name: driver_name, ref: device_ref, uri: device_uri}} =
-      NxIREE.Device.get(opts[:device])
+    %NxIREE.Device{driver_name: driver_name, ref: device_ref, uri: device_uri} =
+      NxIREE.Device.fetch!(opts[:device])
 
     instance_ref = NxIREE.VM.get_instance()
 
@@ -135,8 +135,8 @@ defmodule NxIREE do
       ) do
     opts = Keyword.validate!(opts, function: "main", device: nil)
 
-    {:ok, %NxIREE.Device{driver_name: driver_name, ref: device_ref, uri: device_uri}} =
-      NxIREE.Device.get(opts[:device])
+    %NxIREE.Device{driver_name: driver_name, ref: device_ref, uri: device_uri} =
+      NxIREE.Device.fetch!(opts[:device])
 
     input_refs =
       Enum.map(inputs, fn
@@ -283,7 +283,7 @@ defmodule NxIREE do
           raise ArgumentError, "not a binary produced by NxIREE.export/3"
       end
 
-    {:ok, device} = NxIREE.Device.get(opts[:device])
+    device = NxIREE.Device.fetch!(opts[:device])
 
     module = %NxIREE.Module{
       bytecode: data.bytecode,

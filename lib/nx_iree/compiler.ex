@@ -37,13 +37,13 @@ defmodule NxIREE.Compiler do
     {iree_compiler_flags, backend} =
       cond do
         is_nil(iree_runtime_options[:device]) and not has_target_backend_flag? ->
-          %{compiler_target_backend: backend} = NxIREE.Device.default_device()
+          %{compiler_target_backend: backend} = NxIREE.Device.fetch!(nil)
           flag = "--iree-hal-target-backends=#{backend}"
           {[flag | iree_compiler_flags], backend}
 
         not has_target_backend_flag? ->
-          {:ok, %{compiler_target_backend: backend}} =
-            NxIREE.Device.get(iree_runtime_options[:device])
+          %{compiler_target_backend: backend} =
+            NxIREE.Device.fetch!(iree_runtime_options[:device])
 
           {["--iree-hal-target-backends=#{backend}" | iree_compiler_flags], backend}
 
@@ -103,7 +103,7 @@ defmodule NxIREE.Compiler do
     if output_mode == :bytecode do
       throw({:bytecode, %{nx_iree_module | used_inputs: Enum.sort(used_inputs)}})
     else
-      {:ok, device} = NxIREE.Device.get(iree_runtime_options[:device])
+      device = NxIREE.Device.fetch!(iree_runtime_options[:device])
       {:ok, nx_iree_module} = NxIREE.load(nx_iree_module, device: device)
       leading_inputs = callback_pid_inputs(device)
 
@@ -237,7 +237,7 @@ defmodule NxIREE.Compiler do
 
         iree_runtime_options =
           if tag == :force_host do
-            {:ok, device} = NxIREE.Device.get("local-sync://")
+            device = NxIREE.Device.fetch!("local-sync://")
             Keyword.put(iree_runtime_options, :device, device)
           else
             Keyword.put_new(
@@ -250,7 +250,7 @@ defmodule NxIREE.Compiler do
         nx_iree_module =
           NxIREE.compile(mlir_module, iree_compiler_flags, output_container: output_container)
 
-        {:ok, stage_device} = NxIREE.Device.get(iree_runtime_options[:device])
+        stage_device = NxIREE.Device.fetch!(iree_runtime_options[:device])
         {:ok, nx_iree_module} = NxIREE.load(nx_iree_module, device: stage_device)
         leading_inputs = callback_pid_inputs(stage_device)
 
