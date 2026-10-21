@@ -27,10 +27,30 @@ clone_iree: $(NX_IREE_SOURCE_DIR)
 $(NX_IREE_SOURCE_DIR):
 	./scripts/clone_iree.sh $(IREE_GIT_REV) $(NX_IREE_SOURCE_DIR)
 
+# Nerves sets CROSSCOMPILE (the toolchain prefix) when building for a device.
+# Cross builds get their own build, install and cache directories so they
+# coexist with the host build.
+ifneq ($(strip $(CROSSCOMPILE)),)
+IREE_BUILD_TARGET = cross
+CROSS_NAME := $(notdir $(CROSSCOMPILE))
+IREE_CMAKE_BUILD_DIR ?= $(abspath iree-runtime/$(CROSS_NAME)/iree-build)
+IREE_RUNTIME_BUILD_DIR ?= $(abspath iree-runtime/$(CROSS_NAME)/build)
+IREE_INSTALL_DIR ?= $(abspath iree-runtime/$(CROSS_NAME)/install)
+NX_IREE_CACHE_DIR = cache/$(CROSS_NAME)
+else
+NX_IREE_CACHE_DIR = cache
+endif
+
 IREE_CMAKE_BUILD_DIR ?= $(abspath iree-runtime/iree-build)
 IREE_RUNTIME_INCLUDE_PATH := $(abspath $(NX_IREE_SOURCE_DIR)/runtime/src/iree)
 IREE_RUNTIME_BUILD_DIR ?= $(abspath iree-runtime/build)
 IREE_INSTALL_DIR ?= $(abspath iree-runtime/host/install)
+
+# Code generators IREE's build runs on the build machine
+IREE_HOST_TOOLS_DIR = $(abspath iree-runtime/host-tools)
+IREE_HOST_TOOLS_BIN = $(IREE_HOST_TOOLS_DIR)/tools
+HOST_ENV = env -u CC -u CXX -u CFLAGS -u CXXFLAGS -u CPPFLAGS -u LDFLAGS \
+	-u AR -u AS -u LD -u STRIP -u PKG_CONFIG_SYSROOT_DIR -u PKG_CONFIG_LIBDIR
 
 IREE_BUILD_TARGET ?= host
 
@@ -40,7 +60,7 @@ CUDA_PRESENT := $(shell command -v nvcc >/dev/null 2>&1 && echo true || echo fal
 
 ifeq ($(CUDA_PRESENT), true)
 	ifeq ($(IREE_BUILD_TARGET), host)
-		CFLAGS += -DCUDA_ENABLED
+		NIF_CFLAGS += -DCUDA_ENABLED
 		CMAKE_CXX_FLAGS += -DCUDA_ENABLED
 	endif
 endif
@@ -62,6 +82,20 @@ endif
 
 # apple target flags specified for xcode 15.4
 ifeq ($(IREE_BUILD_TARGET), host)
+else ifeq ($(IREE_BUILD_TARGET), cross)
+	BUILD_TARGET_FLAGS += \
+		-DCMAKE_SYSTEM_NAME=Linux \
+		-DCMAKE_SYSTEM_PROCESSOR=$(firstword $(subst -, ,$(CROSS_NAME))) \
+		-DCMAKE_C_COMPILER=$(CC) \
+		-DCMAKE_CXX_COMPILER=$(CXX) \
+		-DCMAKE_SYSROOT=$(NERVES_SDK_SYSROOT) \
+		-DCMAKE_FIND_ROOT_PATH_MODE_PROGRAM=NEVER \
+		-DCMAKE_FIND_ROOT_PATH_MODE_LIBRARY=ONLY \
+		-DCMAKE_FIND_ROOT_PATH_MODE_INCLUDE=ONLY \
+		-DIREE_HOST_BIN_DIR=$(IREE_HOST_TOOLS_BIN) \
+		-DIREE_ENABLE_WERROR_FLAG=OFF
+# Buildroot toolchains add a -mcpu for the device, which GCC warns conflicts
+# with the -march of IREE's per-feature ukernels (selected at run time)
 else ifeq ($(IREE_BUILD_TARGET), webassembly)
   BUILD_TARGET_FLAGS += \
 		-DIREE_HOST_BIN_DIR=$(abspath $(IREE_HOST_BIN_DIR))
@@ -131,7 +165,17 @@ endif
 
 CMAKE_SOURCES = $(wildcard cmake/src/*.cc cmake/src/*.h)
 
-$(IREE_INSTALL_LIB): $(NX_IREE_SOURCE_DIR) $(CMAKE_SOURCES)
+$(IREE_HOST_TOOLS_BIN)/iree-c-embed-data: $(NX_IREE_SOURCE_DIR)
+	$(HOST_ENV) cmake -G Ninja -B $(IREE_HOST_TOOLS_DIR) -S $(NX_IREE_SOURCE_DIR) \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DIREE_BUILD_COMPILER=OFF \
+		-DIREE_BUILD_TESTS=OFF \
+		-DIREE_BUILD_SAMPLES=OFF \
+		-DIREE_HAL_DRIVER_DEFAULTS=OFF
+	$(HOST_ENV) cmake --build $(IREE_HOST_TOOLS_DIR) --target iree-flatcc-cli iree-c-embed-data
+
+$(IREE_INSTALL_LIB): $(NX_IREE_SOURCE_DIR) $(CMAKE_SOURCES) \
+		$(if $(CROSS_NAME),$(IREE_HOST_TOOLS_BIN)/iree-c-embed-data)
 	$(EMCMAKE) cmake -G Ninja -B $(IREE_CMAKE_BUILD_DIR) \
 		-DCMAKE_BUILD_TYPE=$(IREE_CMAKE_CONFIG)\
 		-DIREE_BUILD_COMPILER=OFF\
@@ -165,35 +209,41 @@ $(IREE_HOST_INSTALL_DIR)/bin/iree-flatcc-cli: $(NX_IREE_SOURCE_DIR) $(CMAKE_SOUR
 ### NxIREE Runtime NIF library
 
 NX_IREE_SO ?= $(MIX_APP_PATH)/priv/libnx_iree.so
-NX_IREE_CACHE_SO ?= cache/libnx_iree.so
+NX_IREE_CACHE_SO ?= $(NX_IREE_CACHE_DIR)/libnx_iree.so
 NX_IREE_SO_LINK_PATH = $(CWD_RELATIVE_TO_PRIV_PATH)/$(NX_IREE_CACHE_SO)
 
-NX_IREE_RUNTIME_LIB = cache/iree-runtime
+NX_IREE_RUNTIME_LIB = $(NX_IREE_CACHE_DIR)/iree-runtime
 NX_IREE_RUNTIME_CACHE_LIB = $(NX_IREE_RUNTIME_LIB)/libnx_iree_runtime.so
 NX_IREE__IREE_RUNTIME_INCLUDE_PATH = $(NX_IREE_RUNTIME_LIB)/include
 NX_IREE_RUNTIME_SO ?= $(MIX_APP_PATH)/priv/libnx_iree_runtime.so
 
-CFLAGS = -fPIC -I$(ERTS_INCLUDE_DIR) -I$(NX_IREE__IREE_RUNTIME_INCLUDE_PATH) -Wall -std=c++17 -w
+NIF_CFLAGS += -fPIC -I$(ERTS_INCLUDE_DIR) -I$(NX_IREE__IREE_RUNTIME_INCLUDE_PATH) -Wall -std=c++17 -w
 
 IREE_CMAKE_CONFIG ?= Release
 
 ifdef DEBUG
 	IREE_CMAKE_CONFIG = RelWithDebInfo
-	CFLAGS += -g
+	NIF_CFLAGS += -g
 else
-	CFLAGS += -O3
+	NIF_CFLAGS += -O3
 endif
 
-LDFLAGS = -L$(NX_IREE_RUNTIME_LIB) -lnx_iree_runtime -shared
+NIF_LDFLAGS = -L$(NX_IREE_RUNTIME_LIB) -lnx_iree_runtime -shared
+
+# Nerves passes the sysroot in CFLAGS/LDFLAGS, which the NIF build does not use
+ifneq ($(strip $(NERVES_SDK_SYSROOT)),)
+	NIF_CFLAGS += --sysroot=$(NERVES_SDK_SYSROOT)
+	NIF_LDFLAGS += --sysroot=$(NERVES_SDK_SYSROOT)
+endif
 
 ifeq ($(shell uname -s), Darwin)
-	LDFLAGS += -flat_namespace -undefined dynamic_lookup -rpath @loader_path/iree-runtime
+	NIF_LDFLAGS += -flat_namespace -undefined dynamic_lookup -rpath @loader_path/iree-runtime
 else
 	# Use a relative RPATH, so at runtime libexla.so looks for libxla_extension.so
 	# in ./lib regardless of the absolute location. This way priv can be safely
 	# packed into an Elixir release. Also, we use $$ to escape Makefile variable
 	# and single quotes to escape shell variable
-	LDFLAGS += -Wl,-rpath,'$$ORIGIN/iree-runtime'
+	NIF_LDFLAGS += -Wl,-rpath,'$$ORIGIN/iree-runtime'
 endif
 
 NX_IREE_LIB_DIR = $(MIX_APP_PATH)/priv/iree-runtime
@@ -202,7 +252,7 @@ NX_IREE_CACHE_SO_LINK_PATH = $(NX_IREE_CACHE_SO)
 
 SOURCES = $(wildcard c_src/*.cc)
 HEADERS = $(wildcard c_src/*.h)
-OBJECTS = $(patsubst c_src/%.cc,cache/objs/%.o,$(SOURCES))
+OBJECTS = $(patsubst c_src/%.cc,$(NX_IREE_CACHE_DIR)/objs/%.o,$(SOURCES))
 
 ifeq ($(NX_IREE_PREFER_PRECOMPILED), true)
 # If we are using precompiled libnx_iree.so, we need to make sure that
@@ -223,7 +273,7 @@ else
 nx_iree: $(NX_IREE_RUNTIME_CACHE_LIB) $(NX_IREE_SO)
 
 $(NX_IREE_CACHE_SO): $(OBJECTS)
-	$(CXX) -shared -o $@ $^ $(LDFLAGS)
+	$(CXX) -shared -o $@ $^ $(NIF_LDFLAGS)
 
 # Refresh the runtime the NIF links and loads whenever it is rebuilt
 $(NX_IREE_RUNTIME_CACHE_LIB): $(IREE_INSTALL_LIB)
@@ -232,20 +282,32 @@ $(NX_IREE_RUNTIME_CACHE_LIB): $(IREE_INSTALL_LIB)
 	cp -r $(IREE_INSTALL_DIR) $(NX_IREE_RUNTIME_LIB)
 endif
 
-$(NX_IREE_SO): $(NX_IREE_CACHE_SO)
+# Always refreshed: priv may hold entries from a build for another target
+# (for a path dependency it is copied from, or links to, the source priv)
+$(NX_IREE_SO): $(NX_IREE_CACHE_SO) FORCE
+	@ if [ -L $(PRIV_DIR) ]; then \
+		src=$$(readlink -f $(PRIV_DIR)) ; \
+		rm $(PRIV_DIR) && mkdir -p $(PRIV_DIR) && cp $$src/VERSION $(PRIV_DIR)/ ; \
+	fi
 	@mkdir -p $(PRIV_DIR)
-	@ if [ "${MIX_BUILD_EMBEDDED}" = "true" ]; then \
-		cp -a $(abspath $(NX_IREE_RUNTIME_LIB)) $(NX_IREE_LIB_DIR) ; \
+	@rm -rf $(NX_IREE_LIB_DIR) $(NX_IREE_SO)
+	@ if [ -n "$(CROSS_NAME)" ]; then rm -f $(PRIV_DIR)/iree-compile ; fi
+	@ if [ "${MIX_BUILD_EMBEDDED}" = "true" ] || [ -n "$(CROSS_NAME)" ]; then \
+		mkdir -p $(NX_IREE_LIB_DIR) ; \
+		cp -a $(abspath $(NX_IREE_RUNTIME_CACHE_LIB)) $(NX_IREE_LIB_DIR)/ ; \
 		cp -a $(abspath $(NX_IREE_CACHE_SO)) $(NX_IREE_SO) ; \
 	else \
 		ln -sf $(NX_IREE_LIB_LINK_PATH) $(NX_IREE_LIB_DIR) ; \
 		ln -sf $(NX_IREE_CACHE_SO_LINK_PATH) $(NX_IREE_SO) ; \
 	fi
 
+.PHONY: FORCE
+FORCE:
 
-cache/objs/%.o: c_src/%.cc $(CMAKE_SOURCES) $(NX_IREE_RUNTIME_CACHE_LIB)
+
+$(NX_IREE_CACHE_DIR)/objs/%.o: c_src/%.cc $(CMAKE_SOURCES) $(NX_IREE_RUNTIME_CACHE_LIB)
 	@ mkdir -p $(dir $@)
-	$(CXX) $(CFLAGS) -o $@ -c $<
+	$(CXX) $(NIF_CFLAGS) -o $@ -c $<
 
 # Print IREE Dir
 .PHONY: PTD
@@ -258,5 +320,5 @@ webassembly:
 	./scripts/build_and_package.sh --target=webassembly
 
 clean:
-	rm -rf cache/objs
+	rm -rf $(NX_IREE_CACHE_DIR)/objs
 	rm -rf $(TARGET_DIR)

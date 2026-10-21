@@ -102,7 +102,12 @@ defmodule NxIREE.MixProject do
   end
 
   defp compile(args) do
-    :ok = download_and_unzip_iree_release(args)
+    ensure_build_priv!()
+
+    # Devices only run precompiled modules; iree-compile runs on the host
+    unless cross_compiling?() do
+      :ok = download_and_unzip_iree_release(args)
+    end
 
     if nx_iree_config().use_precompiled and not File.exists?(nx_iree_config().nx_iree_so_path) do
       case download_precompiled_nx_iree_lib() do
@@ -137,6 +142,12 @@ defmodule NxIREE.MixProject do
 
     use_precompiled = System.get_env("NX_IREE_PREFER_PRECOMPILED", "false") in ["1", "true"]
 
+    # Matches NX_IREE_CACHE_DIR in the Makefile
+    cache =
+      if cross_compiling?(),
+        do: Path.join([__DIR__, "cache", Path.basename(System.get_env("CROSSCOMPILE"))]),
+        else: Path.join(__DIR__, "cache")
+
     %{
       version: version,
       tag: tag,
@@ -145,9 +156,32 @@ defmodule NxIREE.MixProject do
       dir: dir,
       source_dir: source_dir,
       use_precompiled: use_precompiled,
-      nx_iree_so_path: Path.join([__DIR__, "cache", "libnx_iree.so"]),
-      nx_iree_tar_gz_path: Path.join([__DIR__, "cache", "libnx_iree.tar.gz"])
+      nx_iree_so_path: Path.join(cache, "libnx_iree.so"),
+      nx_iree_tar_gz_path: Path.join(cache, "libnx_iree.tar.gz")
     }
+  end
+
+  # Nerves sets CROSSCOMPILE when building for a device
+  defp cross_compiling?, do: System.get_env("CROSSCOMPILE", "") != ""
+
+  # Mix links the build's priv to the source priv (for this project and for
+  # path dependencies). Build products are written into the build's priv, so
+  # replace that link with a directory of its own: otherwise host and device
+  # builds overwrite each other's files through the shared source directory.
+  # The Makefile does the same before installing the NIF.
+  defp ensure_build_priv! do
+    priv = Path.join(Mix.Project.app_path(), "priv")
+
+    case File.read_link(priv) do
+      {:ok, _} ->
+        source = Path.expand("priv", __DIR__)
+        File.rm!(priv)
+        File.mkdir_p!(priv)
+        File.cp!(Path.join(source, "VERSION"), Path.join(priv, "VERSION"))
+
+      {:error, _} ->
+        File.mkdir_p!(priv)
+    end
   end
 
   defp download_and_unzip_iree_release(args) do
