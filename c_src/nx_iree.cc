@@ -42,6 +42,14 @@ void default_dtor(ErlNifEnv* env, void* obj) {
   resource = nullptr;
 }
 
+// Destructor for resources holding an owning pointer.
+template <typename T>
+void delete_dtor(ErlNifEnv* env, void* obj) {
+  T** resource = reinterpret_cast<T**>(obj);
+  delete *resource;
+  *resource = nullptr;
+}
+
 // Opens a resource for the given template type T. If no
 // destructor is given, uses the default destructor defined
 // above.
@@ -95,7 +103,10 @@ static int open_resources(ErlNifEnv* env) {
   if (!open_resource<iree_hal_driver_registry_t*>(env, mod, "iree_hal_driver_registry_t")) {
     return -1;
   }
-  if (!open_resource<iree::runtime::IREETensor*>(env, mod, "iree::runtime::IREETensor")) {
+  if (!open_resource<iree::runtime::IREETensor*>(env, mod, "iree::runtime::IREETensor", &delete_dtor<iree::runtime::IREETensor>)) {
+    return -1;
+  }
+  if (!open_resource<iree::runtime::LoadedModule*>(env, mod, "iree::runtime::LoadedModule", &delete_dtor<iree::runtime::LoadedModule>)) {
     return -1;
   }
 
@@ -439,6 +450,23 @@ DECLARE_NIF(deserialize_tensor) {
   return ok(env, make<iree::runtime::IREETensor*>(env, tensor));
 }
 
+ERL_NIF_TERM make_output_terms(ErlNifEnv* env, std::vector<iree::runtime::IREETensor*>& tensors) {
+  std::vector<ERL_NIF_TERM> output_terms;
+  for (auto tensor : tensors) {
+    auto tensor_term = make<iree::runtime::IREETensor*>(env, tensor);
+    std::vector<ERL_NIF_TERM> dims;
+    for (auto dim : tensor->dims) {
+      dims.push_back(enif_make_int64(env, dim));
+    }
+    auto dims_term = enif_make_list_from_array(env, dims.data(), dims.size());
+    auto type_term = enif_make_string(env, iree_type_to_nx_type(tensor->type).c_str(), ERL_NIF_LATIN1);
+    auto term = enif_make_tuple3(env, tensor_term, dims_term, type_term);
+    output_terms.push_back(term);
+  }
+
+  return ok(env, enif_make_list_from_array(env, output_terms.data(), output_terms.size()));
+}
+
 DECLARE_NIF(call_nif) {
   iree_vm_instance_t** instance;
   iree_hal_device_t** device;
@@ -468,20 +496,59 @@ DECLARE_NIF(call_nif) {
     return error(env, get_status_message(status).c_str());
   }
 
-  std::vector<ERL_NIF_TERM> output_terms;
-  for (auto tensor : result_tensors.value()) {
-    auto tensor_term = make<iree::runtime::IREETensor*>(env, tensor);
-    std::vector<ERL_NIF_TERM> dims;
-    for (auto dim : tensor->dims) {
-      dims.push_back(enif_make_int64(env, dim));
-    }
-    auto dims_term = enif_make_list_from_array(env, dims.data(), dims.size());
-    auto type_term = enif_make_string(env, iree_type_to_nx_type(tensor->type).c_str(), ERL_NIF_LATIN1);
-    auto term = enif_make_tuple3(env, tensor_term, dims_term, type_term);
-    output_terms.push_back(term);
+  return make_output_terms(env, result_tensors.value());
+}
+
+DECLARE_NIF(load_module_nif) {
+  iree_vm_instance_t** instance;
+  iree_hal_device_t** device;
+  ErlNifBinary bytecode;
+  std::string driver_name;
+
+  if (!get<iree_vm_instance_t*>(env, argv[0], instance)) {
+    return error(env, "invalid instance");
+  }
+  if (!get<iree_hal_device_t*>(env, argv[1], device)) {
+    return error(env, "invalid device");
+  }
+  if (!get_string(env, argv[2], driver_name)) {
+    return error(env, "invalid driver name");
+  }
+  if (!enif_inspect_binary(env, argv[3], &bytecode)) {
+    return error(env, "invalid bytecode");
   }
 
-  return ok(env, enif_make_list_from_array(env, output_terms.data(), output_terms.size()));
+  auto [status, loaded] = load_module(*instance, *device, driver_name, bytecode.data, bytecode.size);
+
+  if (!is_ok(status)) {
+    return error(env, get_status_message(status).c_str());
+  }
+
+  return ok(env, make<iree::runtime::LoadedModule*>(env, loaded));
+}
+
+DECLARE_NIF(call_loaded_nif) {
+  iree::runtime::LoadedModule** loaded;
+  std::vector<iree::runtime::IREETensor*> inputs;
+  std::string driver_name;
+
+  if (!get<iree::runtime::LoadedModule*>(env, argv[0], loaded)) {
+    return error(env, "invalid loaded module");
+  }
+  if (!get_string(env, argv[1], driver_name)) {
+    return error(env, "invalid driver name");
+  }
+  if (!get_list(env, argv[2], inputs)) {
+    return error(env, "invalid inputs");
+  }
+
+  auto [status, result_tensors] = call_loaded(*loaded, driver_name, inputs);
+
+  if (!is_ok(status)) {
+    return error(env, get_status_message(status).c_str());
+  }
+
+  return make_output_terms(env, result_tensors.value());
 }
 
 static ErlNifFunc funcs[] = {
@@ -497,6 +564,9 @@ static ErlNifFunc funcs[] = {
     {"deserialize_tensor", 1, deserialize_tensor},
     {"read_buffer", 3, read_buffer_nif},
     {"call_io", 5, call_nif, ERL_NIF_DIRTY_JOB_IO_BOUND},
-    {"call_cpu", 5, call_nif, ERL_NIF_DIRTY_JOB_CPU_BOUND}};
+    {"call_cpu", 5, call_nif, ERL_NIF_DIRTY_JOB_CPU_BOUND},
+    {"load_module", 4, load_module_nif, ERL_NIF_DIRTY_JOB_IO_BOUND},
+    {"call_loaded_io", 3, call_loaded_nif, ERL_NIF_DIRTY_JOB_IO_BOUND},
+    {"call_loaded_cpu", 3, call_loaded_nif, ERL_NIF_DIRTY_JOB_CPU_BOUND}};
 
 ERL_NIF_INIT(Elixir.NxIREE.Native, funcs, &load, NULL, &upgrade, NULL);

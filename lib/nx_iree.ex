@@ -71,6 +71,29 @@ defmodule NxIREE do
   end
 
   @doc """
+  Loads the module on a device once, so that `call/3` on that device reuses
+  its pipelines instead of recreating them on every call.
+
+  ## Options
+
+    * `:device` - The device to load the module on. Defaults to the same device
+      `call/3` would pick.
+  """
+  def load(%NxIREE.Module{bytecode: bytecode} = module, opts \\ []) do
+    opts = Keyword.validate!(opts, device: nil)
+
+    {:ok, %NxIREE.Device{driver_name: driver_name, ref: device_ref, uri: device_uri}} =
+      NxIREE.Device.get(opts[:device])
+
+    instance_ref = NxIREE.VM.get_instance()
+
+    case NxIREE.Native.load_module(instance_ref, device_ref, driver_name, bytecode) do
+      {:ok, loaded_ref} -> {:ok, %{module | loaded: {device_uri, loaded_ref}}}
+      {:error, error} -> {:error, List.to_string(error)}
+    end
+  end
+
+  @doc """
   Calls a function in the given module with the provided Nx inputs.
 
   ## Options
@@ -80,7 +103,7 @@ defmodule NxIREE do
       Valid values can be obtained through `list_devices/0` or `list_devices/1`.
   """
   def call(
-        %NxIREE.Module{bytecode: bytecode, output_container: output_container},
+        %NxIREE.Module{bytecode: bytecode, output_container: output_container} = module,
         inputs,
         opts \\ []
       ) do
@@ -103,10 +126,15 @@ defmodule NxIREE do
           ref
       end)
 
-    instance_ref = NxIREE.VM.get_instance()
-
     result =
-      NxIREE.Native.call_io(instance_ref, device_ref, driver_name, bytecode, input_refs)
+      case module.loaded do
+        {^device_uri, loaded_ref} ->
+          NxIREE.Native.call_loaded_io(loaded_ref, driver_name, input_refs)
+
+        _ ->
+          instance_ref = NxIREE.VM.get_instance()
+          NxIREE.Native.call_io(instance_ref, device_ref, driver_name, bytecode, input_refs)
+      end
 
     case result do
       {:ok, refs} ->

@@ -93,6 +93,10 @@ defmodule NxIREE.Compiler do
     if output_mode == :bytecode do
       throw({:bytecode, nx_iree_module})
     else
+      {:ok, device} = NxIREE.Device.get(iree_runtime_options[:device])
+      {:ok, nx_iree_module} = NxIREE.load(nx_iree_module, device: device)
+      leading_inputs = callback_pid_inputs(device)
+
       fn [inputs] ->
         filtered_inputs =
           filter_inputs_by_indices(inputs, used_inputs)
@@ -100,12 +104,36 @@ defmodule NxIREE.Compiler do
         {:ok, result} =
           NxIREE.call(
             nx_iree_module,
-            filtered_inputs,
-            iree_runtime_options
+            leading_inputs ++ filtered_inputs,
+            Keyword.put(iree_runtime_options, :device, device)
           )
 
         [result]
       end
+    end
+  end
+
+  # EXLA modules take the encoded callback server pid as their first argument.
+  # IREE runs no host callbacks, so the argument is a zero buffer allocated
+  # once per compiled function.
+  defp callback_pid_inputs(%NxIREE.Device{} = device) do
+    if Code.ensure_loaded?(EXLA.Executable) and
+         function_exported?(EXLA.Executable, :callback_server_pid_size, 0) do
+      size = apply(EXLA.Executable, :callback_server_pid_size, [])
+
+      {:ok, ref} =
+        NxIREE.VM.allocate_buffer(<<0::size(size)-unit(8)>>, device.ref, {size}, {:u, 8})
+
+      data = %NxIREE.Backend{
+        ref: ref,
+        device: device.ref,
+        device_uri: device.uri,
+        driver: device.driver_name
+      }
+
+      [%T{data: data, shape: {size}, type: {:u, 8}, names: [nil]}]
+    else
+      []
     end
   end
 
@@ -160,6 +188,10 @@ defmodule NxIREE.Compiler do
         nx_iree_module =
           NxIREE.compile(mlir_module, iree_compiler_flags, output_container: output_container)
 
+        {:ok, stage_device} = NxIREE.Device.get(iree_runtime_options[:device])
+        {:ok, nx_iree_module} = NxIREE.load(nx_iree_module, device: stage_device)
+        leading_inputs = callback_pid_inputs(stage_device)
+
         runtime_fun = fn [inputs] ->
           filtered_inputs =
             filter_inputs_by_indices(inputs, used_inputs)
@@ -167,7 +199,7 @@ defmodule NxIREE.Compiler do
           {:ok, result} =
             NxIREE.call(
               nx_iree_module,
-              filtered_inputs,
+              leading_inputs ++ filtered_inputs,
               iree_runtime_options
             )
 

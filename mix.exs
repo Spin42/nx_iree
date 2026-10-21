@@ -60,9 +60,9 @@ defmodule NxIREE.MixProject do
   defp deps do
     [
       {:elixir_make, "~> 0.6", runtime: false},
-      {:exla, "~> 0.9"},
-      {:nx, "~> 0.9"},
-      {:ex_doc, "~> 0.34"},
+      {:exla, "~> 0.9 or ~> 1.0", optional: true},
+      {:nx, "~> 0.9 or ~> 1.0"},
+      {:ex_doc, "~> 0.34", only: :docs, runtime: false},
       {:req, "~> 0.5", runtime: false}
     ]
   end
