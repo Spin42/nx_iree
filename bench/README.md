@@ -14,6 +14,24 @@ compiler flags (for example `--iree-vulkan-target=rdna3`) come from
 | `pjrt.exs` | EXLA through IREE's Vulkan PJRT plugin (`../patches/iree-pjrt-exla.patch`) |
 | `aot.exs` | compiles the Jetson test modules ahead of time |
 
+## Vulkan i8 masks
+
+IREE 3.13's SPIR-V backend misreads an i8 tensor that a batch matmul
+dispatch consumes from memory when the Vulkan target has no 8-bit storage
+(the default `vp_android_baseline_2022` profile), which makes BERT's masked
+attention weights uniform. `vulkan_i8_mask_repro.mlir` is the standalone
+StableHLO reproducer for `iree-compile`/`iree-run-module`; passing
+`--iree-vulkan-target=<device arch>` or
+`--iree-vulkan-target-features=spirv:v1.3,cap:Shader,cap:StorageBuffer8BitAccess,cap:Int8,ext:SPV_KHR_8bit_storage`
+through `NXIREE_FLAGS` avoids it.
+
+| Script | Checks |
+| --- | --- |
+| `bert_attn_print.exs` | BERT-tiny's first-layer attention weights on Vulkan against EXLA |
+| `attn_bisect.exs` | the pieces of that graph one by one, ending with the i8 mask + batch matmul |
+| `bert_trace.exs` | BERT-tiny with `--iree-flow-trace-dispatch-tensors` (`NXIREE_BACKEND=cpu` or `vulkan`) |
+| `bert_dump.exs` | writes BERT-tiny's StableHLO and Vulkan bytecode to `OUT` for standalone runs |
+
 ## Jetson
 
 `aot.exs` writes `jetson-modules.bin` for `NXIREE_VULKAN_TARGET` (default
