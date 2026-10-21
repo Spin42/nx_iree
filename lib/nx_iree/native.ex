@@ -21,17 +21,20 @@ defmodule NxIREE.Native do
   def allocate_buffer(_data, _device_ref, _dims, _element_type), do: :erlang.nif_error(:undef)
   def read_buffer(_device_ref, _input_ref, _num_bytes), do: :erlang.nif_error(:undef)
 
-  def call_io(_instance_ref, _device_ref, _driver_name, _bytecode, _inputs),
+  def call_io(_instance_ref, _device_ref, _driver_name, _bytecode, _inputs, _copy_inputs),
     do: :erlang.nif_error(:undef)
 
-  def call_cpu(_instance_ref, _device_ref, _driver_name, _bytecode, _inputs),
+  def call_cpu(_instance_ref, _device_ref, _driver_name, _bytecode, _inputs, _copy_inputs),
     do: :erlang.nif_error(:undef)
 
   def load_module(_instance_ref, _device_ref, _driver_name, _bytecode),
     do: :erlang.nif_error(:undef)
 
-  def call_loaded_io(_loaded_ref, _driver_name, _inputs), do: :erlang.nif_error(:undef)
-  def call_loaded_cpu(_loaded_ref, _driver_name, _inputs), do: :erlang.nif_error(:undef)
+  def call_loaded_io(_loaded_ref, _driver_name, _inputs, _copy_inputs),
+    do: :erlang.nif_error(:undef)
+
+  def call_loaded_cpu(_loaded_ref, _driver_name, _inputs, _copy_inputs),
+    do: :erlang.nif_error(:undef)
 
   def serialize_tensor(_reference), do: :erlang.nif_error(:undef)
   def deserialize_tensor(_binary), do: :erlang.nif_error(:undef)

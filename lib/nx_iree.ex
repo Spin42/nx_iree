@@ -53,8 +53,17 @@ defmodule NxIREE do
             "compiler run modules compiled on the host with NxIREE.export/3"
     end
 
+    phases_dir = tmpfile <> ".phases"
+
+    phase_flags =
+      if Enum.any?(flags, &String.starts_with?(&1, "--dump-compilation-phases-to")),
+        do: [],
+        else: ["--dump-compilation-phases-to=#{phases_dir}"]
+
     try do
-      case System.cmd(compiler_path, flags ++ ["-o", outfile, tmpfile], stderr_to_stdout: true) do
+      case System.cmd(compiler_path, flags ++ phase_flags ++ ["-o", outfile, tmpfile],
+             stderr_to_stdout: true
+           ) do
         {log, 0} ->
           if log != "", do: Logger.debug("iree-compile: " <> log)
 
@@ -62,7 +71,8 @@ defmodule NxIREE do
             bytecode: File.read!(outfile),
             compilation_flags: flags,
             mlir_module: mlir_module,
-            output_container: output_container
+            output_container: output_container,
+            written_inputs: written_inputs(phases_dir)
           }
 
         {log, status} ->
@@ -72,6 +82,17 @@ defmodule NxIREE do
     after
       File.rm(tmpfile)
       File.rm(outfile)
+      File.rm_rf(phases_dir)
+    end
+  end
+
+  # Arguments IREE may write in place, from the stream phase of the compilation
+  defp written_inputs(phases_dir) do
+    with [path] <- Path.wildcard(Path.join(phases_dir, "*.stream.mlir")),
+         {:ok, indices} <- path |> File.read!() |> NxIREE.WrittenInputs.analyze() do
+      indices
+    else
+      _ -> :all
     end
   end
 
@@ -138,30 +159,44 @@ defmodule NxIREE do
     %NxIREE.Device{driver_name: driver_name, ref: device_ref, uri: device_uri} =
       NxIREE.Device.fetch!(opts[:device])
 
-    input_refs =
-      Enum.map(inputs, fn
-        # Buffers are only valid on the device that allocated them; tensors
-        # on other devices are copied by allocate_buffer below
-        %Nx.Tensor{data: %NxIREE.Backend{ref: ref, device: ^device_ref}} ->
-          ref
+    written = module.written_inputs || :all
 
-        fun when is_function(fun, 0) ->
-          {:ok, ref} = NxIREE.VM.allocate_buffer(fun.(), device_ref)
-          ref
+    {input_refs, copy_inputs} =
+      inputs
+      |> Enum.with_index()
+      |> Enum.map(fn {input, i} ->
+        input = if is_function(input, 0), do: input.(), else: input
 
-        t ->
-          {:ok, ref} = NxIREE.VM.allocate_buffer(t, device_ref)
-          ref
+        case input do
+          # Buffers are only valid on the device that allocated them; tensors
+          # on other devices are copied by allocate_buffer below. Existing
+          # buffers the module may write are passed as copies.
+          %Nx.Tensor{data: %NxIREE.Backend{ref: ref, device: ^device_ref}} ->
+            {ref, written == :all or i in written}
+
+          t ->
+            {:ok, ref} = NxIREE.VM.allocate_buffer(t, device_ref)
+            {ref, false}
+        end
       end)
+      |> Enum.unzip()
 
     result =
       case module.loaded do
         {^device_uri, loaded_ref} ->
-          NxIREE.Native.call_loaded_io(loaded_ref, driver_name, input_refs)
+          NxIREE.Native.call_loaded_io(loaded_ref, driver_name, input_refs, copy_inputs)
 
         _ ->
           instance_ref = NxIREE.VM.get_instance()
-          NxIREE.Native.call_io(instance_ref, device_ref, driver_name, bytecode, input_refs)
+
+          NxIREE.Native.call_io(
+            instance_ref,
+            device_ref,
+            driver_name,
+            bytecode,
+            input_refs,
+            copy_inputs
+          )
       end
 
     case result do
@@ -252,6 +287,7 @@ defmodule NxIREE do
       compilation_flags: flags,
       inputs: inputs,
       used_inputs: module.used_inputs,
+      written_inputs: module.written_inputs,
       output: Nx.Defn.Composite.traverse(module.output_container, &Nx.to_template/1),
       callback_pid_size: NxIREE.Compiler.callback_pid_size()
     })
@@ -289,7 +325,8 @@ defmodule NxIREE do
       bytecode: data.bytecode,
       compilation_flags: data.compilation_flags,
       output_container: data.output,
-      used_inputs: data.used_inputs
+      used_inputs: data.used_inputs,
+      written_inputs: data.written_inputs
     }
 
     case load(module, device: device) do

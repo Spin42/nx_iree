@@ -550,10 +550,36 @@ load_module(iree_vm_instance_t *instance, iree_hal_device_t *device,
   return {iree_ok_status(), loaded};
 }
 
+// Copies a device buffer view into a new device-local buffer.
+static iree_status_t clone_buffer_view(iree_hal_device_t *device,
+                                       iree_hal_buffer_view_t *source,
+                                       iree_hal_buffer_view_t **out_view) {
+  iree_device_size_t length = iree_hal_buffer_view_byte_length(source);
+  iree_hal_buffer_t *target = nullptr;
+  IREE_RETURN_IF_ERROR(iree_hal_allocator_allocate_buffer(
+      iree_hal_device_allocator(device),
+      (iree_hal_buffer_params_t){
+          .usage = IREE_HAL_BUFFER_USAGE_DEFAULT,
+          .type = IREE_HAL_MEMORY_TYPE_DEVICE_LOCAL,
+      },
+      length, &target));
+
+  iree_status_t status = iree_hal_device_transfer_d2d(
+      device, iree_hal_buffer_view_buffer(source), 0, target, 0, length,
+      IREE_HAL_TRANSFER_BUFFER_FLAG_DEFAULT, iree_infinite_timeout());
+  if (iree_status_is_ok(status)) {
+    status = iree_hal_buffer_view_create_like(target, source,
+                                              iree_allocator_system(), out_view);
+  }
+  iree_hal_buffer_release(target);
+  return status;
+}
+
 std::pair<iree_status_t,
           std::optional<std::vector<iree::runtime::IREETensor *>>>
 call_loaded(iree::runtime::LoadedModule *loaded, std::string driver_name,
-            std::vector<iree::runtime::IREETensor *> exla_inputs) {
+            std::vector<iree::runtime::IREETensor *> exla_inputs,
+            std::vector<bool> copy_inputs) {
   iree_hal_device_t *device = loaded->device;
   iree_vm_list_t *inputs = nullptr;
   iree_vm_list_t *outputs = nullptr;
@@ -569,8 +595,9 @@ call_loaded(iree::runtime::LoadedModule *loaded, std::string driver_name,
       iree_vm_make_undefined_type_def(), exla_inputs.size(),
       iree_allocator_system(), &inputs);
 
-  for (auto input : exla_inputs) {
+  for (size_t i = 0; i < exla_inputs.size(); i++) {
     if (!iree_status_is_ok(status)) break;
+    auto input = exla_inputs[i];
 
     if (input->buffer_view == nullptr && input->data == nullptr) {
       status = iree_make_status(IREE_STATUS_FAILED_PRECONDITION,
@@ -580,7 +607,15 @@ call_loaded(iree::runtime::LoadedModule *loaded, std::string driver_name,
 
     iree_vm_ref_t arg_buffer_view_ref;
 
-    if (input->buffer_view) {
+    if (input->buffer_view && i < copy_inputs.size() && copy_inputs[i] &&
+        iree_hal_buffer_view_byte_length(input->buffer_view) > 0) {
+      // The module may write this argument in place, so it gets a copy and
+      // the tensor keeps its contents.
+      iree_hal_buffer_view_t *copy = nullptr;
+      status = clone_buffer_view(device, input->buffer_view, &copy);
+      if (!iree_status_is_ok(status)) break;
+      arg_buffer_view_ref = iree_hal_buffer_view_move_ref(copy);
+    } else if (input->buffer_view) {
       // The tensor keeps its buffer view, so the list takes a new reference.
       arg_buffer_view_ref = iree_hal_buffer_view_retain_ref(input->buffer_view);
     } else {
@@ -651,13 +686,14 @@ std::pair<iree_status_t,
           std::optional<std::vector<iree::runtime::IREETensor *>>>
 call(iree_vm_instance_t *instance, iree_hal_device_t *device,
      std::string driver_name, unsigned char *bytecode, size_t bytecode_size,
-     std::vector<iree::runtime::IREETensor *> exla_inputs) {
+     std::vector<iree::runtime::IREETensor *> exla_inputs,
+     std::vector<bool> copy_inputs) {
   auto [status, loaded] =
       load_module(instance, device, driver_name, bytecode, bytecode_size);
   if (!iree_status_is_ok(status)) {
     return {status, std::nullopt};
   }
-  auto result = call_loaded(loaded, driver_name, exla_inputs);
+  auto result = call_loaded(loaded, driver_name, exla_inputs, copy_inputs);
   delete loaded;
   return result;
 }

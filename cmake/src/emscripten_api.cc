@@ -219,7 +219,9 @@ std::pair<std::shared_ptr<nx_iree_status_t>, std::vector<std::shared_ptr<iree::r
       device->driver_name,
       bytecode->data,
       bytecode->size,
-      inputs);
+      inputs,
+      // Without the compiler's analysis any argument may be written in place
+      std::vector<bool>(inputs.size(), true));
 
   auto wrapped_outputs = std::vector<std::shared_ptr<iree::runtime::IREETensor>>();
   if (opt_outputs.has_value()) {

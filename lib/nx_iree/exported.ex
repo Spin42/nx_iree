@@ -10,7 +10,7 @@ defmodule NxIREE.Exported do
 
   defstruct [:module, :device, :inputs, :used_inputs, :leading_inputs]
 
-  @format 1
+  @format 2
 
   @doc false
   def format, do: @format

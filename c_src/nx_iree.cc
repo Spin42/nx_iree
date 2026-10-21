@@ -2,6 +2,7 @@
 #include <iree/hal/driver_registry.h>
 #include <nx_iree/runtime.h>
 
+#include <cstring>
 #include <functional>
 #include <iostream>
 #include <map>
@@ -496,6 +497,17 @@ ERL_NIF_TERM make_output_terms(ErlNifEnv* env, std::vector<iree::runtime::IREETe
   return ok(env, enif_make_list_from_array(env, output_terms.data(), output_terms.size()));
 }
 
+// Reads a list of booleans.
+static bool get_bool_list(ErlNifEnv *env, ERL_NIF_TERM list, std::vector<bool> &out) {
+  ERL_NIF_TERM head, tail = list;
+  char atom[6];
+  while (enif_get_list_cell(env, tail, &head, &tail)) {
+    if (!enif_get_atom(env, head, atom, sizeof(atom), ERL_NIF_LATIN1)) return false;
+    out.push_back(std::strcmp(atom, "true") == 0);
+  }
+  return enif_is_empty_list(env, tail);
+}
+
 DECLARE_NIF(call_nif) {
   iree_vm_instance_t** instance;
   iree_hal_device_t** device;
@@ -518,8 +530,12 @@ DECLARE_NIF(call_nif) {
   if (!get_list(env, argv[4], inputs)) {
     return error(env, "invalid inputs");
   }
+  std::vector<bool> copy_inputs;
+  if (!get_bool_list(env, argv[5], copy_inputs)) {
+    return error(env, "invalid input copy flags");
+  }
 
-  auto [status, result_tensors] = call(*instance, *device, driver_name, bytecode.data, bytecode.size, inputs);
+  auto [status, result_tensors] = call(*instance, *device, driver_name, bytecode.data, bytecode.size, inputs, copy_inputs);
 
   if (!is_ok(status)) {
     return error(env, get_status_message(status).c_str());
@@ -570,8 +586,12 @@ DECLARE_NIF(call_loaded_nif) {
   if (!get_list(env, argv[2], inputs)) {
     return error(env, "invalid inputs");
   }
+  std::vector<bool> copy_inputs;
+  if (!get_bool_list(env, argv[3], copy_inputs)) {
+    return error(env, "invalid input copy flags");
+  }
 
-  auto [status, result_tensors] = call_loaded(*loaded, driver_name, inputs);
+  auto [status, result_tensors] = call_loaded(*loaded, driver_name, inputs, copy_inputs);
 
   if (!is_ok(status)) {
     return error(env, get_status_message(status).c_str());
@@ -592,10 +612,10 @@ static ErlNifFunc funcs[] = {
     {"serialize_tensor", 1, serialize_tensor},
     {"deserialize_tensor", 1, deserialize_tensor},
     {"read_buffer", 3, read_buffer_nif},
-    {"call_io", 5, call_nif, ERL_NIF_DIRTY_JOB_IO_BOUND},
-    {"call_cpu", 5, call_nif, ERL_NIF_DIRTY_JOB_CPU_BOUND},
+    {"call_io", 6, call_nif, ERL_NIF_DIRTY_JOB_IO_BOUND},
+    {"call_cpu", 6, call_nif, ERL_NIF_DIRTY_JOB_CPU_BOUND},
     {"load_module", 4, load_module_nif, ERL_NIF_DIRTY_JOB_IO_BOUND},
-    {"call_loaded_io", 3, call_loaded_nif, ERL_NIF_DIRTY_JOB_IO_BOUND},
-    {"call_loaded_cpu", 3, call_loaded_nif, ERL_NIF_DIRTY_JOB_CPU_BOUND}};
+    {"call_loaded_io", 4, call_loaded_nif, ERL_NIF_DIRTY_JOB_IO_BOUND},
+    {"call_loaded_cpu", 4, call_loaded_nif, ERL_NIF_DIRTY_JOB_CPU_BOUND}};
 
 ERL_NIF_INIT(Elixir.NxIREE.Native, funcs, &load, NULL, &upgrade, NULL);

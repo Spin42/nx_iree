@@ -135,6 +135,34 @@ defmodule NxIREE.BackendTest do
     end
   end
 
+  describe "inputs IREE writes in place" do
+    defp in_place(:sort, t), do: Nx.sort(t, axis: 0)
+    defp in_place(:indexed_put, t), do: Nx.indexed_put(t, Nx.tensor([[0, 0]]), Nx.tensor([5.0]))
+    defp in_place(:put_slice, t), do: Nx.put_slice(t, [1, 1], Nx.tensor([[9.0]]))
+
+    for name <- [:sort, :indexed_put, :put_slice] do
+      test "#{name} leaves a device input untouched" do
+        t = Nx.tensor([[4.0, 1.0], [2.0, 3.0]])
+        before = Nx.to_flat_list(t)
+        _ = Nx.Defn.jit_apply(&in_place(unquote(name), &1), [t]) |> host()
+        assert Nx.to_flat_list(t) == before
+      end
+    end
+
+    test "are only the arguments the program writes" do
+      t = Nx.template({4}, :f32)
+      flags = @flags ++ ["--iree-hal-target-backends=llvm-cpu"]
+      opts = [iree_compiler_flags: flags]
+
+      {:ok, sorted} = NxIREE.Compiler.to_bytecode(&{Nx.sort(&1), Nx.exp(&2)}, [t, t], opts)
+      {:ok, read} = NxIREE.Compiler.to_bytecode(&Nx.exp/1, [t], opts)
+
+      # argument 0 is EXLA's callback pid
+      assert sorted.written_inputs == [1]
+      assert read.written_inputs == []
+    end
+  end
+
   # On Vulkan, a u8 tensor read by a batch matmul dispatch needs 8-bit storage
   test "u8 mask added to a batch matmul on the default device" do
     fun = fn q, k, mask ->

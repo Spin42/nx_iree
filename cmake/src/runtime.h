@@ -115,13 +115,15 @@ iree_hal_driver_registry_t* get_driver_registry();
 iree_hal_device_t* create_device(iree_hal_driver_registry_t* registry, const std::string& device_uri);
 
 std::pair<iree_status_t, std::optional<std::vector<iree::runtime::IREETensor*>>>
-call(iree_vm_instance_t* i, iree_hal_device_t*, std::string, unsigned char*, size_t, std::vector<iree::runtime::IREETensor*>);
+call(iree_vm_instance_t* i, iree_hal_device_t*, std::string, unsigned char*, size_t, std::vector<iree::runtime::IREETensor*>, std::vector<bool>);
 
 std::pair<iree_status_t, iree::runtime::LoadedModule*>
 load_module(iree_vm_instance_t*, iree_hal_device_t*, std::string, unsigned char*, size_t);
 
+// copy_inputs[i] marks inputs the module may write in place; those that live
+// on the device are passed as copies.
 std::pair<iree_status_t, std::optional<std::vector<iree::runtime::IREETensor*>>>
-call_loaded(iree::runtime::LoadedModule*, std::string, std::vector<iree::runtime::IREETensor*>);
+call_loaded(iree::runtime::LoadedModule*, std::string, std::vector<iree::runtime::IREETensor*>, std::vector<bool>);
 
 iree_status_t read_buffer(iree_hal_device_t* device, iree_hal_buffer_view_t* buffer_view, void* output_buffer, size_t num_bytes);
 std::string get_status_message(iree_status_t status);

@@ -32,6 +32,7 @@ unless the flags choose a `--iree-vulkan-target`; device targets such as
 | `attn_bisect.exs` | the pieces of that graph one by one, ending with the i8 mask + batch matmul |
 | `bert_trace.exs` | BERT-tiny with `--iree-flow-trace-dispatch-tensors` (`NXIREE_BACKEND=cpu` or `vulkan`) |
 | `bert_dump.exs` | writes BERT-tiny's StableHLO and Vulkan bytecode to `OUT` for standalone runs |
+| `sort_inplace_check.exs` | that sort, argsort and a fused sort leave their device input untouched |
 
 ## Jetson
 
