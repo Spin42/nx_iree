@@ -10,7 +10,7 @@ flags = [
   "--iree-input-type=stablehlo_xla",
   "--iree-execution-model=async-internal",
   "--iree-vulkan-target=#{target}"
-]
+] ++ String.split(System.get_env("NXIREE_FLAGS", ""), " ", trim: true)
 
 opts = [iree_compiler_flags: flags]
 

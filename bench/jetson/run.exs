@@ -36,7 +36,7 @@ defmodule Bench do
       file |> File.read!() |> :erlang.binary_to_term()
 
     {:ok, [device | _]} = NxIREE.list_devices("vulkan")
-    log("device #{device.uri}, modules compiled for #{target}")
+    log("device #{device.uri}, #{Path.basename(file)} compiled for #{target}")
 
     to_dev = fn t -> Nx.backend_transfer(t, {NxIREE.Backend, device: device}) end
     pid_inputs = if pid_size > 0, do: [to_dev.(Nx.broadcast(Nx.tensor(0, type: :u8), {pid_size}))], else: []
@@ -59,7 +59,14 @@ defmodule Bench do
     diff = Nx.subtract(gpu, Nx.dot(a, b)) |> Nx.abs() |> Nx.reduce_max() |> Nx.to_number()
     log("matmul 256 max |gpu - cpu| = #{diff}")
 
-    for n <- [256, 512, 1024, 2048] do
+    # NXIREE_SIZES="256:512:1024" keeps runs short; the board's supply trips
+    # on long full-load bursts
+    sizes =
+      System.get_env("NXIREE_SIZES", "256:512:1024")
+      |> String.split(":", trim: true)
+      |> Enum.map(&String.to_integer/1)
+
+    for n <- sizes do
       da = to_dev.(uniform({n, n}))
       db = to_dev.(uniform({n, n}))
       reps = if n >= 1024, do: 3, else: 10
@@ -67,9 +74,11 @@ defmodule Bench do
       log("matmul #{n}: #{Float.round(2 * n * n * n / us / 1000, 1)} GFLOPS (#{Float.round(us / 1000, 2)} ms)")
     end
 
-    dx = to_dev.(uniform({4_000_000}))
-    us = time(fn -> call.({:chain, 4_000_000}, [dx]) |> Nx.to_number() end, 5)
-    log("chain on 4M floats: #{Float.round(us / 1000, 2)} ms")
+    if System.get_env("NXIREE_CHAIN") do
+      dx = to_dev.(uniform({4_000_000}))
+      us = time(fn -> call.({:chain, 4_000_000}, [dx]) |> Nx.to_number() end, 5)
+      log("chain on 4M floats: #{Float.round(us / 1000, 2)} ms")
+    end
   end
 end
 
