@@ -1,20 +1,42 @@
-# Exports the Jetson test functions with NxIREE.export/3 for a Vulkan target
-# (default pascal: the closest IREE preset to the Nano's Maxwell GPU, and its
-# 32-wide subgroups match the hardware).
+# Exports the Jetson test functions with NxIREE.export/3 for a Vulkan target:
 #
-#   NXIREE_VULKAN_TARGET=pascal NXIREE_FLAGS="..." AOT_OUT=jetson-modules.bin mix run aot.exs
+#   * nvk (default) - a capability list NVK provides on the Nano; compiles
+#     every model in real_models.exs
+#   * generic - IREE's baseline profile plus 8-bit storage
+#   * any named IREE target, e.g. pascal (its 32-wide subgroups match the
+#     Maxwell GPU, but it fails to compile BERT- and GPT-style models)
+#
+#   NXIREE_VULKAN_TARGET=nvk NXIREE_FLAGS="..." AOT_OUT=jetson-modules.bin mix run aot.exs
 Logger.configure(level: :warning)
 
-target = System.get_env("NXIREE_VULKAN_TARGET", "pascal")
+target = System.get_env("NXIREE_VULKAN_TARGET", "nvk")
 out = System.get_env("AOT_OUT", "jetson-modules.bin")
 
+nvk_features =
+  Enum.join(
+    ~w(spirv:v1.3 cap:Shader cap:StorageBuffer8BitAccess cap:Int8 ext:SPV_KHR_8bit_storage
+       cap:GroupNonUniform cap:GroupNonUniformArithmetic cap:GroupNonUniformShuffle
+       cap:GroupNonUniformBallot cap:Int64 cap:Int16 cap:Float16 cap:StorageBuffer16BitAccess
+       ext:SPV_KHR_16bit_storage),
+    ","
+  )
+
+target_flags =
+  case target do
+    "nvk" -> ["--iree-vulkan-target-features=#{nvk_features}"]
+    "generic" -> []
+    named -> ["--iree-vulkan-target=#{named}"]
+  end
+
 flags =
-  ["--iree-hal-target-backends=vulkan-spirv", "--iree-vulkan-target=#{target}"] ++
+  ["--iree-hal-target-backends=vulkan-spirv" | target_flags] ++
     String.split(System.get_env("NXIREE_FLAGS", ""), " ", trim: true)
 
 export = fn fun, templates -> NxIREE.export(fun, templates, iree_compiler_flags: flags) end
 
-chain = fn t -> t |> Nx.multiply(1.5) |> Nx.add(0.25) |> Nx.exp() |> Nx.multiply(t) |> Nx.sum() end
+chain = fn t ->
+  t |> Nx.multiply(1.5) |> Nx.add(0.25) |> Nx.exp() |> Nx.multiply(t) |> Nx.sum()
+end
 
 models =
   Map.new(
