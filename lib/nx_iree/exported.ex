@@ -15,6 +15,16 @@ defmodule NxIREE.Exported do
   @doc false
   def format, do: @format
 
+  @doc false
+  # Decodes an export or module cache entry. :safe refuses atoms the VM does
+  # not have yet, and on a device that has not loaded Nx's tensor modules the
+  # output template's struct atoms are such atoms.
+  def decode(binary) do
+    Code.ensure_loaded(Nx.Tensor)
+    Code.ensure_loaded(Nx.TemplateBackend)
+    :erlang.binary_to_term(binary, [:safe])
+  end
+
   @type t :: %__MODULE__{
           module: NxIREE.Module.t(),
           device: NxIREE.Device.t(),

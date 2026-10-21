@@ -59,7 +59,7 @@ defmodule NxIREE.ModuleCache do
   end
 
   defp decode(binary) do
-    :erlang.binary_to_term(binary, [:safe])
+    NxIREE.Exported.decode(binary)
   rescue
     ArgumentError -> :error
   end

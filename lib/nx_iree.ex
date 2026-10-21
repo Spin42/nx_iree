@@ -325,7 +325,7 @@ defmodule NxIREE do
     format = NxIREE.Exported.format()
 
     data =
-      case :erlang.binary_to_term(binary, [:safe]) do
+      case NxIREE.Exported.decode(binary) do
         %{format: ^format} = data ->
           data
 
