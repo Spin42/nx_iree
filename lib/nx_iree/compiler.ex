@@ -57,6 +57,9 @@ defmodule NxIREE.Compiler do
           {iree_compiler_flags, backend}
       end
 
+    iree_compiler_flags = default_f64_flags(iree_compiler_flags, backend)
+    ensure_f64_supported!(vars, iree_compiler_flags, backend)
+
     exla_opts = opts |> Keyword.put(:within_defn_compiler, true) |> Keyword.put(:client, :host)
 
     if output_mode != :bytecode and backend == "metal-spirv" do
@@ -113,6 +116,36 @@ defmodule NxIREE.Compiler do
 
         [result]
       end
+    end
+  end
+
+  @demote_f64 "--iree-input-demote-f64-to-f32"
+
+  # IREE demotes f64 to f32 unless told otherwise, which would leave the
+  # module expecting f32 buffers where Nx passes f64. The CPU backend computes
+  # in f64, so keep f64 there unless the caller chose.
+  defp default_f64_flags(flags, "llvm-cpu") do
+    if Enum.any?(flags, &String.starts_with?(&1, @demote_f64)),
+      do: flags,
+      else: flags ++ ["#{@demote_f64}=false"]
+  end
+
+  defp default_f64_flags(flags, _backend), do: flags
+
+  # The SPIR-V backends cannot compile f64 math, so f64 inputs fail with a
+  # clear message instead of an element type mismatch at call time.
+  defp ensure_f64_supported!(vars, flags, backend) do
+    demoting? = "#{@demote_f64}=false" not in flags
+
+    f64_input? =
+      vars
+      |> Nx.Defn.Composite.flatten_list()
+      |> Enum.any?(&(&1.type == {:f, 64}))
+
+    if demoting? and f64_input? do
+      raise ArgumentError,
+            "f64 tensors are not supported on the #{backend} IREE backend " <>
+              "(IREE demotes f64 to f32 there); convert the inputs to f32"
     end
   end
 
