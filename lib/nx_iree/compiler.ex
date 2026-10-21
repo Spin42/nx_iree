@@ -101,7 +101,7 @@ defmodule NxIREE.Compiler do
       NxIREE.compile(mlir_module, iree_compiler_flags, output_container: output_container)
 
     if output_mode == :bytecode do
-      throw({:bytecode, nx_iree_module})
+      throw({:bytecode, %{nx_iree_module | used_inputs: Enum.sort(used_inputs)}})
     else
       {:ok, device} = NxIREE.Device.get(iree_runtime_options[:device])
       {:ok, nx_iree_module} = NxIREE.load(nx_iree_module, device: device)
@@ -166,24 +166,37 @@ defmodule NxIREE.Compiler do
   # IREE runs no host callbacks, so the argument is a zero buffer allocated
   # once per compiled function.
   defp callback_pid_inputs(%NxIREE.Device{} = device) do
+    leading_inputs(device, callback_pid_size())
+  end
+
+  @doc false
+  # Size of the callback pid argument EXLA prepends to every module (0 when
+  # the EXLA in use does not add it).
+  def callback_pid_size do
     if Code.ensure_loaded?(EXLA.Executable) and
          function_exported?(EXLA.Executable, :callback_server_pid_size, 0) do
-      size = apply(EXLA.Executable, :callback_server_pid_size, [])
-
-      {:ok, ref} =
-        NxIREE.VM.allocate_buffer(<<0::size(size)-unit(8)>>, device.ref, {size}, {:u, 8})
-
-      data = %NxIREE.Backend{
-        ref: ref,
-        device: device.ref,
-        device_uri: device.uri,
-        driver: device.driver_name
-      }
-
-      [%T{data: data, shape: {size}, type: {:u, 8}, names: [nil]}]
+      apply(EXLA.Executable, :callback_server_pid_size, [])
     else
-      []
+      0
     end
+  end
+
+  @doc false
+  # The zero buffer passed as the callback pid argument
+  def leading_inputs(_device, 0), do: []
+
+  def leading_inputs(%NxIREE.Device{} = device, size) do
+    {:ok, ref} =
+      NxIREE.VM.allocate_buffer(<<0::size(size)-unit(8)>>, device.ref, {size}, {:u, 8})
+
+    data = %NxIREE.Backend{
+      ref: ref,
+      device: device.ref,
+      device_uri: device.uri,
+      driver: device.driver_name
+    }
+
+    [%T{data: data, shape: {size}, type: {:u, 8}, names: [nil]}]
   end
 
   defp compile_with_graph_splitter(

@@ -178,6 +178,144 @@ defmodule NxIREE do
   end
 
   @doc """
+  Compiles `fun` ahead of time for the given argument templates and returns a
+  binary to load on a device with `load_exported/2`.
+
+  `args` are the function's arguments, as tensors or `Nx.template/2`
+  templates (containers are accepted); only their shapes and types matter.
+  This runs EXLA and the IREE compiler, so it belongs on the host.
+
+  ## Options
+
+    * `:iree_compiler_flags` - flags for `iree-compile`. They must name the
+      target with `--iree-hal-target-backends`, e.g. `vulkan-spirv` plus
+      `--iree-vulkan-target=pascal` for a Jetson Nano.
+
+  ## Examples
+
+      flags = ["--iree-hal-target-backends=llvm-cpu", "--iree-input-type=stablehlo_xla"]
+      exported = NxIREE.export(&Nx.dot/2, [Nx.template({4, 4}, :f32), Nx.template({4, 4}, :f32)],
+        iree_compiler_flags: flags)
+
+      # on the device
+      model = NxIREE.load_exported(exported, device: "local-sync://")
+      NxIREE.run(model, [a, b])
+  """
+  def export(fun, args, opts \\ []) when is_function(fun) and is_list(args) do
+    opts = Keyword.validate!(opts, iree_compiler_flags: [])
+    flags = opts[:iree_compiler_flags]
+
+    unless Enum.any?(flags, &String.starts_with?(&1, "--iree-hal-target-backends=")) do
+      raise ArgumentError,
+            "export/3 needs --iree-hal-target-backends in :iree_compiler_flags, " <>
+              "since the target device is not known on the host"
+    end
+
+    templates = Enum.map(args, &Nx.Defn.Composite.traverse(&1, fn t -> Nx.to_template(t) end))
+
+    {:ok, module} = NxIREE.Compiler.to_bytecode(fun, templates, iree_compiler_flags: flags)
+
+    inputs =
+      templates
+      |> Nx.Defn.Composite.flatten_list()
+      |> Enum.map(&{&1.shape, &1.type})
+
+    :erlang.term_to_binary(%{
+      format: NxIREE.Exported.format(),
+      bytecode: module.bytecode,
+      compilation_flags: flags,
+      inputs: inputs,
+      used_inputs: module.used_inputs,
+      output: Nx.Defn.Composite.traverse(module.output_container, &Nx.to_template/1),
+      callback_pid_size: NxIREE.Compiler.callback_pid_size()
+    })
+  end
+
+  @doc """
+  Loads a binary produced by `export/3` on a device, once, for repeated
+  `run/2` calls. Needs neither EXLA nor the IREE compiler.
+
+  ## Options
+
+    * `:device` - the device to load on, as a URI or `NxIREE.Device`.
+      Defaults to the same device `call/3` would pick. It must match the
+      backend the binary was compiled for.
+  """
+  def load_exported(binary, opts \\ []) when is_binary(binary) do
+    opts = Keyword.validate!(opts, device: nil)
+    format = NxIREE.Exported.format()
+
+    data =
+      case :erlang.binary_to_term(binary, [:safe]) do
+        %{format: ^format} = data ->
+          data
+
+        %{format: other} ->
+          raise ArgumentError, "unsupported export format #{inspect(other)}, expected #{format}"
+
+        _ ->
+          raise ArgumentError, "not a binary produced by NxIREE.export/3"
+      end
+
+    {:ok, device} = NxIREE.Device.get(opts[:device])
+
+    module = %NxIREE.Module{
+      bytecode: data.bytecode,
+      compilation_flags: data.compilation_flags,
+      output_container: data.output,
+      used_inputs: data.used_inputs
+    }
+
+    case load(module, device: device) do
+      {:ok, module} ->
+        %NxIREE.Exported{
+          module: module,
+          device: device,
+          inputs: data.inputs,
+          used_inputs: data.used_inputs,
+          leading_inputs: NxIREE.Compiler.leading_inputs(device, data.callback_pid_size)
+        }
+
+      {:error, error} ->
+        raise ArgumentError, "could not load the exported module on #{device.uri}: #{error}"
+    end
+  end
+
+  @doc """
+  Runs a function loaded with `load_exported/2`.
+
+  `args` must match the shapes and types given to `export/3`. Results stay on
+  the device as `NxIREE.Backend` tensors.
+  """
+  def run(%NxIREE.Exported{} = exported, args) when is_list(args) do
+    tensors =
+      args
+      |> Enum.map(&Nx.Defn.Composite.traverse(&1, fn t -> Nx.to_tensor(t) end))
+      |> Nx.Defn.Composite.flatten_list()
+
+    if length(tensors) != length(exported.inputs) do
+      raise ArgumentError,
+            "expected #{length(exported.inputs)} input tensors, got #{length(tensors)}"
+    end
+
+    Enum.zip(tensors, exported.inputs)
+    |> Enum.with_index()
+    |> Enum.each(fn {{t, {shape, type}}, i} ->
+      if t.shape != shape or t.type != type do
+        raise ArgumentError,
+              "input #{i} must be #{inspect(type)} #{inspect(shape)}, " <>
+                "got #{inspect(t.type)} #{inspect(t.shape)}"
+      end
+    end)
+
+    used = for {t, i} <- Enum.with_index(tensors), i in exported.used_inputs, do: t
+
+    case call(exported.module, exported.leading_inputs ++ used, device: exported.device) do
+      {:ok, result} -> result
+    end
+  end
+
+  @doc """
   Lists all devices available for running IREE modules.
   """
   @spec list_devices(String.t()) :: {:ok, list(String.t())}
