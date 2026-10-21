@@ -10,10 +10,23 @@ defmodule NxIREE.VM do
     {:ok, instance}
   end
 
+  # Without the application started (as on devices running exported
+  # modules), the first caller creates the instance
   def get_instance do
     case :persistent_term.get(@cache_key, nil) do
-      nil -> create_instance()
+      nil -> :global.trans({{__MODULE__, :instance}, self()}, &instance_once/0, [node()])
       instance -> instance
+    end
+  end
+
+  defp instance_once do
+    case :persistent_term.get(@cache_key, nil) do
+      nil ->
+        {:ok, instance} = create_instance()
+        instance
+
+      instance ->
+        instance
     end
   end
 
