@@ -28,7 +28,13 @@ target_link_libraries(${_NAME} iree_tooling_context_util)
 # to the final bundle.
 install(DIRECTORY "${IREE_RUNTIME_INCLUDE_PATH}"
         DESTINATION "include"
-        FILES_MATCHING PATTERN "*.h")
+        FILES_MATCHING PATTERN "*.h" PATTERN "*.inc")
+
+# Headers generated at build time (bytecode op tables, flatbuffer schemas)
+install(DIRECTORY "${IREE_RUNTIME_BUILD_DIR}/runtime/src/iree"
+        DESTINATION "include"
+        FILES_MATCHING PATTERN "*.h" PATTERN "*.inc"
+        PATTERN "CMakeFiles" EXCLUDE)
 
 file(GLOB HEADER_FILES "${CMAKE_SOURCE_DIR}/src/*.h")
 

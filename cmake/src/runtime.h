@@ -4,9 +4,9 @@
 #include <iree/modules/hal/types.h>
 #include <iree/runtime/api.h>
 #include <iree/vm/api.h>
-#include <iree/vm/bytecode/module.h>
 
 #include <memory>
+#include <mutex>
 #include <optional>
 #include <vector>
 
@@ -83,6 +83,24 @@ class IREETensor {
   std::vector<char>* serialize();
 };
 
+// A bytecode module loaded into a VM context on one device, reused across
+// calls so pipelines and executables are created once.
+class LoadedModule {
+ public:
+  iree_vm_context_t* context = nullptr;
+  iree_vm_function_t main_function;
+  iree_host_size_t output_count = 0;
+  iree_hal_device_t* device = nullptr;
+  void* archive = nullptr;
+  std::mutex mutex;
+
+  LoadedModule() = default;
+  ~LoadedModule();
+
+  LoadedModule(const LoadedModule&) = delete;
+  LoadedModule& operator=(const LoadedModule&) = delete;
+};
+
 }  // namespace runtime
 }  // namespace iree
 
@@ -94,6 +112,12 @@ iree_hal_device_t* create_device(iree_hal_driver_registry_t* registry, const std
 
 std::pair<iree_status_t, std::optional<std::vector<iree::runtime::IREETensor*>>>
 call(iree_vm_instance_t* i, iree_hal_device_t*, std::string, unsigned char*, size_t, std::vector<iree::runtime::IREETensor*>);
+
+std::pair<iree_status_t, iree::runtime::LoadedModule*>
+load_module(iree_vm_instance_t*, iree_hal_device_t*, std::string, unsigned char*, size_t);
+
+std::pair<iree_status_t, std::optional<std::vector<iree::runtime::IREETensor*>>>
+call_loaded(iree::runtime::LoadedModule*, std::string, std::vector<iree::runtime::IREETensor*>);
 
 iree_status_t read_buffer(iree_hal_device_t* device, iree_hal_buffer_view_t* buffer_view, void* output_buffer, size_t num_bytes);
 std::string get_status_message(iree_status_t status);

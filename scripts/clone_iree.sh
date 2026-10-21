@@ -40,7 +40,7 @@ if [ -d ${NX_IREE_SOURCE_DIR} ]; then
   # Ensure submodules are also up to date
   remove_stale_locks
 
-  git submodule update --init --recursive --depth 1
+  git submodule update --init --depth 1 $(cat build_tools/scripts/git/runtime_submodules.txt)
 
   exit 0;
 fi
@@ -49,12 +49,5 @@ git clone --branch ${IREE_GIT_REV} --depth 1 ${IREE_REPO} ${NX_IREE_SOURCE_DIR}
 
 cd ${NX_IREE_SOURCE_DIR}
 
-git config --global submodule.recurse true
-for submodule in $(git config --file .gitmodules --name-only --get-regexp path | sed 's/\.path$//'); do
-    git config submodule.${submodule}.shallow true
-    git config submodule.${submodule}.fetchRecurseSubmodules true
-done
-
-remove_stale_locks
-
-git submodule update --init --recursive --depth 1
+# Only the runtime is built, so only its submodules are needed
+git submodule update --init --depth 1 $(cat build_tools/scripts/git/runtime_submodules.txt)

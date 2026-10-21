@@ -1,14 +1,22 @@
 #include "runtime.h"
 
+#include <iree/async/frontier_tracker.h>
+#include <iree/async/util/proactor_pool.h>
+#include <iree/base/threading/numa.h>
 #include <iree/hal/api.h>
 #include <iree/hal/drivers/init.h>
+#include <iree/modules/hal/debugging.h>
+#include <iree/vm/bytecode/module.h>
 #include <iree/tooling/device_util.h>
 
 #ifdef DEBUG
 #include <iree/base/tracing/tracy.h>
 #endif
 
+#include <cstdlib>
+#include <cstring>
 #include <iostream>
+#include <map>
 #include <sstream>
 #include <vector>
 
@@ -204,6 +212,55 @@ iree_vm_instance_t *create_instance() {
   return instance;
 }
 
+// Devices need a proactor pool for async I/O; one pool serves every device in
+// the process and lives as long as the process.
+static iree_status_t
+device_create_params(iree_hal_device_create_params_t *out_params) {
+  static std::mutex pool_mutex;
+  static iree_async_proactor_pool_t *pool = nullptr;
+
+  std::lock_guard<std::mutex> guard(pool_mutex);
+  if (pool == nullptr) {
+    IREE_RETURN_IF_ERROR(iree_async_proactor_pool_create(
+        iree_numa_node_count(), /*node_ids=*/NULL,
+        iree_async_proactor_pool_options_default(), iree_allocator_system(),
+        &pool));
+  }
+
+  *out_params = iree_hal_device_create_params_default();
+  out_params->proactor_pool = pool;
+  return iree_ok_status();
+}
+
+// A device's queues join exactly one frontier tracker, so every module loaded
+// on a device shares one device group. Groups live as long as the process.
+static iree_status_t shared_device_group(iree_hal_device_t *device,
+                                         iree_hal_device_group_t **out_group) {
+  static std::mutex groups_mutex;
+  static std::map<iree_hal_device_t *, iree_hal_device_group_t *> groups;
+
+  std::lock_guard<std::mutex> guard(groups_mutex);
+  auto it = groups.find(device);
+  if (it != groups.end()) {
+    *out_group = it->second;
+    return iree_ok_status();
+  }
+
+  iree_async_frontier_tracker_t *frontier_tracker = nullptr;
+  IREE_RETURN_IF_ERROR(iree_async_frontier_tracker_create(
+      iree_async_frontier_tracker_options_default(), iree_allocator_system(),
+      &frontier_tracker));
+  iree_hal_device_group_t *group = nullptr;
+  iree_status_t status = iree_hal_device_group_create_from_device(
+      device, frontier_tracker, iree_allocator_system(), &group);
+  iree_async_frontier_tracker_release(frontier_tracker);
+  IREE_RETURN_IF_ERROR(status);
+
+  groups[device] = group;
+  *out_group = group;
+  return iree_ok_status();
+}
+
 iree_status_t register_all_drivers(iree_hal_driver_registry_t *registry) {
   iree_status_t status = iree_hal_register_all_available_drivers(registry);
   return status;
@@ -298,14 +355,26 @@ iree_status_t list_devices(iree_hal_driver_registry_t *registry,
     device->uri = driver_name + "://" + device_urn;
     device->id = info.device_id;
 
-    status = iree_hal_create_device(registry,
-                                    iree_make_cstring_view(device->uri.c_str()),
-                                    iree_allocator_system(), &device->ref);
+    iree_hal_device_create_params_t create_params;
+    status = device_create_params(&create_params);
+    if (iree_status_is_ok(status)) {
+      status = iree_hal_create_device(
+          registry, iree_make_cstring_view(device->uri.c_str()), &create_params,
+          iree_allocator_system(), &device->ref);
+    }
+
+    // Queues accept work only once the device belongs to a group
+    iree_hal_device_group_t *group = nullptr;
+    if (iree_status_is_ok(status)) {
+      status = shared_device_group(device->ref, &group);
+    }
 
     if (!iree_status_is_ok(status)) {
-      for (size_t j = 0; j <= i; j++) {
-        delete devices[i];
+      delete device;
+      for (auto created : devices) {
+        delete created;
       }
+      devices.clear();
       iree_hal_driver_release(driver);
       iree_allocator_free(iree_allocator_system(), device_infos);
       return status;
@@ -330,9 +399,19 @@ iree_hal_device_t *create_device(iree_hal_driver_registry_t *registry,
                                  const std::string &device_uri) {
   iree_hal_device_t *device = nullptr;
 
-  iree_status_t status = iree_hal_create_device(
-      registry, iree_make_cstring_view(device_uri.c_str()),
-      iree_allocator_system(), &device);
+  iree_hal_device_create_params_t create_params;
+  iree_status_t status = device_create_params(&create_params);
+  if (iree_status_is_ok(status)) {
+    status = iree_hal_create_device(
+        registry, iree_make_cstring_view(device_uri.c_str()), &create_params,
+        iree_allocator_system(), &device);
+  }
+
+  // Queues accept work only once the device belongs to a group
+  iree_hal_device_group_t *group = nullptr;
+  if (iree_status_is_ok(status)) {
+    status = shared_device_group(device, &group);
+  }
 
   RUN_IF_CUDA_ENABLED(if (device_uri.find("cuda://") != std::string::npos) {
     const iree_hal_cuda_dynamic_symbols_t *cuda_symbols =
@@ -349,20 +428,30 @@ iree_hal_device_t *create_device(iree_hal_driver_registry_t *registry,
   return device;
 }
 
-std::pair<iree_status_t,
-          std::optional<std::vector<iree::runtime::IREETensor *>>>
-call(iree_vm_instance_t *instance, iree_hal_device_t *device,
-     std::string driver_name, unsigned char *bytecode, size_t bytecode_size,
-     std::vector<iree::runtime::IREETensor *> exla_inputs) {
-  iree_vm_module_t *hal_module = nullptr;
-  iree_vm_module_t *bytecode_module = nullptr;
-  iree_vm_context_t *context = nullptr;
-  const char kMainFunctionName[] = "module.main";
-  iree_vm_function_t main_function;
-  iree_vm_list_t *inputs = nullptr;
-  iree_vm_list_t *outputs = nullptr;
+iree::runtime::LoadedModule::~LoadedModule() {
+  if (context != nullptr) {
+    iree_vm_context_release(context);
+    context = nullptr;
+  }
+  if (device != nullptr) {
+    iree_hal_device_release(device);
+    device = nullptr;
+  }
+  // The bytecode module references the archive without owning it, so the
+  // archive is freed only after the context has released the module.
+  if (archive != nullptr) {
+    std::free(archive);
+    archive = nullptr;
+  }
+}
 
-  IREE_TRACE_ZONE_BEGIN(call_module_create);
+std::pair<iree_status_t, iree::runtime::LoadedModule *>
+load_module(iree_vm_instance_t *instance, iree_hal_device_t *device,
+            std::string driver_name, unsigned char *bytecode,
+            size_t bytecode_size) {
+  const char kMainFunctionName[] = "module.main";
+  auto loaded = new iree::runtime::LoadedModule();
+
   RUN_IF_CUDA_ENABLED(if (driver_name == "cuda") {
     const iree_hal_cuda_dynamic_symbols_t *cuda_symbols =
         iree_hal_cuda_device_dynamic_symbols(device);
@@ -370,41 +459,106 @@ call(iree_vm_instance_t *instance, iree_hal_device_t *device,
     cuda_symbols->cuCtxSetCurrent(ctx);
   });
 
-  RETURN_PAIR_IF_ERROR(iree_hal_module_create(
-      instance, /*device_count=*/1, &device, IREE_HAL_MODULE_FLAG_SYNCHRONOUS,
-      iree_allocator_system(), &hal_module));
+  // FlatBuffer archives are read in place and need 64-byte alignment.
+  size_t archive_size = (bytecode_size + 63) & ~static_cast<size_t>(63);
+  loaded->archive = std::aligned_alloc(64, archive_size);
+  if (loaded->archive == nullptr) {
+    delete loaded;
+    return {iree_make_status(IREE_STATUS_RESOURCE_EXHAUSTED,
+                             "unable to allocate the module archive"),
+            nullptr};
+  }
+  std::memcpy(loaded->archive, bytecode, bytecode_size);
 
-  const iree_const_byte_span_t module_data =
-      iree_make_const_byte_span(bytecode, bytecode_size);
+  iree_hal_device_retain(device);
+  loaded->device = device;
 
-  RETURN_PAIR_IF_ERROR(iree_vm_bytecode_module_create(
-      instance, module_data, iree_allocator_system(), iree_allocator_system(),
-      &bytecode_module));
-  IREE_TRACE_ZONE_END(call_module_create);
+  iree_hal_device_group_t *device_group = nullptr;
+  iree_vm_module_t *hal_module = nullptr;
+  iree_vm_module_t *bytecode_module = nullptr;
 
-  IREE_TRACE_ZONE_BEGIN(call_context_create);
-  iree_vm_module_t *modules[] = {hal_module, bytecode_module};
-  RETURN_PAIR_IF_ERROR(iree_vm_context_create_with_modules(
-      instance, IREE_VM_CONTEXT_FLAG_NONE, IREE_ARRAYSIZE(modules), &modules[0],
-      iree_allocator_system(), &context));
-  IREE_TRACE_ZONE_END(call_module_create);
+  iree_status_t status = shared_device_group(device, &device_group);
 
-  RETURN_PAIR_IF_ERROR(iree_vm_context_resolve_function(
-      context, iree_make_cstring_view(kMainFunctionName), &main_function));
+  if (iree_status_is_ok(status)) {
+    status = iree_hal_module_create(
+        instance, iree_hal_module_device_policy_default(), device_group,
+        IREE_HAL_MODULE_FLAG_SYNCHRONOUS,
+        iree_hal_module_debug_sink_null(), iree_allocator_system(),
+        &hal_module);
+  }
 
-  RETURN_PAIR_IF_ERROR(iree_vm_list_create(iree_vm_make_undefined_type_def(),
-                                           exla_inputs.size(),
-                                           iree_allocator_system(), &inputs));
+  if (iree_status_is_ok(status)) {
+    status = iree_vm_bytecode_module_create(
+        instance, IREE_VM_BYTECODE_MODULE_FLAG_NONE,
+        iree_make_const_byte_span(loaded->archive, bytecode_size),
+        iree_allocator_null(), iree_allocator_system(), &bytecode_module);
+  }
 
-  IREE_TRACE_ZONE_BEGIN(call_input_allocation);
+  if (iree_status_is_ok(status)) {
+    iree_vm_module_t *modules[] = {hal_module, bytecode_module};
+    status = iree_vm_context_create_with_modules(
+        instance, IREE_VM_CONTEXT_FLAG_NONE, IREE_ARRAYSIZE(modules),
+        &modules[0], iree_allocator_system(), &loaded->context);
+  }
+
+  // The context retains both modules.
+  iree_vm_module_release(hal_module);
+  iree_vm_module_release(bytecode_module);
+
+  if (iree_status_is_ok(status)) {
+    status = iree_vm_context_resolve_function(
+        loaded->context, iree_make_cstring_view(kMainFunctionName),
+        &loaded->main_function);
+  }
+
+  if (iree_status_is_ok(status)) {
+    iree_vm_function_signature_t signature =
+        iree_vm_function_signature(&loaded->main_function);
+    iree_string_view_t input_signature;
+    iree_string_view_t output_signature;
+    status = iree_vm_function_call_get_cconv_fragments(
+        &signature, &input_signature, &output_signature);
+    loaded->output_count = output_signature.size;
+  }
+
+  if (!iree_status_is_ok(status)) {
+    delete loaded;
+    return {status, nullptr};
+  }
+
+  return {iree_ok_status(), loaded};
+}
+
+std::pair<iree_status_t,
+          std::optional<std::vector<iree::runtime::IREETensor *>>>
+call_loaded(iree::runtime::LoadedModule *loaded, std::string driver_name,
+            std::vector<iree::runtime::IREETensor *> exla_inputs) {
+  iree_hal_device_t *device = loaded->device;
+  iree_vm_list_t *inputs = nullptr;
+  iree_vm_list_t *outputs = nullptr;
+
+  RUN_IF_CUDA_ENABLED(if (driver_name == "cuda") {
+    const iree_hal_cuda_dynamic_symbols_t *cuda_symbols =
+        iree_hal_cuda_device_dynamic_symbols(device);
+    auto ctx = iree_hal_cuda_device_context(device);
+    cuda_symbols->cuCtxSetCurrent(ctx);
+  });
+
+  iree_status_t status = iree_vm_list_create(
+      iree_vm_make_undefined_type_def(), exla_inputs.size(),
+      iree_allocator_system(), &inputs);
+
   for (auto input : exla_inputs) {
+    if (!iree_status_is_ok(status)) break;
+
     iree_vm_ref_t arg_buffer_view_ref;
 
     if (input->buffer_view) {
-      arg_buffer_view_ref = iree_hal_buffer_view_move_ref(input->buffer_view);
+      // The tensor keeps its buffer view, so the list takes a new reference.
+      arg_buffer_view_ref = iree_hal_buffer_view_retain_ref(input->buffer_view);
     } else {
       iree_hal_buffer_view_t *arg_buffer_view = nullptr;
-      RETURN_PAIR_IF_ERROR(iree_hal_buffer_view_allocate_buffer_copy(
+      status = iree_hal_buffer_view_allocate_buffer_copy(
           device, iree_hal_device_allocator(device), input->dims.size(),
           input->dims.data(), input->type,
           IREE_HAL_ENCODING_TYPE_DENSE_ROW_MAJOR,
@@ -412,70 +566,73 @@ call(iree_vm_instance_t *instance, iree_hal_device_t *device,
               .usage = IREE_HAL_BUFFER_USAGE_DEFAULT,
               .type = IREE_HAL_MEMORY_TYPE_DEVICE_LOCAL,
           },
-          input->data_byte_span(), &arg_buffer_view));
+          input->data_byte_span(), &arg_buffer_view);
+      if (!iree_status_is_ok(status)) break;
 
       arg_buffer_view_ref = iree_hal_buffer_view_move_ref(arg_buffer_view);
     }
-    RETURN_PAIR_IF_ERROR(
-        iree_vm_list_push_ref_move(inputs, &arg_buffer_view_ref));
+    status = iree_vm_list_push_ref_move(inputs, &arg_buffer_view_ref);
   }
-  IREE_TRACE_ZONE_END(call_input_allocation);
 
-  iree_vm_function_signature_t signature =
-      iree_vm_function_signature(&main_function);
-  iree_string_view_t input_signature;
-  iree_string_view_t output_signature;
+  if (iree_status_is_ok(status)) {
+    status = iree_vm_list_create(iree_vm_make_undefined_type_def(),
+                                 loaded->output_count, iree_allocator_system(),
+                                 &outputs);
+  }
 
-  RETURN_PAIR_IF_ERROR(iree_vm_function_call_get_cconv_fragments(
-      &signature, &input_signature, &output_signature));
+  if (iree_status_is_ok(status)) {
+    // A VM context runs one invocation at a time.
+    std::lock_guard<std::mutex> guard(loaded->mutex);
+    status = iree_vm_invoke(loaded->context, loaded->main_function,
+                            IREE_VM_INVOCATION_FLAG_NONE,
+                            /*policy=*/NULL, inputs, outputs,
+                            iree_allocator_system());
+  }
 
-  RETURN_PAIR_IF_ERROR(iree_vm_list_create(iree_vm_make_undefined_type_def(),
-                                           output_signature.size,
-                                           iree_allocator_system(), &outputs));
-
-  IREE_TRACE_ZONE_BEGIN(call_invoke);
-  // Synchronously invoke the function.
-  RETURN_PAIR_IF_ERROR(iree_vm_invoke(
-      context, main_function, IREE_VM_INVOCATION_FLAG_NONE,
-      /*policy=*/NULL, inputs, outputs, iree_allocator_system()));
-  IREE_TRACE_ZONE_END(call_invoke);
-
-  IREE_TRACE_ZONE_BEGIN(call_outputs);
   std::vector<iree::runtime::IREETensor *> results;
-  results.resize(output_signature.size);
-  for (int i = 0; i < output_signature.size; i++) {
-    iree_hal_buffer_view_t *output_buffer_view =
-        iree_vm_list_get_buffer_view_retain(outputs, i);
-    if (!output_buffer_view) {
-      return {iree_make_status(IREE_STATUS_NOT_FOUND,
-                               "can't get output buffer view [index=%d]", i),
-              std::nullopt};
+  if (iree_status_is_ok(status)) {
+    iree_host_size_t output_count = iree_vm_list_size(outputs);
+    results.reserve(output_count);
+    for (iree_host_size_t i = 0; i < output_count; i++) {
+      iree_hal_buffer_view_t *output_buffer_view =
+          iree_vm_list_get_buffer_view_retain(outputs, i);
+      if (!output_buffer_view) {
+        status = iree_make_status(IREE_STATUS_NOT_FOUND,
+                                  "can't get output buffer view [index=%d]",
+                                  (int)i);
+        break;
+      }
+
+      iree_hal_element_type_t out_type =
+          iree_hal_buffer_view_element_type(output_buffer_view);
+      results.push_back(
+          new iree::runtime::IREETensor(output_buffer_view, out_type, device));
     }
-
-    iree_host_size_t out_shape_rank =
-        iree_hal_buffer_view_shape_rank(output_buffer_view);
-    const iree_hal_dim_t *out_shape =
-        iree_hal_buffer_view_shape_dims(output_buffer_view);
-    iree_hal_element_type_t out_type =
-        iree_hal_buffer_view_element_type(output_buffer_view);
-
-    auto tensor =
-        new iree::runtime::IREETensor(output_buffer_view, out_type, device);
-    tensor->dims = std::vector<iree_hal_dim_t>();
-    for (int j = 0; j < out_shape_rank; j++) {
-      tensor->dims.push_back(out_shape[j]);
-    }
-
-    results[i] = tensor;
   }
-  IREE_TRACE_ZONE_END(call_outputs);
 
   iree_vm_list_release(inputs);
   iree_vm_list_release(outputs);
-  if (context != nullptr) {
-    iree_vm_context_release(context);
-  };
+
+  if (!iree_status_is_ok(status)) {
+    for (auto tensor : results) delete tensor;
+    return {status, std::nullopt};
+  }
   return {iree_ok_status(), results};
+}
+
+std::pair<iree_status_t,
+          std::optional<std::vector<iree::runtime::IREETensor *>>>
+call(iree_vm_instance_t *instance, iree_hal_device_t *device,
+     std::string driver_name, unsigned char *bytecode, size_t bytecode_size,
+     std::vector<iree::runtime::IREETensor *> exla_inputs) {
+  auto [status, loaded] =
+      load_module(instance, device, driver_name, bytecode, bytecode_size);
+  if (!iree_status_is_ok(status)) {
+    return {status, std::nullopt};
+  }
+  auto result = call_loaded(loaded, driver_name, exla_inputs);
+  delete loaded;
+  return result;
 }
 
 iree_status_t read_buffer(iree_hal_device_t *device,

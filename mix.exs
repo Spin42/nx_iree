@@ -122,8 +122,8 @@ defmodule NxIREE.MixProject do
   end
 
   defp nx_iree_config() do
-    version = System.get_env("NX_IREE_VERSION", "20240822.993")
-    tag = System.get_env("NX_IREE_GIT_REV", "candidate-20240822.993")
+    version = System.get_env("NX_IREE_VERSION", "3.13.0")
+    tag = System.get_env("NX_IREE_GIT_REV", "v3.13.0")
 
     env_dir = System.get_env("NX_IREE_COMPILER_DIR")
 
@@ -135,7 +135,7 @@ defmodule NxIREE.MixProject do
     dir = env_dir || Path.join(__DIR__, "cache/iree")
     source_dir = source_env_dir || Path.join(__DIR__, "cache/iree-source")
 
-    use_precompiled = System.get_env("NX_IREE_PREFER_PRECOMPILED", "true") in ["1", "true"]
+    use_precompiled = System.get_env("NX_IREE_PREFER_PRECOMPILED", "false") in ["1", "true"]
 
     %{
       version: version,
@@ -195,11 +195,11 @@ defmodule NxIREE.MixProject do
       url =
         case {os, arch} do
           {{:unix, :linux}, arch} ->
-            "https://github.com/iree-org/iree/releases/download/#{nx_iree_config.tag}/iree_compiler-#{nx_iree_config.version}-cp310-cp310-manylinux_2_27_#{arch}.manylinux_2_28_#{arch}.whl"
+            "https://github.com/iree-org/iree/releases/download/#{nx_iree_config.tag}/iree_base_compiler-#{nx_iree_config.version}-cp312-abi3-manylinux_2_27_#{arch}.manylinux_2_28_#{arch}.whl"
 
           {{:unix, :darwin}, _} ->
             # MacOS
-            "https://github.com/iree-org/iree/releases/download/#{nx_iree_config.tag}/iree_compiler-#{nx_iree_config.version}-cp311-cp311-macosx_13_0_universal2.whl"
+            "https://github.com/iree-org/iree/releases/download/#{nx_iree_config.tag}/iree_base_compiler-#{nx_iree_config.version}-cp312-abi3-macosx_13_0_universal2.whl"
 
           os ->
             Mix.raise("OS #{inspect(os)} is not supported")
@@ -220,8 +220,8 @@ defmodule NxIREE.MixProject do
 
     # Remove stray files
 
-    File.rm_rf(Path.join(parent_iree_dir, "iree_compiler.egg-info"))
-    File.rm_rf(Path.join(parent_iree_dir, "iree_compiler-#{nx_iree_config.version}.dist-info"))
+    File.rm_rf(Path.join(parent_iree_dir, "iree_base_compiler.egg-info"))
+    File.rm_rf(Path.join(parent_iree_dir, "iree_base_compiler-#{nx_iree_config.version}.dist-info"))
 
     iree_compile_path =
       Path.join([parent_iree_dir, "iree", "compiler", "_mlir_libs", "iree-compile"])
