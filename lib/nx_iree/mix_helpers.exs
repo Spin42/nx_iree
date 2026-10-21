@@ -16,9 +16,6 @@ defmodule NxIREE.MixHelpers do
 
       {:error, :not_found} ->
         {:error, :not_found}
-
-      {:error, reason} ->
-        raise "unable to download #{name} from #{url}: #{inspect(reason)}"
     end
   end
 

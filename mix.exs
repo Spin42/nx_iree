@@ -9,6 +9,10 @@ defmodule NxIREE.MixProject do
 
   import NxIREE.MixHelpers, only: [download!: 3, github_release_path: 2]
 
+  def cli do
+    [preferred_envs: [docs: :docs, "hex.publish": :docs]]
+  end
+
   def project do
     n_jobs = to_string(max(System.schedulers_online() - 2, 1))
 
@@ -22,10 +26,6 @@ defmodule NxIREE.MixProject do
       name: "NxIREE",
       description: "IREE compiler and runtime facilities for Nx",
       package: package(),
-      preferred_cli_env: [
-        docs: :docs,
-        "hex.publish": :docs
-      ],
       compilers: [:nx_iree, :elixir_make] ++ Mix.compilers(),
       aliases: [
         "compile.nx_iree": &compile/1,
@@ -255,7 +255,10 @@ defmodule NxIREE.MixProject do
     # Remove stray files
 
     File.rm_rf(Path.join(parent_iree_dir, "iree_base_compiler.egg-info"))
-    File.rm_rf(Path.join(parent_iree_dir, "iree_base_compiler-#{nx_iree_config.version}.dist-info"))
+
+    File.rm_rf(
+      Path.join(parent_iree_dir, "iree_base_compiler-#{nx_iree_config.version}.dist-info")
+    )
 
     iree_compile_path =
       Path.join([parent_iree_dir, "iree", "compiler", "_mlir_libs", "iree-compile"])

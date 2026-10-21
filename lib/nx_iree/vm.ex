@@ -33,7 +33,7 @@ defmodule NxIREE.VM do
         allocate_buffer(data, device_ref, shape, type)
 
       %{data: binary} ->
-        allocate_buffer(binary, device_ref, Nx.shape(t), Nx.type(t))
+        allocate_buffer(binary, device_ref, shape, type)
     end
   end
 
