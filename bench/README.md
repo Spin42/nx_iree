@@ -13,6 +13,8 @@ compiler flags (for example `--iree-vulkan-target=rdna3`) come from
 | `sweep.exs` | reduction time against size, host and device-resident inputs |
 | `pjrt.exs` | EXLA through IREE's Vulkan PJRT plugin (`../patches/iree-pjrt-exla.patch`) |
 | `aot.exs` | compiles the Jetson test modules ahead of time |
+| `real_models.exs` | pretrained BERT, DistilBERT, GPT-2, ResNet-50 and ViT servings against EXLA (`docs/real-models.md`) |
+| `offline_cache.exs` | a serving run from the module cache in a VM without EXLA |
 
 ## Vulkan i8 masks
 

@@ -119,6 +119,12 @@ loads the modules from it. The flags and Nx, Bumblebee and model versions
 must be the same on both sides, since they shape the key. A function missing
 from the cache raises on the device, naming the entry.
 
+Preprocessing written as `defn` and called eagerly, such as Bumblebee's image
+resizing, uses the global defn options: set them with
+`Nx.Defn.global_default_options/1` to the same options so it is compiled and
+cached as well. Use `preallocate_params: true` with Bumblebee servings, or
+the parameters are uploaded to the device on every call.
+
 ## Host calls
 
 IREE modules cannot call back into Elixir. Named `io_call`s that have no
