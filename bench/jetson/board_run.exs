@@ -1,5 +1,5 @@
 # Evaluated in the board's main node: pauses any ncnn test processes, pins the
-# GPU clock, runs /root/nxiree/run.exs in a separate BEAM (so a NIF crash
+# GPU clock, runs /root/nxiree/run.exs (or NXIREE_SCRIPT) in a separate BEAM (so a NIF crash
 # cannot take the main node down), then restores the clock and resumes.
 sig = fn s ->
   for p <- Path.wildcard("/proc/[0-9]*"),
@@ -35,7 +35,8 @@ try do
 
   env = env ++ extra
 
-  eval = ~s|{ok,_}=application:ensure_all_started(elixir), 'Elixir.Code':eval_file(<<"/root/nxiree/run.exs">>), halt().|
+  script = "/root/nxiree/" <> System.get_env("NXIREE_SCRIPT", "run.exs")
+  eval = ~s|{ok,_}=application:ensure_all_started(elixir), 'Elixir.Code':eval_file(<<"#{script}">>), halt().|
 
   args = ["-boot", "/srv/erlang/releases/0.1.0/start_clean", "-boot_var", "RELEASE_LIB", "/srv/erlang/lib", "-noshell", "-eval", eval]
   File.rm("/root/nxiree.log")
