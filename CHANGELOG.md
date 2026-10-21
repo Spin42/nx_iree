@@ -18,6 +18,7 @@
   * `NxIREE.CompileError` with the compiler's diagnostics.
   * Compiled defn functions are cached and their modules are loaded once per
     device.
+  * Functions jitted for the CPU use the host CPU's features.
 
 ### Fixed
 
