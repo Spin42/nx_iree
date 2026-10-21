@@ -66,6 +66,7 @@ defmodule NxIREE.BackendTest do
       x = Nx.tensor([0.5, 2.0], type: :f64, backend: Nx.BinaryBackend)
       result = jit(&Nx.exp/1).(x) |> host()
       assert Nx.type(result) == {:f, 64}
+
       for {got, want} <- Enum.zip(Nx.to_flat_list(result), [:math.exp(0.5), :math.exp(2.0)]) do
         assert_in_delta got, want, 1.0e-12
       end

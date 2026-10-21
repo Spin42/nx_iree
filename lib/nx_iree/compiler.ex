@@ -62,6 +62,7 @@ defmodule NxIREE.Compiler do
       |> default_flag("--iree-input-type", "stablehlo_xla")
       |> default_flag("--iree-execution-model", "async-internal")
       |> default_f64_flags(backend)
+
     ensure_f64_supported!(vars, iree_compiler_flags, backend)
 
     exla_opts = opts |> Keyword.put(:within_defn_compiler, true) |> Keyword.put(:client, :host)

@@ -41,7 +41,9 @@ defmodule NxIREE.Device do
   defp create_devices do
     {:ok, registry} = NxIREE.Native.get_driver_registry()
     {:ok, drivers} = NxIREE.Native.list_drivers(registry)
-    drivers = Map.new(drivers, fn {name, full_name} -> {to_string(name), to_string(full_name)} end)
+
+    drivers =
+      Map.new(drivers, fn {name, full_name} -> {to_string(name), to_string(full_name)} end)
 
     enabled =
       case Application.get_env(:nx_iree, :drivers, :all) do
