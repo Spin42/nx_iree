@@ -89,15 +89,8 @@ defmodule NxIREE.NxTest do
     log10: 1,
     logsumexp: 2,
     linspace: 3,
-    # 8/16-bit integers are computed as 32-bit: clz and popcount count the
-    # extra bits
-    count_leading_zeros: 1,
-    population_count: 1,
-    # iree-compile fails
-    mode: 2,
-    remainder: 2,
-    # wrong order on RDNA2 (RADV) only
-    sort: 2
+    # 8/16-bit integers are computed as 32-bit: clz counts the extra bits
+    count_leading_zeros: 1
   ]
 
   @driver_exclusions if System.get_env("NX_IREE_DEFAULT_DRIVER") == "vulkan",
