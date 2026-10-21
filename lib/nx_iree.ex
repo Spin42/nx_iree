@@ -66,9 +66,9 @@ defmodule NxIREE do
         ]
 
     try do
-      case System.cmd(compiler_path, flags ++ phase_flags ++ ["-o", outfile, tmpfile],
-             stderr_to_stdout: true
-           ) do
+      args = flags ++ phase_flags ++ ["-o", outfile, tmpfile]
+
+      case run_compiler(compiler_path, args) do
         {log, 0} ->
           if log != "", do: Logger.debug("iree-compile: " <> log)
 
@@ -88,6 +88,18 @@ defmodule NxIREE do
       File.rm(tmpfile)
       File.rm(outfile)
       File.rm_rf(phases_dir)
+    end
+  end
+
+  # The compiler runs in a monitored, unlinked process, so the exit of its
+  # port never reaches callers that trap exits (an Nx.Serving does)
+  defp run_compiler(path, args) do
+    {pid, ref} =
+      spawn_monitor(fn -> exit({:compiled, System.cmd(path, args, stderr_to_stdout: true)}) end)
+
+    receive do
+      {:DOWN, ^ref, :process, ^pid, {:compiled, result}} -> result
+      {:DOWN, ^ref, :process, ^pid, reason} -> exit(reason)
     end
   end
 
