@@ -119,16 +119,19 @@ else
 	$(error "Unknown IREE_BUILD_TARGET: $(IREE_BUILD_TARGET), must be one of host, ios, ios_simulator, visionos, visionos_simulator, tvos, tvos_simulator")
 endif
 
+# A file target, so the runtime is rebuilt whenever its sources change
+IREE_INSTALL_LIB = $(IREE_INSTALL_DIR)/libnx_iree_runtime.so
+
 .PHONY: install_runtime
 ifneq ($(strip $(IREE_HOST_BUILD_DIR)),)
-install_runtime: $(IREE_HOST_INSTALL_DIR)/bin/iree-flatcc-cli $(IREE_INSTALL_DIR)
+install_runtime: $(IREE_HOST_INSTALL_DIR)/bin/iree-flatcc-cli $(IREE_INSTALL_LIB)
 else
-install_runtime: $(IREE_INSTALL_DIR)
+install_runtime: $(IREE_INSTALL_LIB)
 endif
 
 CMAKE_SOURCES = $(wildcard cmake/src/*.cc cmake/src/*.h)
 
-$(IREE_INSTALL_DIR): $(NX_IREE_SOURCE_DIR) $(CMAKE_SOURCES)
+$(IREE_INSTALL_LIB): $(NX_IREE_SOURCE_DIR) $(CMAKE_SOURCES)
 	$(EMCMAKE) cmake -G Ninja -B $(IREE_CMAKE_BUILD_DIR) \
 		-DCMAKE_BUILD_TYPE=$(IREE_CMAKE_CONFIG)\
 		-DIREE_BUILD_COMPILER=OFF\
@@ -139,6 +142,7 @@ $(IREE_INSTALL_DIR): $(NX_IREE_SOURCE_DIR) $(CMAKE_SOURCES)
 		$(BUILD_TARGET_FLAGS)
 	cmake --build $(IREE_CMAKE_BUILD_DIR) --config $(IREE_CMAKE_CONFIG)
 	cmake --install $(IREE_CMAKE_BUILD_DIR) --config $(IREE_CMAKE_CONFIG) --prefix $(IREE_INSTALL_DIR)
+	touch $@
 
 .PHONY: iree_host
 ifneq ($(strip $(IREE_HOST_BUILD_DIR)),)
@@ -165,6 +169,7 @@ NX_IREE_CACHE_SO ?= cache/libnx_iree.so
 NX_IREE_SO_LINK_PATH = $(CWD_RELATIVE_TO_PRIV_PATH)/$(NX_IREE_CACHE_SO)
 
 NX_IREE_RUNTIME_LIB = cache/iree-runtime
+NX_IREE_RUNTIME_CACHE_LIB = $(NX_IREE_RUNTIME_LIB)/libnx_iree_runtime.so
 NX_IREE__IREE_RUNTIME_INCLUDE_PATH = $(NX_IREE_RUNTIME_LIB)/include
 NX_IREE_RUNTIME_SO ?= $(MIX_APP_PATH)/priv/libnx_iree_runtime.so
 
@@ -215,10 +220,16 @@ endif
 
 else
 
-nx_iree: $(NX_IREE__IREE_RUNTIME_INCLUDE_PATH) $(NX_IREE_SO)
+nx_iree: $(NX_IREE_RUNTIME_CACHE_LIB) $(NX_IREE_SO)
 
 $(NX_IREE_CACHE_SO): $(OBJECTS)
 	$(CXX) -shared -o $@ $^ $(LDFLAGS)
+
+# Refresh the runtime the NIF links and loads whenever it is rebuilt
+$(NX_IREE_RUNTIME_CACHE_LIB): $(IREE_INSTALL_LIB)
+	rm -rf $(NX_IREE_RUNTIME_LIB)
+	mkdir -p $(dir $(NX_IREE_RUNTIME_LIB))
+	cp -r $(IREE_INSTALL_DIR) $(NX_IREE_RUNTIME_LIB)
 endif
 
 $(NX_IREE_SO): $(NX_IREE_CACHE_SO)
@@ -232,13 +243,7 @@ $(NX_IREE_SO): $(NX_IREE_CACHE_SO)
 	fi
 
 
-# This rule may be overriden by the mix.exs compiler rule
-# in that it may download the .so instead of compiling it locally
-# It assumes that the .so has at least already been compiled with cmake
-$(NX_IREE__IREE_RUNTIME_INCLUDE_PATH):
-	cp -r iree-runtime/host/install $(dir $@)
-
-cache/objs/%.o: c_src/%.cc $(CMAKE_SOURCES)
+cache/objs/%.o: c_src/%.cc $(CMAKE_SOURCES) $(NX_IREE_RUNTIME_CACHE_LIB)
 	@ mkdir -p $(dir $@)
 	$(CXX) $(CFLAGS) -o $@ -c $<
 
