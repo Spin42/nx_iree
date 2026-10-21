@@ -81,6 +81,21 @@ defmodule NxIREE.ExportTest do
     end
   end
 
+  test "reports compiler errors" do
+    # a 3x3 kernel with stride 2 and padding 1 on a 2x2 input fails in IREE 3.13
+    model = fn x, w -> Nx.conv(x, w, strides: [2, 2], padding: [{1, 1}, {1, 1}], input_permutation: [0, 3, 1, 2], kernel_permutation: [3, 2, 0, 1], output_permutation: [0, 3, 1, 2]) end
+
+    error =
+      assert_raise NxIREE.CompileError, fn ->
+        NxIREE.export(model, [Nx.template({1, 2, 2, 4}, :f32), Nx.template({3, 3, 4, 8}, :f32)],
+          iree_compiler_flags: @cpu_flags
+        )
+      end
+
+    assert error.message =~ "iree-compile exited with status"
+    assert error.message =~ "error:"
+  end
+
   test "needs an explicit target backend" do
     assert_raise ArgumentError, ~r/--iree-hal-target-backends/, fn ->
       NxIREE.export(&Nx.exp/1, [Nx.template({3}, :f32)], iree_compiler_flags: [])

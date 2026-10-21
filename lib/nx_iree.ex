@@ -21,6 +21,8 @@ defmodule NxIREE do
   such as the iOS devices usable through [`LiveNxIREE`](https://github.com/elixir-nx/nx_iree/tree/main/embedded_devices/live_nx_iree).
   """
 
+  require Logger
+
   @doc """
   Compiles the given MLIR module with the given list of flags.
 
@@ -42,22 +44,46 @@ defmodule NxIREE do
     {:ok, tmpfile} = create_temp_file(mlir_module)
 
     compiler_path = opts[:compiler_path] || Path.join(:code.priv_dir(:nx_iree), "iree-compile")
+    outfile = tmpfile <> ".vmfb"
+
+    unless File.exists?(compiler_path) do
+      raise NxIREE.CompileError,
+        message:
+          "iree-compile not found at #{compiler_path}. Devices built without the " <>
+            "compiler run modules compiled on the host with NxIREE.export/3"
+    end
 
     try do
-      {output, 0} =
-        System.cmd(
-          compiler_path,
-          flags ++ [tmpfile]
-        )
+      case System.cmd(compiler_path, flags ++ ["-o", outfile, tmpfile], stderr_to_stdout: true) do
+        {log, 0} ->
+          if log != "", do: Logger.debug("iree-compile: " <> log)
 
-      %NxIREE.Module{
-        bytecode: output,
-        compilation_flags: flags,
-        mlir_module: mlir_module,
-        output_container: output_container
-      }
+          %NxIREE.Module{
+            bytecode: File.read!(outfile),
+            compilation_flags: flags,
+            mlir_module: mlir_module,
+            output_container: output_container
+          }
+
+        {log, status} ->
+          raise NxIREE.CompileError,
+            message: "iree-compile exited with status #{status}:\n" <> compile_errors(log)
+      end
     after
       File.rm(tmpfile)
+      File.rm(outfile)
+    end
+  end
+
+  # The compiler's diagnostics with the CPU-target advice it prints for every
+  # module left out
+  defp compile_errors(log) do
+    log
+    |> String.split("\n")
+    |> Enum.filter(&String.contains?(&1, "error"))
+    |> case do
+      [] -> log
+      errors -> Enum.join(errors, "\n")
     end
   end
 
