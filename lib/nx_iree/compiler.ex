@@ -57,7 +57,11 @@ defmodule NxIREE.Compiler do
           {iree_compiler_flags, backend}
       end
 
-    iree_compiler_flags = default_f64_flags(iree_compiler_flags, backend)
+    iree_compiler_flags =
+      iree_compiler_flags
+      |> default_flag("--iree-input-type", "stablehlo_xla")
+      |> default_flag("--iree-execution-model", "async-internal")
+      |> default_f64_flags(backend)
     ensure_f64_supported!(vars, iree_compiler_flags, backend)
 
     exla_opts = opts |> Keyword.put(:within_defn_compiler, true) |> Keyword.put(:client, :host)
@@ -117,6 +121,15 @@ defmodule NxIREE.Compiler do
         [result]
       end
     end
+  end
+
+  # EXLA emits StableHLO, and NxIREE.call/3 invokes modules synchronously
+  # without fences: other execution models return before the device work is
+  # done, so results read back as zeros.
+  defp default_flag(flags, name, value) do
+    if Enum.any?(flags, &String.starts_with?(&1, name <> "=")),
+      do: flags,
+      else: flags ++ ["#{name}=#{value}"]
   end
 
   @demote_f64 "--iree-input-demote-f64-to-f32"
