@@ -32,6 +32,8 @@ defmodule NxIREE.Compiler do
         Application.get_env(:nx_iree, :module_cache)
       end)
 
+    {device_indexing, opts} = Keyword.pop(opts, :iree_device_indexing, false)
+
     unless is_list(iree_compiler_flags) do
       raise "missing :iree_compiler_flags option"
     end
@@ -71,6 +73,13 @@ defmodule NxIREE.Compiler do
       |> default_f64_flags(backend)
 
     ensure_f64_supported!(vars, iree_compiler_flags, backend)
+
+    # Opt-in: removes a host round trip per dynamic slice, which gains nothing
+    # where round trips are short, as on desktop GPUs
+    fun =
+      if device_indexing == true,
+        do: fn vars -> fun.(vars) |> NxIREE.Compiler.DeviceIndexing.rewrite() end,
+        else: fun
 
     exla_opts = opts |> Keyword.put(:within_defn_compiler, true) |> Keyword.put(:client, :host)
 
