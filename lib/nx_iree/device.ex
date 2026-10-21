@@ -11,6 +11,8 @@ defmodule NxIREE.Device do
   #     these drivers (default: all registered drivers)
   #   * `config :nx_iree, default_device: "vulkan://..."` - the device used
   #     when none is given (default: the first GPU, else the first CPU device)
+  #   * `config :nx_iree, software_vulkan: true` - also open software Vulkan
+  #     devices such as lavapipe (default: false)
 
   @state_key {__MODULE__, :state}
 
@@ -51,13 +53,15 @@ defmodule NxIREE.Device do
         names -> Map.take(drivers, Enum.map(names, &to_string/1))
       end
 
+    software? = Application.get_env(:nx_iree, :software_vulkan, false)
+
     devices =
       enabled
       |> Map.keys()
       |> Enum.flat_map(fn name ->
         # A driver whose system library is missing (e.g. no libcuda) has no
         # devices
-        case NxIREE.Native.list_devices(registry, name) do
+        case NxIREE.Native.list_devices(registry, name, software?) do
           {:ok, devices} -> devices
           {:error, _} -> []
         end

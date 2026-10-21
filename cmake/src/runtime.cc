@@ -346,7 +346,7 @@ iree_status_t list_devices(iree_hal_driver_registry_t *registry,
 
 iree_status_t list_devices(iree_hal_driver_registry_t *registry,
                            std::string driver_name,
-                           std::vector<iree::runtime::Device *> &devices) {
+                           std::vector<iree::runtime::Device *> &devices, bool include_software) {
   size_t device_info_count;
   iree_hal_device_info_t *device_infos;
   iree_hal_driver_t *driver;
@@ -370,8 +370,14 @@ iree_status_t list_devices(iree_hal_driver_registry_t *registry,
   }
 
   for (size_t i = 0; i < device_info_count; i++) {
-    auto device = new iree::runtime::Device(driver_name);
     auto info = device_infos[i];
+    std::string device_name(info.name.data, info.name.size);
+    if (!include_software && (device_name.find("llvmpipe") != std::string::npos ||
+                              device_name.find("SwiftShader") != std::string::npos)) {
+      continue;
+    }
+
+    auto device = new iree::runtime::Device(driver_name);
     std::string device_urn(info.path.data, info.path.size);
     device->uri = driver_name + "://" + device_urn;
     device->id = info.device_id;

@@ -132,6 +132,9 @@ iree_status_t register_all_drivers(iree_hal_driver_registry_t*);
 
 std::pair<iree_status_t, std::vector<iree::runtime::Driver*>> list_drivers(iree_hal_driver_registry_t*);
 iree_status_t list_devices(iree_hal_driver_registry_t*, std::vector<iree::runtime::Device*>&);
-iree_status_t list_devices(iree_hal_driver_registry_t*, std::string driver_name, std::vector<iree::runtime::Device*>&);
+// Software rasterizers (lavapipe, SwiftShader) are skipped unless
+// include_software is set: they add nothing over IREE's CPU drivers and
+// lavapipe's worker threads busy-wait.
+iree_status_t list_devices(iree_hal_driver_registry_t*, std::string driver_name, std::vector<iree::runtime::Device*>&, bool include_software = false);
 
 bool is_ok(iree_status_t status);

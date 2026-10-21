@@ -237,7 +237,9 @@ DECLARE_NIF(list_devices) {
       return error(env, "invalid driver name");
     }
 
-    iree_status_t status = list_devices(*registry, driver_name, devices);
+    bool include_software = argc == 3 && enif_is_identical(argv[2], enif_make_atom(env, "true"));
+
+    iree_status_t status = list_devices(*registry, driver_name, devices, include_software);
     if (!is_ok(status)) {
       return error(env, get_status_message(status).c_str());
     }
@@ -606,6 +608,7 @@ static ErlNifFunc funcs[] = {
     {"create_device", 2, create_device},
     {"list_devices", 1, list_devices},
     {"list_devices", 2, list_devices},
+    {"list_devices", 3, list_devices},
     {"list_drivers", 1, list_drivers},
     {"deallocate_buffer", 1, deallocate_buffer},
     {"allocate_buffer", 4, allocate_buffer},

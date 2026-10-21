@@ -13,6 +13,7 @@ defmodule NxIREE.Native do
 
   def list_devices(_registry), do: :erlang.nif_error(:undef)
   def list_devices(_registry, _driver), do: :erlang.nif_error(:undef)
+  def list_devices(_registry, _driver, _include_software), do: :erlang.nif_error(:undef)
   def list_drivers(_registry), do: :erlang.nif_error(:undef)
 
   def create_device(_registry, _device_uri), do: :erlang.nif_error(:undef)
