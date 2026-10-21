@@ -69,6 +69,7 @@ defmodule NxIREE.Compiler do
       |> default_flag("--iree-input-type", "stablehlo_xla")
       |> default_flag("--iree-execution-model", "async-internal")
       |> default_vulkan_features(backend)
+      |> default_memoization(backend)
       |> default_cpu_target(backend, output_mode)
       |> default_f64_flags(backend)
 
@@ -245,6 +246,15 @@ defmodule NxIREE.Compiler do
       do: flags,
       else: flags ++ [flag]
   end
+
+  # IREE 3.13 memoizes command buffers with indirect bindings, and on Vulkan
+  # a memoized buffer keeps the slice offsets of the call that recorded it:
+  # later calls with other dynamic offsets read the wrong window. Recording
+  # per call costs nothing measurable on the models in bench/real_models.exs.
+  defp default_memoization(flags, backend) when backend in ["llvm-cpu", "vmvx"], do: flags
+
+  defp default_memoization(flags, _backend),
+    do: default_flag(flags, "--iree-hal-memoization", "false")
 
   @demote_f64 "--iree-input-demote-f64-to-f32"
 

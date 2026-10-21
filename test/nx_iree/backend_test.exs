@@ -20,6 +20,17 @@ defmodule NxIREE.BackendTest do
              {Nx.type(expected), Nx.shape(expected), Nx.to_flat_list(expected)}
   end
 
+  # IREE's memoized command buffers kept the first call's offsets on Vulkan
+  test "dynamic slices follow their offsets across calls on the default device" do
+    ref = Nx.iota({4, 6}, type: :f32, backend: Nx.BinaryBackend)
+    f = Nx.Defn.jit(fn t, i, j -> Nx.slice(t, [i, j], [2, 2]) end)
+
+    for {i, j} <- [{0, 0}, {2, 1}, {1, 3}] do
+      got = f.(ref, Nx.tensor(i), Nx.tensor(j)) |> host()
+      assert_same(got, Nx.slice(ref, [i, j], [2, 2]))
+    end
+  end
+
   describe "constants" do
     test "keep the requested type" do
       for type <- [:f32, :f64, :s32, :u8] do
