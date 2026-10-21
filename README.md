@@ -91,13 +91,41 @@ told otherwise; for another device pass its triple and CPU, for example
 `--iree-llvmcpu-target-triple=aarch64-linux-gnu --iree-llvmcpu-target-cpu=cortex-a57`.
 Functions compiled for calls on the CPU use the host CPU's features.
 
+## Module cache
+
+Unchanged Nx code, Bumblebee servings included, runs on a device without
+EXLA or the IREE compiler when its modules come from a cache compiled on the
+host. With `:iree_module_cache` (or `config :nx_iree, module_cache: dir`),
+each compiled function is stored under a key derived from its defn
+expression, input shapes and compiler flags:
+
+```elixir
+defn_options = [
+  compiler: NxIREE.Compiler,
+  iree_compiler_flags: ["--iree-hal-target-backends=vulkan-spirv", "--iree-vulkan-target=pascal"],
+  iree_module_cache: Application.app_dir(:my_app, "priv/nx_iree_cache")
+]
+
+Bumblebee.Text.text_classification(model, tokenizer,
+  compile: [batch_size: 4, sequence_length: 32],
+  preallocate_params: true,
+  defn_options: defn_options
+)
+```
+
+On the host, starting the serving (or `Nx.Defn.compile/3` on the function)
+compiles into the directory; ship it with the application and the device
+loads the modules from it. The flags and Nx, Bumblebee and model versions
+must be the same on both sides, since they shape the key. A function missing
+from the cache raises on the device, naming the entry.
+
 ## Nerves
 
 Cross-compiling is automatic when `CROSSCOMPILE` is set, as in a Nerves
 build: the runtime is built for the target with the Nerves toolchain, the
 host tools it needs are built for the host, and `iree-compile` is left out of
-the firmware. Functions for the device are compiled on the host with
-`NxIREE.export/3`. For Vulkan, the Nerves system must provide a Vulkan loader
+the firmware. Functions for the device are compiled on the host, into a
+module cache or with `NxIREE.export/3`. For Vulkan, the Nerves system must provide a Vulkan loader
 and driver (for example Mesa's NVK on NVIDIA Tegra).
 
 ## Vulkan notes

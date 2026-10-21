@@ -27,6 +27,11 @@ defmodule NxIREE.Compiler do
     {iree_runtime_options, opts} = Keyword.pop(opts, :iree_runtime_options, [])
     {output_mode, opts} = Keyword.pop(opts, :output_mode, nil)
 
+    {module_cache, opts} =
+      Keyword.pop_lazy(opts, :iree_module_cache, fn ->
+        Application.get_env(:nx_iree, :module_cache)
+      end)
+
     unless is_list(iree_compiler_flags) do
       raise "missing :iree_compiler_flags option"
     end
@@ -84,7 +89,8 @@ defmodule NxIREE.Compiler do
         exla_opts,
         iree_compiler_flags,
         iree_runtime_options,
-        output_mode
+        output_mode,
+        module_cache
       )
     end
   end
@@ -95,20 +101,20 @@ defmodule NxIREE.Compiler do
          exla_opts,
          iree_compiler_flags,
          iree_runtime_options,
-         output_mode
+         output_mode,
+         module_cache
        ) do
-    %{mlir_module: mlir_module, output_container: output_container, used_inputs: used_inputs} =
-      EXLA.to_mlir_module(fun, vars, exla_opts)
+    {nx_iree_module, pid_size} =
+      cached_or_compiled(module_cache, fun, vars, exla_opts, iree_compiler_flags)
 
-    nx_iree_module =
-      NxIREE.compile(mlir_module, iree_compiler_flags, output_container: output_container)
+    used_inputs = nx_iree_module.used_inputs
 
     if output_mode == :bytecode do
-      throw({:bytecode, %{nx_iree_module | used_inputs: Enum.sort(used_inputs)}})
+      throw({:bytecode, nx_iree_module})
     else
       device = NxIREE.Device.fetch!(iree_runtime_options[:device])
       {:ok, nx_iree_module} = NxIREE.load(nx_iree_module, device: device)
-      leading_inputs = callback_pid_inputs(device)
+      leading_inputs = leading_inputs(device, pid_size)
 
       fn [inputs] ->
         filtered_inputs =
@@ -124,6 +130,44 @@ defmodule NxIREE.Compiler do
         [result]
       end
     end
+  end
+
+  defp cached_or_compiled(nil, fun, vars, exla_opts, flags) do
+    compile_module(fun, vars, exla_opts, flags, nil)
+  end
+
+  defp cached_or_compiled(dir, fun, vars, exla_opts, flags) do
+    path = NxIREE.ModuleCache.path(dir, NxIREE.ModuleCache.key(fun.(vars), vars, flags))
+
+    case NxIREE.ModuleCache.read(path) do
+      {:ok, cached} ->
+        cached
+
+      :error ->
+        {module, pid_size} = compile_module(fun, vars, exla_opts, flags, path)
+        NxIREE.ModuleCache.write!(path, module, pid_size)
+        {module, pid_size}
+    end
+  end
+
+  defp compile_module(fun, vars, exla_opts, flags, cache_path) do
+    unless Code.ensure_loaded?(EXLA) do
+      hint =
+        if cache_path,
+          do:
+            ", and the module cache has no entry #{Path.basename(cache_path)}: compile " <>
+              "this function on the host with the same :iree_compiler_flags and " <>
+              ":iree_module_cache",
+          else: "; without it, use NxIREE.export/3 or :iree_module_cache"
+
+      raise NxIREE.CompileError, message: "compiling defn functions needs EXLA" <> hint
+    end
+
+    %{mlir_module: mlir_module, output_container: output_container, used_inputs: used_inputs} =
+      EXLA.to_mlir_module(fun, vars, exla_opts)
+
+    module = NxIREE.compile(mlir_module, flags, output_container: output_container)
+    {%{module | used_inputs: Enum.sort(used_inputs)}, callback_pid_size()}
   end
 
   # EXLA emits StableHLO, and NxIREE.call/3 invokes modules synchronously
