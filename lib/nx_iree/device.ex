@@ -15,8 +15,12 @@ defmodule NxIREE.Device do
 
     devices =
       Enum.flat_map(drivers, fn {name, _} ->
-        {:ok, devices} = NxIREE.Native.list_devices(driver_registry, name)
-        devices
+        # A driver whose system library is missing (e.g. no libcuda) has no
+        # devices
+        case NxIREE.Native.list_devices(driver_registry, name) do
+          {:ok, devices} -> devices
+          {:error, _} -> []
+        end
       end)
 
     cache =
