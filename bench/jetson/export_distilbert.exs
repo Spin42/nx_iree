@@ -4,8 +4,14 @@
 # EXLA's reference logits.
 #
 #   OUT=/tmp/distilbert mix run jetson/export_distilbert.exs
+#
+# NXIREE_FLAGS adds compiler flags, TUNING selects an :iree_tuning spec (e.g.
+# maxwell_matmul) and SUFFIX names the variant: distilbert-<target><suffix>.bin.
 Logger.configure(level: :warning)
 out = System.get_env("OUT", "distilbert")
+extra_flags = String.split(System.get_env("NXIREE_FLAGS", ""), " ", trim: true)
+suffix = System.get_env("SUFFIX", "")
+tuning = System.get_env("TUNING") |> then(&(&1 && String.to_atom(&1)))
 File.mkdir_p!(out)
 
 name = "distilbert/distilbert-base-uncased-finetuned-sst-2-english"
@@ -45,10 +51,10 @@ targets = [
 templates = [Nx.to_template(data), Nx.to_template(inputs)]
 
 for {target, extra} <- targets do
-  flags = ["--iree-hal-target-backends=vulkan-spirv" | extra]
-  bin = NxIREE.export(forward, templates, iree_compiler_flags: flags)
-  File.write!(Path.join(out, "distilbert-#{target}.bin"), bin)
-  IO.puts("#{target}: #{byte_size(bin)} bytes")
+  flags = ["--iree-hal-target-backends=vulkan-spirv" | extra] ++ extra_flags
+  bin = NxIREE.export(forward, templates, iree_compiler_flags: flags, iree_tuning: tuning)
+  File.write!(Path.join(out, "distilbert-#{target}#{suffix}.bin"), bin)
+  IO.puts("#{target}#{suffix}: #{byte_size(bin)} bytes")
 end
 
 host = fn c -> Nx.Defn.Composite.traverse(c, &Nx.backend_copy(&1, Nx.BinaryBackend)) end

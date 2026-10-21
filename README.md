@@ -153,6 +153,12 @@ provide a Vulkan loader and driver (for example Mesa's NVK on NVIDIA Tegra).
     size, so they are wrong on other GPUs. A capability list compiles these
     models and is correct everywhere it is supported, for example on NVK:
     `--iree-vulkan-target-features=spirv:v1.3,cap:Shader,cap:StorageBuffer8BitAccess,cap:Int8,ext:SPV_KHR_8bit_storage,cap:GroupNonUniform,cap:GroupNonUniformArithmetic,cap:GroupNonUniformShuffle,cap:GroupNonUniformBallot,cap:Int64,cap:Int16,cap:Float16,cap:StorageBuffer16BitAccess,ext:SPV_KHR_16bit_storage`.
+  * `iree_tuning: :maxwell_matmul` (a `NxIREE.Compiler` and `NxIREE.export/3`
+    option) applies a matmul tuning spec shipped with nx_iree: 64x64x8
+    workgroup tiles without multi-buffering. On the Jetson Nano's GM20B
+    under NVK it takes a 1024 matmul from 34-42 to 99 GFLOPS and DistilBERT
+    from 346 to 145 ms per batch of 4. The spec is named, not given by
+    path, so module cache keys match between host and device.
   * Command buffer memoization is off by default for GPU targets
     (`--iree-hal-memoization=false`): IREE 3.13 replays the first call's
     dynamic slice offsets from memoized Vulkan command buffers.
