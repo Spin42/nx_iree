@@ -119,6 +119,13 @@ loads the modules from it. The flags and Nx, Bumblebee and model versions
 must be the same on both sides, since they shape the key. A function missing
 from the cache raises on the device, naming the entry.
 
+## Host calls
+
+IREE modules cannot call back into Elixir. Named `io_call`s that have no
+callback and no `:hooks` entry do nothing and are removed, so Bumblebee's
+text generation works; hooks with a callback (Bumblebee streaming),
+`print_value`/`print_expr` and `Nx.runtime_call/4` raise when compiling.
+
 ## Nerves
 
 Cross-compiling is automatic when `CROSSCOMPILE` is set, as in a Nerves

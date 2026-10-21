@@ -163,6 +163,9 @@ defmodule NxIREE.Compiler do
       raise NxIREE.CompileError, message: "compiling defn functions needs EXLA" <> hint
     end
 
+    hooks = Keyword.get(exla_opts, :hooks, %{})
+    fun = fn vars -> fun.(vars) |> NxIREE.Compiler.HostCalls.strip!(hooks) end
+
     %{mlir_module: mlir_module, output_container: output_container, used_inputs: used_inputs} =
       EXLA.to_mlir_module(fun, vars, exla_opts)
 
