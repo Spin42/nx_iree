@@ -12,7 +12,8 @@ defmodule NxIREE.Backend do
 
   @impl true
   def init(opts) do
-    Keyword.validate!(opts, [:device])
+    # Nx may also pass defn compiler options here; only :device applies
+    Keyword.take(opts, [:device])
   end
 
   @impl true
@@ -42,13 +43,13 @@ defmodule NxIREE.Backend do
 
   @impl true
   def constant(out, number, opts) do
-    {:ok, %NxIREE.Device{ref: device_ref, uri: device_uri}} = NxIREE.Device.get(opts[:device])
+    # Encode the number with the output's type and shape, not its own
+    binary =
+      out
+      |> Nx.BinaryBackend.constant(number, [])
+      |> Nx.BinaryBackend.to_binary(Nx.size(out))
 
-    {:ok, ref} = NxIREE.VM.allocate_buffer(number, device_ref)
-
-    data = %__MODULE__{ref: ref, device: device_ref, device_uri: device_uri}
-
-    %{out | data: data}
+    from_binary(out, binary, opts)
   end
 
   @impl true
