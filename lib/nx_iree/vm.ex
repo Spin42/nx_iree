@@ -22,9 +22,9 @@ defmodule NxIREE.VM do
         device_ref
       ) do
     case t do
-      %{data: nil, ref: ref, device_ref: ^device_ref} ->
+      %{data: nil, ref: ref, device: ^device_ref} ->
         # Same device, so we can just return the ref
-        ref
+        {:ok, ref}
 
       %{data: nil} ->
         # in this case, we're dealing with different devices,

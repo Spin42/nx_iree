@@ -117,6 +117,27 @@ void iree::runtime::IREETensor::deallocate() {
   }
 }
 
+iree_status_t
+iree::runtime::IREETensor::upload(iree_hal_device_t *target_device) {
+  if (buffer_view != nullptr) {
+    return iree_ok_status();
+  }
+
+  IREE_RETURN_IF_ERROR(iree_hal_buffer_view_allocate_buffer_copy(
+      target_device, iree_hal_device_allocator(target_device), dims.size(),
+      dims.data(), type, IREE_HAL_ENCODING_TYPE_DENSE_ROW_MAJOR,
+      (iree_hal_buffer_params_t){
+          .usage = IREE_HAL_BUFFER_USAGE_DEFAULT,
+          .type = IREE_HAL_MEMORY_TYPE_DEVICE_LOCAL,
+      },
+      data_byte_span(), &buffer_view));
+
+  device = target_device;
+  std::free(data);
+  data = nullptr;
+  return iree_ok_status();
+}
+
 std::vector<char> *iree::runtime::IREETensor::serialize() {
   auto buffer = new std::vector<char>();
 

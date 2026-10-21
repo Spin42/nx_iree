@@ -11,8 +11,8 @@ defmodule NxIREE.Backend do
   @behaviour Nx.Backend
 
   @impl true
-  def init(_opts) do
-    []
+  def init(opts) do
+    Keyword.validate!(opts, [:device])
   end
 
   @impl true

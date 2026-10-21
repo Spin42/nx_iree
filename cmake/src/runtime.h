@@ -68,6 +68,10 @@ class IREETensor {
 
   void deallocate();
 
+  // Copies host data into a device buffer once and frees the host copy, so
+  // calls use the device buffer directly.
+  iree_status_t upload(iree_hal_device_t* device);
+
   // Disable copy and move semantics for simplicity
   IREETensor(const IREETensor&) = delete;
   IREETensor& operator=(const IREETensor&) = delete;

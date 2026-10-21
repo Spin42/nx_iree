@@ -391,6 +391,12 @@ DECLARE_NIF(allocate_buffer) {
 
   auto input = new iree::runtime::IREETensor(binary.data, binary.size, dims, type);
 
+  auto status = input->upload(*device);
+  if (!is_ok(status)) {
+    delete input;
+    return error(env, get_status_message(status).c_str());
+  }
+
   return ok(env, make<iree::runtime::IREETensor*>(env, input));
 }
 
