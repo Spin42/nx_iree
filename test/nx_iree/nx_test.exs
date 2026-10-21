@@ -74,7 +74,7 @@ defmodule NxIREE.NxTest do
 
   # Known gaps of IREE's SPIR-V code generation, measured with IREE 3.13 on
   # RADV (RDNA2 and RDNA3) and lavapipe
-  @vulkan_known_issues [
+  vulkan_known_issues = [
     # f64 math does not compile for SPIR-V; NxIREE rejects f64 inputs there
     exp: 1,
     log: 1,
@@ -94,7 +94,7 @@ defmodule NxIREE.NxTest do
   ]
 
   @driver_exclusions if System.get_env("NX_IREE_DEFAULT_DRIVER") == "vulkan",
-                       do: @vulkan_known_issues,
+                       do: vulkan_known_issues,
                        else: []
 
   doctest Nx,
