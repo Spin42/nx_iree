@@ -1,0 +1,257 @@
+--- a/integrations/pjrt/src/iree_pjrt/common/api_impl.cc
++++ b/integrations/pjrt/src/iree_pjrt/common/api_impl.cc
+@@ -7,6 +7,9 @@
+ #include "iree_pjrt/common/api_impl.h"
+ 
+ #include <iterator>
++#include <algorithm>
++#include <mutex>
++#include <unordered_map>
+ #include <optional>
+ #include <sstream>
+ #include <utility>
+@@ -466,141 +469,21 @@
+ 
+ iree_status_t BufferInstance::CopyToHost(void* dst, iree_host_size_t dst_size,
+                                          EventInstance** out_done_event) {
+-  // Use a data structure to handle intermediary buffer when necessary. This
+-  // needs to include the destination and aligned buffer, along with the size
+-  // so the destination can be mem-copied if necessary.
+-  struct CopyToHostData {
+-    void* alloc;
+-    void* aligned;
+-    void* dst;
+-    size_t size;
+-    // Fence will be signaled when copy to host is complete.
+-    iree::vm::ref<iree_hal_fence_t> copy_done_fence;
+-  };
+-
+-  //  Configure a default structure that writes directly to dst.
+-  const size_t alignment = 64;
+-  struct CopyToHostData* copy_to_host_data = new CopyToHostData;
+-  copy_to_host_data->alloc = nullptr;
+-  copy_to_host_data->aligned = dst;
+-  copy_to_host_data->dst = dst;
+-  copy_to_host_data->size = dst_size;
+-
+-  // If the destination is unaligned we need to write to an intermediary buffer.
+-  if (((uintptr_t)dst) & (alignment - 1)) {
+-    const size_t alignment_size = alignment + dst_size + sizeof(uintptr_t);
+-    char* alloc = new char[alignment_size];
+-    copy_to_host_data->alloc = alloc;
+-    copy_to_host_data->aligned =
+-        (void*)((((uintptr_t)alloc + alignment) & ~(uintptr_t)(alignment - 1)));
+-  }
+-
+-  // Import the destination (host) buffer as an iree_hal_buffer_t so that we
+-  // can issue copy commands.
+-  iree::vm::ref<iree_hal_buffer_t> dst_buffer;
+-  iree_hal_buffer_params_t dst_buffer_params = {
+-      /*usage=*/IREE_HAL_BUFFER_USAGE_TRANSFER_TARGET,
+-      // TODO: We should be able to use WRITE access here since the buffer
+-      // is never actually mapped to read back out (just accessed through the
+-      // void* later). However, that seems to cause the memory to never be
+-      // committed and the interaction aborted.
+-      /*access=*/IREE_HAL_MEMORY_ACCESS_ALL,
+-      /*type=*/IREE_HAL_MEMORY_TYPE_HOST_LOCAL |
+-          IREE_HAL_MEMORY_TYPE_DEVICE_VISIBLE,
+-  };
+-  iree_hal_external_buffer_t dst_external_buffer;
+-  memset(&dst_external_buffer, 0, sizeof(dst_external_buffer));
+-  dst_external_buffer.type = IREE_HAL_EXTERNAL_BUFFER_TYPE_HOST_ALLOCATION;
+-  dst_external_buffer.flags = IREE_HAL_EXTERNAL_BUFFER_FLAG_NONE;
+-  dst_external_buffer.size = dst_size;
+-  dst_external_buffer.handle.host_allocation.ptr = copy_to_host_data->aligned;
+-  IREE_RETURN_IF_ERROR(IreeApi::hal_allocator_import_buffer(
+-      device_.device_allocator(), dst_buffer_params, &dst_external_buffer,
+-      /*release_callback=*/iree_hal_buffer_release_callback_null(),
+-      &dst_buffer));
+-
+-  // Create the transfer command buffer.
+-  iree::vm::ref<iree_hal_command_buffer_t> transfer_cb;
+-  iree_hal_transfer_command_t transfer_command;
+-  memset(&transfer_command, 0, sizeof(transfer_command));
+-  transfer_command.type = IREE_HAL_TRANSFER_COMMAND_TYPE_COPY;
+-  transfer_command.copy.source_buffer =
+-      iree_hal_buffer_view_buffer(buffer_view());
+-  transfer_command.copy.source_offset = 0;
+-  transfer_command.copy.target_buffer = dst_buffer.get();
+-  transfer_command.copy.target_offset = 0;
+-  transfer_command.copy.length = dst_size;
+-  IREE_RETURN_IF_ERROR(iree_hal_create_transfer_command_buffer(
+-      device_.device(), IREE_HAL_COMMAND_BUFFER_MODE_ONE_SHOT,
+-      IREE_HAL_QUEUE_AFFINITY_ANY,
+-      /*transfer_count=*/1, &transfer_command, &transfer_cb));
+-  dst_buffer.reset();
+-
+-  iree::vm::ref<iree_hal_semaphore_t> semaphore;
+-  IREE_RETURN_IF_ERROR(iree_hal_semaphore_create(
+-      device_.device(), IREE_HAL_QUEUE_AFFINITY_ANY, 0ull,
+-      IREE_HAL_SEMAPHORE_FLAG_DEFAULT, &semaphore));
+-
+-  // Signaled when `dst_buffer` is ready to be consumed.
+-  iree::vm::ref<iree_hal_fence_t> dst_buffer_ready_fence;
+-  IREE_RETURN_IF_ERROR(IreeApi::hal_fence_create_at(
+-      semaphore.get(), 1ull, device_.client().host_allocator(),
+-      &dst_buffer_ready_fence));
+-
+-  // Signaled when copy to host is complete.
+-  IREE_RETURN_IF_ERROR(IreeApi::hal_fence_create_at(
+-      semaphore.get(), 2ull, device_.client().host_allocator(),
+-      &(copy_to_host_data->copy_done_fence)));
+-
+-  auto dst_buffer_callback = [](PJRT_Error* error, void* user_data) {
+-    const ErrorInstance* error_instance = ErrorInstance::FromError(error);
+-    auto* copy_data = static_cast<CopyToHostData*>(user_data);
+-
+-    if (!error) {
+-      // If there is an allocated buffer we need to copy to the destination.
+-      if (copy_data->alloc) {
+-        std::memcpy(copy_data->dst, copy_data->aligned, copy_data->size);
+-      }
+-      iree_hal_fence_signal(copy_data->copy_done_fence.get());
+-    } else {
+-      iree_hal_fence_fail(copy_data->copy_done_fence.get(),
+-                          error_instance->status());
+-    }
+-
+-    if (copy_data->alloc) {
+-      delete[] static_cast<char*>(copy_data->alloc);
+-    }
+-    delete copy_data;
+-    delete error_instance;
+-  };
+-
+-  // This callback simply deletes the `dst_buffer_ready_event`. We could perform
+-  // this deletion in the `dst_buffer_callback`, but this would result in the
+-  // callback thread of `dst_buffer_ready_event` detaching from the main thread,
+-  // potentially resulting in the callback thread outliving the main thread.
+-  auto copy_done_callback = [](PJRT_Error* error, void* user_data) {
+-    EventInstance* dst_buffer_ready_event =
+-        static_cast<EventInstance*>(user_data);
+-    delete dst_buffer_ready_event;
+-    delete ErrorInstance::FromError(error);
+-  };
+-
+-  auto dst_buffer_ready_event =
+-      new EventInstance(retain_ref(dst_buffer_ready_fence));
+-  dst_buffer_ready_event->OnReady(dst_buffer_callback, copy_to_host_data);
+-
+-  auto copy_done_event =
+-      new EventInstance(retain_ref(copy_to_host_data->copy_done_fence));
+-  copy_done_event->OnReady(copy_done_callback, dst_buffer_ready_event);
+-
+-  IREE_RETURN_IF_ERROR(IreeApi::hal_device_queue_execute(
+-      device_.device(), IREE_HAL_QUEUE_AFFINITY_ANY,
+-      /*wait_semaphore_list=*/iree_hal_fence_semaphore_list(ready_fence_.get()),
+-      /*signal_semaphore_list=*/
+-      iree_hal_fence_semaphore_list(dst_buffer_ready_fence.get()),
+-      transfer_cb.get()));
++  // Reads back synchronously: wait for the producing work, then let the device
++  // stage the transfer. Unlike importing |dst| as a host allocation this works
++  // for any pointer alignment and memory origin.
++  IREE_RETURN_IF_ERROR(iree_hal_fence_wait(
++      ready_fence_.get(), iree_infinite_timeout(), IREE_ASYNC_WAIT_FLAG_NONE));
++  IREE_RETURN_IF_ERROR(iree_hal_device_transfer_d2h(
++      device_.device(), iree_hal_buffer_view_buffer(buffer_view()),
++      /*source_offset=*/0, dst, dst_size, IREE_HAL_TRANSFER_BUFFER_FLAG_DEFAULT,
++      iree_infinite_timeout()));
+ 
+-  *out_done_event = copy_done_event;
++  // An empty fence is already signaled.
++  iree::vm::ref<iree_hal_fence_t> done_fence;
++  IREE_RETURN_IF_ERROR(iree_hal_fence_create(
++      /*capacity=*/0, device_.client().host_allocator(), &done_fence));
++  *out_done_event = new EventInstance(std::move(done_fence));
+   return iree_ok_status();
+ }
+ 
+@@ -1694,25 +1577,34 @@
+     std::vector<iree::vm::ref<iree_vm_module_t>>& modules,
+     iree_hal_device_t* hal_device,
+     iree::vm::ref<iree_vm_module_t>& main_module) {
+-  // HAL module.
+-  iree_async_frontier_tracker_t* frontier_tracker = nullptr;
+-  iree_status_t status = iree_async_frontier_tracker_create(
+-      iree_async_frontier_tracker_options_default(), host_allocator(),
+-      &frontier_tracker);
++  // HAL module. A device's queues join exactly one frontier tracker, so every
++  // module on a device shares one device group, kept for the process lifetime.
++  static std::mutex device_groups_mutex;
++  static std::unordered_map<iree_hal_device_t*, iree_hal_device_group_t*>
++      device_groups;
+   iree_hal_device_group_t* device_group = nullptr;
+-  if (iree_status_is_ok(status)) {
+-    status = iree_hal_device_group_create_from_device(
+-        hal_device, frontier_tracker, host_allocator(), &device_group);
++  {
++    std::lock_guard<std::mutex> guard(device_groups_mutex);
++    auto found = device_groups.find(hal_device);
++    if (found != device_groups.end()) {
++      device_group = found->second;
++    } else {
++      iree_async_frontier_tracker_t* frontier_tracker = nullptr;
++      IREE_RETURN_IF_ERROR(iree_async_frontier_tracker_create(
++          iree_async_frontier_tracker_options_default(), host_allocator(),
++          &frontier_tracker));
++      iree_status_t status = iree_hal_device_group_create_from_device(
++          hal_device, frontier_tracker, host_allocator(), &device_group);
++      iree_async_frontier_tracker_release(frontier_tracker);
++      IREE_RETURN_IF_ERROR(status);
++      device_groups[hal_device] = device_group;
++    }
+   }
+-  iree_async_frontier_tracker_release(frontier_tracker);
+-  IREE_RETURN_IF_ERROR(status);
+   modules.push_back({});
+-  status = iree_hal_module_create(
++  IREE_RETURN_IF_ERROR(iree_hal_module_create(
+       vm_instance(), iree_hal_module_device_policy_default(), device_group,
+       IREE_HAL_MODULE_FLAG_NONE, iree_hal_module_debug_sink_stdio(stderr),
+-      host_allocator(), &modules.back());
+-  iree_hal_device_group_release(device_group);
+-  IREE_RETURN_IF_ERROR(status);
++      host_allocator(), &modules.back()));
+ 
+   // Main module.
+   modules.push_back(main_module);
+@@ -2101,12 +1993,25 @@
+ 
+ iree_status_t LoadedExecutableInstance::BatchExecute(
+     PJRT_LoadedExecutable_Execute_Args* args) {
+-  // Early exit for unsupported features and illegal input.
++  // Executing on a specific device runs a single invocation on that device's
++  // resident executable; resident executables follow addressable_devices_.
++  size_t device_offset = 0;
+   if (args->execute_device) {
+-    return iree_make_status(IREE_STATUS_UNIMPLEMENTED,
+-                            "executing with a specific device not supported");
+-  }
+-  if (args->num_devices != addressable_devices_.size()) {
++    if (args->num_devices != 1) {
++      return iree_make_status(
++          IREE_STATUS_INVALID_ARGUMENT,
++          "executing on a specific device takes one argument list (got %d)",
++          (int)args->num_devices);
++    }
++    DeviceInstance* target = DeviceInstance::Unwrap(args->execute_device);
++    auto it = std::find(addressable_devices_.begin(),
++                        addressable_devices_.end(), target);
++    if (it == addressable_devices_.end()) {
++      return iree_make_status(IREE_STATUS_INVALID_ARGUMENT,
++                              "device is not addressable by this executable");
++    }
++    device_offset = it - addressable_devices_.begin();
++  } else if (args->num_devices != addressable_devices_.size()) {
+     return iree_make_status(
+         IREE_STATUS_INVALID_ARGUMENT,
+         "incorrect number of devices to execute on (%d vs %d)",
+@@ -2135,7 +2040,7 @@
+   invs.resize(args->num_devices);
+   for (size_t dev_index = 0; dev_index < args->num_devices; ++dev_index) {
+     auto& inv = invs[dev_index];
+-    inv.res_exe = &resident_executables_ecs[dev_index];
++    inv.res_exe = &resident_executables_ecs[device_offset + dev_index];
+ 
+     // Wait fence initial value.
+     // We allocate it to be able to hold two semaphores (main timeline and
