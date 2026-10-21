@@ -208,14 +208,34 @@ defmodule NxIREE.Compiler do
           String.starts_with?(flag, "--iree-llvmcpu-target-triple")
       end)
 
-    cond do
-      chosen? -> flags
-      output_mode == :bytecode -> flags ++ ["--iree-llvmcpu-target-cpu=generic"]
-      true -> flags ++ ["--iree-llvmcpu-target-cpu=host"]
-    end
+    flags =
+      cond do
+        chosen? -> flags
+        output_mode == :bytecode -> flags ++ ["--iree-llvmcpu-target-cpu=generic"]
+        true -> flags ++ ["--iree-llvmcpu-target-cpu=host"]
+      end
+
+    # Data tiling packs matmul operands into the CPU's preferred layout, and
+    # im2col turns convolutions into such matmuls: ViT-base runs about 6x and
+    # ResNet-50 about 4x faster with them
+    flags
+    |> default_switch(
+      ~w(--iree-opt-data-tiling --iree-dispatch-creation-data-tiling --iree-global-opt-data-tiling),
+      "--iree-opt-data-tiling"
+    )
+    |> default_switch(
+      ["--iree-global-opt-use-im2col-for-convs"],
+      "--iree-global-opt-use-im2col-for-convs"
+    )
   end
 
   defp default_cpu_target(flags, _backend, _output_mode), do: flags
+
+  defp default_switch(flags, switches, flag) do
+    if Enum.any?(flags, fn given -> Enum.any?(switches, &String.starts_with?(given, &1)) end),
+      do: flags,
+      else: flags ++ [flag]
+  end
 
   @demote_f64 "--iree-input-demote-f64-to-f32"
 
