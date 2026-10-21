@@ -77,7 +77,7 @@ returns a binary. `NxIREE.load_exported/2` loads it on a device and
 
 ```elixir
 # host
-flags = ["--iree-hal-target-backends=vulkan-spirv", "--iree-vulkan-target=pascal"]
+flags = ["--iree-hal-target-backends=vulkan-spirv"]
 bin = NxIREE.export(&MyModel.predict/2, [params_template, input_template], iree_compiler_flags: flags)
 File.write!("model.bin", bin)
 
@@ -102,7 +102,7 @@ expression, input shapes and compiler flags:
 ```elixir
 defn_options = [
   compiler: NxIREE.Compiler,
-  iree_compiler_flags: ["--iree-hal-target-backends=vulkan-spirv", "--iree-vulkan-target=pascal"],
+  iree_compiler_flags: ["--iree-hal-target-backends=vulkan-spirv"],
   iree_module_cache: Application.app_dir(:my_app, "priv/nx_iree_cache")
 ]
 
@@ -138,17 +138,26 @@ Cross-compiling is automatic when `CROSSCOMPILE` is set, as in a Nerves
 build: the runtime is built for the target with the Nerves toolchain, the
 host tools it needs are built for the host, and `iree-compile` is left out of
 the firmware. Functions for the device are compiled on the host, into a
-module cache or with `NxIREE.export/3`. For Vulkan, the Nerves system must provide a Vulkan loader
-and driver (for example Mesa's NVK on NVIDIA Tegra).
+module cache or with `NxIREE.export/3`. For Vulkan, the Nerves system must
+provide a Vulkan loader and driver (for example Mesa's NVK on NVIDIA Tegra).
 
 ## Vulkan notes
 
   * Without a `--iree-vulkan-target`, NxIREE compiles for IREE's baseline
     profile plus 8-bit storage: on the plain baseline IREE misreads `u8`/`s8`
     tensors that vectorized dispatches read, such as attention masks.
-  * A named target (`--iree-vulkan-target=pascal`, `rdna3`, ...) enables
-    faster kernels, which assume that architecture's subgroup size. Use the
-    target matching the GPU; on other GPUs results can be wrong.
+  * Named targets (`--iree-vulkan-target=pascal`, `rdna2`, ...) fail to
+    compile transformers in IREE 3.13: two embedding gathers added and then
+    reduced, as in every BERT and GPT embedding layer, hit a SPIR-V
+    legalization error. Their kernels also assume the architecture's subgroup
+    size, so they are wrong on other GPUs. A capability list compiles these
+    models and is correct everywhere it is supported, for example on NVK:
+    `--iree-vulkan-target-features=spirv:v1.3,cap:Shader,cap:StorageBuffer8BitAccess,cap:Int8,ext:SPV_KHR_8bit_storage,cap:GroupNonUniform,cap:GroupNonUniformArithmetic,cap:GroupNonUniformShuffle,cap:GroupNonUniformBallot,cap:Int64,cap:Int16,cap:Float16,cap:StorageBuffer16BitAccess,ext:SPV_KHR_16bit_storage`.
+  * Command buffer memoization is off by default for GPU targets
+    (`--iree-hal-memoization=false`): IREE 3.13 replays the first call's
+    dynamic slice offsets from memoized Vulkan command buffers.
+  * Software Vulkan devices (lavapipe, SwiftShader) are not opened unless
+    `config :nx_iree, software_vulkan: true`; lavapipe's threads busy-wait.
   * SPIR-V has no f64: f64 inputs raise on Vulkan, so convert them to f32.
     The CPU backend keeps f64.
   * GPU results are within Vulkan's precision bounds rather than bit-exact
