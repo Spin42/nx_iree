@@ -26,7 +26,7 @@ Nx.Defn.global_default_options(
   iree_runtime_options: runtime_options
 )
 
-Nx.global_default_backend(NxIREE.Backend)
+Nx.global_default_backend({NxIREE.Backend, device: device})
 
 if System.get_env("DEBUG") do
   IO.gets("Press Enter to continue - PID: #{System.pid()}")

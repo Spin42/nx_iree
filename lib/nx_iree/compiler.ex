@@ -378,16 +378,15 @@ defmodule NxIREE.Compiler do
     :ets.new(@cache, [:named_table, :public, :set, read_concurrency: true])
   end
 
+  # Each computation runs on a single device
   @impl true
-  def __stream__(_key, _input, _acc, _vars, _fun, _args, _opts) do
-    raise "__stream__ not supported yet in NxIREE"
+  def __partitions_options__(opts), do: [opts]
+
+  @impl true
+  def __to_backend__(opts) do
+    device = opts |> Keyword.get(:iree_runtime_options, []) |> Keyword.get(:device)
+    {NxIREE.Backend, device: NxIREE.Device.fetch!(device)}
   end
-
-  @impl true
-  defdelegate __partitions_options__(opts), to: EXLA.Defn
-
-  @impl true
-  defdelegate __to_backend__(opts), to: EXLA.Defn
 
   defp filter_inputs_by_indices(args, inputs) do
     filter_by_indices_list(args, 0, Enum.sort(inputs), fn x, _ -> x end)

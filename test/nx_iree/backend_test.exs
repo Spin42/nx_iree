@@ -59,6 +59,20 @@ defmodule NxIREE.BackendTest do
       t = Nx.backend_transfer(Nx.tensor([1.0, 4.0, 9.0]), {NxIREE.Backend, device: other})
       assert_same(jit(&Nx.sqrt/1).(t) |> host(), Nx.tensor([1.0, 2.0, 3.0]))
     end
+
+    test "backend operations run on their input's device" do
+      {:ok, [other | _]} = NxIREE.list_devices("local-task")
+      t = Nx.backend_transfer(Nx.iota({4}, type: :f32), {NxIREE.Backend, device: other})
+      out = Nx.indexed_put(t, Nx.tensor([[1]]), Nx.tensor([9.0]))
+      assert out.data.device_uri == other.uri
+      assert_same(host(out), Nx.tensor([0.0, 9.0, 2.0, 3.0]))
+    end
+
+    test "to_backend follows the runtime device" do
+      {:ok, [other | _]} = NxIREE.list_devices("local-task")
+      opts = [compiler: NxIREE.Compiler, iree_runtime_options: [device: other.uri]]
+      assert Nx.Defn.to_backend(opts) == {NxIREE.Backend, device: other}
+    end
   end
 
   describe "f64" do
