@@ -320,6 +320,12 @@ std::string iree_type_to_nx_type(iree_hal_element_type_t type) {
   return "invalid_type";
 }
 
+// deallocate_buffer (e.g. after Nx.backend_transfer) frees both the device
+// buffer and the host copy while the resource itself lives on
+static bool is_deallocated(iree::runtime::IREETensor* tensor) {
+  return tensor == nullptr || (tensor->buffer_view == nullptr && tensor->data == nullptr);
+}
+
 DECLARE_NIF(read_buffer_nif) {
   iree_hal_device_t** device;
   iree::runtime::IREETensor** input;
@@ -335,8 +341,16 @@ DECLARE_NIF(read_buffer_nif) {
     return error(env, "invalid num_bytes");
   }
 
+  if (is_deallocated(*input)) {
+    return error(env, "tensor has been deallocated");
+  }
+
   if (num_bytes == -1) {
     num_bytes = (*input)->size;
+  }
+
+  if (num_bytes < 0 || static_cast<size_t>(num_bytes) > (*input)->size) {
+    return error(env, "invalid num_bytes");
   }
 
   ErlNifBinary binary;
@@ -350,6 +364,7 @@ DECLARE_NIF(read_buffer_nif) {
   } else {
     auto status = read_buffer(*device, (*input)->buffer_view, binary.data, num_bytes);
     if (!is_ok(status)) {
+      enif_release_binary(&binary);
       return error(env, get_status_message(status).c_str());
     }
   }
@@ -427,7 +442,15 @@ DECLARE_NIF(serialize_tensor) {
     return error(env, "invalid input");
   }
 
-  std::vector<char>* serialized = (*input)->serialize();
+  if (is_deallocated(*input)) {
+    return error(env, "tensor has been deallocated");
+  }
+
+  std::unique_ptr<std::vector<char>> serialized((*input)->serialize());
+
+  if (!serialized) {
+    return error(env, "unable to serialize tensor");
+  }
 
   ErlNifBinary binary;
 

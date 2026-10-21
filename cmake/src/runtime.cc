@@ -572,6 +572,12 @@ call_loaded(iree::runtime::LoadedModule *loaded, std::string driver_name,
   for (auto input : exla_inputs) {
     if (!iree_status_is_ok(status)) break;
 
+    if (input->buffer_view == nullptr && input->data == nullptr) {
+      status = iree_make_status(IREE_STATUS_FAILED_PRECONDITION,
+                                "input tensor has been deallocated");
+      break;
+    }
+
     iree_vm_ref_t arg_buffer_view_ref;
 
     if (input->buffer_view) {

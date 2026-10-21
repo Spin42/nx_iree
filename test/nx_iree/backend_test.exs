@@ -100,6 +100,20 @@ defmodule NxIREE.BackendTest do
     end
   end
 
+  describe "deallocated tensors" do
+    test "raise when read again" do
+      t = Nx.backend_transfer(Nx.iota({4}), {NxIREE.Backend, device: cpu()})
+      _ = Nx.backend_transfer(t, Nx.BinaryBackend)
+      assert_raise MatchError, fn -> Nx.backend_transfer(t, Nx.BinaryBackend) end
+    end
+
+    test "raise when passed to a computation" do
+      t = Nx.backend_transfer(Nx.iota({4}, type: :f32), {NxIREE.Backend, device: cpu()})
+      _ = Nx.backend_transfer(t, Nx.BinaryBackend)
+      assert_raise RuntimeError, ~r/deallocated/, fn -> jit(&Nx.exp/1).(t) end
+    end
+  end
+
   test "indexed_put with a list of indices" do
     t = Nx.iota({4}, type: :f32)
     idx = Nx.tensor([[0], [2]])
