@@ -18,6 +18,9 @@ defmodule NxIREE.Compiler do
 
   @behaviour Nx.Defn.Compiler
 
+  # Compiled functions for `__jit__`, keyed by defn key, input templates and options
+  @cache __MODULE__.Cache
+
   @impl true
   def __compile__(_key, vars, fun, opts) do
     {iree_compiler_flags, opts} = Keyword.pop(opts, :iree_compiler_flags, [])
@@ -273,7 +276,30 @@ defmodule NxIREE.Compiler do
 
   @impl true
   def __jit__(key, vars, fun, args_list, opts) do
-    __compile__(key, vars, fun, opts).(args_list)
+    templates =
+      vars
+      |> Nx.Defn.Composite.flatten_list()
+      |> Enum.map(&{&1.shape, &1.type, &1.names})
+
+    cache_key = {key, templates, opts}
+
+    compiled =
+      case :ets.lookup(@cache, cache_key) do
+        [{_, compiled}] ->
+          compiled
+
+        [] ->
+          compiled = __compile__(key, vars, fun, opts)
+          :ets.insert(@cache, {cache_key, compiled})
+          compiled
+      end
+
+    compiled.(args_list)
+  end
+
+  @doc false
+  def create_cache do
+    :ets.new(@cache, [:named_table, :public, :set, read_concurrency: true])
   end
 
   @impl true

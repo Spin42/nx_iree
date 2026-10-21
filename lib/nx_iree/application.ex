@@ -8,6 +8,7 @@ defmodule NxIREE.Application do
 
     :ok = NxIREE.Device.init()
     {:ok, _instance} = NxIREE.VM.create_instance()
+    NxIREE.Compiler.create_cache()
 
     Supervisor.start_link(children, strategy: :one_for_one, name: NxIREE.Supervisor)
   end
