@@ -1,0 +1,16 @@
+Reproducing commands (all read-only on inputs):
+  python3 -I loopstats.py ../measured/pascal.sass 268-1e20,38c8-3a20      # opcode mix, bank conflicts, LDS list
+  python3 -I loopstats.py ../measured/rdna3.sass 4a8-1fd0,51a8-51d0
+  python3 -I loopstats.py ../measured/valhall.sass 108-a18,bc8-bf8
+  python3 -I loopstats.py ../measured/adreno.sass 308-1180
+  python3 -I nakdeps.py ../measured/<t>.nak.log 1                            # delays / waits / load->use distances
+  python3 -I smsim.py <kernel> [--L_dram 500] [--dram_bpc 10] [--mem-free] [--lds-free] [--no-delays]
+                      [--no-conflicts] [--wgs N] [--relax-rd] [--ffma-only] [--lanes 32]
+Steady-state loop = [backward-BRA target, conditional exit branch] + continue block (phi MOVs + BRA);
+the fall-through after the exit branch is the epilogue (last k-tile) and is excluded.
+Model results used in the report:
+  pascal : 57.3 (L=500) / 39.8 (L=500, dram 10 B/clk) / 44.1 (dram 14) ; measured 39.8 ; ffma-only 98.8 ; mem-free 62.5 ; 2 WGs 78
+  rdna3  : 54.2 (L=500) / 49.7 (L=600) ; measured 50.7 ; mem-free 93.7 ; 4 WGs 100.6 ; no-delays 63 ; lds-free 59 ; ffma-only 167
+  adreno : 53.0 (L_A=250,L_B=500) / 45.1 (L_B=650) ; measured 44.6 ; mem-free 142 ; 24 warps 105 ; ffma-only 226
+  valhall: 60.2 (no DRAM cap) / 29.5 (8 B/clk) / 22.5 (6 B/clk) ; measured 24.5 ; mem-free 67 ; ffma-only 118 (half warps)
+  768 MHz check (pascal): L=417, dram 12 B/clk -> 42.9 equiv -> ratio 1.115 ; latency-only -> 1.177 ; measured 1.165
