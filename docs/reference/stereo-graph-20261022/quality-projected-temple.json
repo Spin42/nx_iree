@@ -1,0 +1,25 @@
+{
+  "census-graph-projected-three-temple-board": {
+    "fps": 53.18000474365642,
+    "full_visible": {
+      "evaluated_pixels": 1978104.0,
+      "coverage_percent": 99.71983272871395,
+      "mae_accepted_px": 0.2497338016596178,
+      "bad1_accepted_percent": 2.029898173035879,
+      "bad3_accepted_percent": 0.421026056468694,
+      "bad1_or_invalid_percent": 2.304378334000639,
+      "bad3_or_invalid_percent": 0.700013750540922
+    },
+    "common_x_ge_64": {
+      "evaluated_pixels": 1605604.0,
+      "coverage_percent": 99.7902347029529,
+      "mae_accepted_px": 0.24483205844264877,
+      "bad1_accepted_percent": 1.936793331319481,
+      "bad3_accepted_percent": 0.38377617279851406,
+      "bad1_or_invalid_percent": 2.142495908081943,
+      "bad3_or_invalid_percent": 0.5927364406167399
+    },
+    "visible_gt_outside_search_percent": 0.0,
+    "max_visible_gt_disparity_px": 48.45703125
+  }
+}

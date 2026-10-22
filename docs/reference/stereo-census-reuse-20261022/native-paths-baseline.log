@@ -1,0 +1,20 @@
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+2026-10-22T11:19:45+00:00
+Running /root/nxiree/iree-benchmark-module
+Run on (4 X 1555.5 MHz CPU s)
+Load Average: 0.00, 0.02, 0.00
+***WARNING*** CPU scaling is enabled, the benchmark real time measurements may be noisy and will incur extra overhead.
+***WARNING*** ASLR is enabled, the results may have unreproducible noise in them.
+------------------------------------------------------------------------------------------------
+Benchmark                                      Time             CPU   Iterations UserCounters...
+------------------------------------------------------------------------------------------------
+BM_main/process_time/real_time              29.5 ms        0.663 ms            7 items_per_second=33.9259/s
+BM_main/process_time/real_time              30.4 ms         1.51 ms            7 items_per_second=32.9311/s
+BM_main/process_time/real_time              29.7 ms         1.52 ms            7 items_per_second=33.6456/s
+BM_main/process_time/real_time_mean         29.9 ms         1.23 ms            3 items_per_second=33.5008/s
+BM_main/process_time/real_time_median       29.7 ms         1.51 ms            3 items_per_second=33.6456/s
+BM_main/process_time/real_time_stddev      0.460 ms        0.491 ms            3 items_per_second=0.512963/s
+BM_main/process_time/real_time_cv           1.54 %         39.93 %             3 items_per_second=1.53%
+
+NATIVE_BENCHMARK_EXIT: 0
+:ok

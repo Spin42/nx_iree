@@ -1,0 +1,21 @@
+BOOT_ID=6f672cb9-e70d-433c-8894-7231f93bf6b7
+GOVERNOR=simple_ondemand
+GPU_MAX=921600000
+GPU_MIN=76800000
+OPENCV_THREADS=4 shape=136x320 disparities=64
+Error! Failed to eval: {ok,_}=application:ensure_all_started(elixir), 'Elixir.Code':eval_file(<<"/root/evision-survey/run.exs">>), halt().
+
+Runtime terminating during boot ({#{message=><<"getP1: expected 72, got 0">>,'__struct__'=>'Elixir.RuntimeError','__exception__'=>true},[{'Elixir.OpenCVStereoBench','-run/0-fun-1-',3,[{file,"/root/evision-survey/run.exs"},{line,51},{error_info,#{module=>'Elixir.Exception'}}]},{'Elixir.Enum','-reduce/3-lists^foldl/2-0-',3,[{file,"lib/enum.ex"},{line,2622}]},{'Elixir.OpenCVStereoBench','-run/0-fun-6-',5,[{file,"/root/evision-survey/run.exs"},{line,48}]},{'Elixir.Enum','-reduce/3-lists^foldl/2-0-',3,[{file,"lib/enum.ex"},{line,2622}]},{'Elixir.OpenCVStereoBench',run,0,[{file,"/root/evision-survey/run.exs"},{line,28}]},{elixir_compiler,'__FILE__',1,[{file,"/root/evision-survey/run.exs"},{line,115}]},{elixir,eval_external_handler,3,[{file,"src/elixir.erl"},{line,382}]},{erl_eval,do_apply,7,[{file,"erl_eval.erl"},{line,1048}]}]})
+
+Crash dump is being written to: /root/erl_crash.dump...done
+CHILD_EXIT=1
+GPU_ERRORS=0
+**Error** ** (RuntimeError) stereo path benchmark failed
+    /root/nxiree/stereo-board-run.exs:87: (file)
+    nofile:1: (file)
+    (elixir 1.20.4) src/elixir.erl:382: :elixir.eval_external_handler/3
+    (stdlib 8.1.1) erl_eval.erl:1048: :erl_eval.do_apply/7
+    (stdlib 8.1.1) erl_eval.erl:276: :erl_eval.exprs/6
+    (elixir 1.20.4) src/elixir.erl:365: :elixir.erl_eval/3
+    (elixir 1.20.4) src/elixir.erl:329: :elixir.eval_forms/4
+    (elixir 1.20.4) lib/module/parallel_checker.ex:157: Module.ParallelChecker.verify/1

@@ -1,0 +1,33 @@
+[0/2] Re-checking globbed directories...
+[1/32] Building C object /var/home/marc/Projects/nx_iree/iree-runtime/build/tools/CMakeFiles/iree-profile.dir/iree-profile-main.c.o
+[2/32] Building C object /var/home/marc/Projects/nx_iree/iree-runtime/build/runtime/src/iree/tooling/profile/CMakeFiles/iree_tooling_profile_reader.objects.dir/reader.c.o
+[3/32] Building C object /var/home/marc/Projects/nx_iree/iree-runtime/build/runtime/src/iree/tooling/profile/CMakeFiles/iree_tooling_profile_queue_query.objects.dir/queue_query.c.o
+[4/32] Building C object /var/home/marc/Projects/nx_iree/iree-runtime/build/runtime/src/iree/tooling/profile/CMakeFiles/iree_tooling_profile_common.objects.dir/common.c.o
+[5/32] Linking C static library /var/home/marc/Projects/nx_iree/iree-runtime/build/runtime/src/iree/tooling/profile/libiree_tooling_profile_common.a
+[6/32] Linking C static library /var/home/marc/Projects/nx_iree/iree-runtime/build/runtime/src/iree/tooling/profile/libiree_tooling_profile_reader.a
+[7/32] Building C object /var/home/marc/Projects/nx_iree/iree-runtime/build/runtime/src/iree/tooling/profile/CMakeFiles/iree_tooling_profile_cat.objects.dir/cat.c.o
+[8/32] Linking C static library /var/home/marc/Projects/nx_iree/iree-runtime/build/runtime/src/iree/tooling/profile/libiree_tooling_profile_cat.a
+[9/32] Building C object /var/home/marc/Projects/nx_iree/iree-runtime/build/runtime/src/iree/tooling/profile/CMakeFiles/iree_tooling_profile_statistics.objects.dir/statistics.c.o
+[10/32] Building C object /var/home/marc/Projects/nx_iree/iree-runtime/build/runtime/src/iree/tooling/profile/CMakeFiles/iree_tooling_profile_dispatch.objects.dir/dispatch.c.o
+[11/32] Linking C static library /var/home/marc/Projects/nx_iree/iree-runtime/build/runtime/src/iree/tooling/profile/libiree_tooling_profile_statistics.a
+[12/32] Building C object /var/home/marc/Projects/nx_iree/iree-runtime/build/runtime/src/iree/tooling/profile/CMakeFiles/iree_tooling_profile_counter.objects.dir/counter.c.o
+[13/32] Building C object /var/home/marc/Projects/nx_iree/iree-runtime/build/runtime/src/iree/tooling/profile/CMakeFiles/iree_tooling_profile_help.objects.dir/help.c.o
+[14/32] Linking C static library /var/home/marc/Projects/nx_iree/iree-runtime/build/runtime/src/iree/tooling/profile/libiree_tooling_profile_help.a
+[15/32] Building C object /var/home/marc/Projects/nx_iree/iree-runtime/build/runtime/src/iree/tooling/profile/CMakeFiles/iree_tooling_profile_model.objects.dir/model.c.o
+[16/32] Linking C static library /var/home/marc/Projects/nx_iree/iree-runtime/build/runtime/src/iree/tooling/profile/libiree_tooling_profile_model.a
+[17/32] Linking C static library /var/home/marc/Projects/nx_iree/iree-runtime/build/runtime/src/iree/tooling/profile/libiree_tooling_profile_queue_query.a
+[18/32] Linking C static library /var/home/marc/Projects/nx_iree/iree-runtime/build/runtime/src/iree/tooling/profile/libiree_tooling_profile_counter.a
+[19/32] Linking C static library /var/home/marc/Projects/nx_iree/iree-runtime/build/runtime/src/iree/tooling/profile/libiree_tooling_profile_dispatch.a
+[20/32] Building C object /var/home/marc/Projects/nx_iree/iree-runtime/build/runtime/src/iree/tooling/profile/CMakeFiles/iree_tooling_profile_commands.objects.dir/commands.c.o
+[21/32] Building C object /var/home/marc/Projects/nx_iree/iree-runtime/build/runtime/src/iree/tooling/profile/CMakeFiles/iree_tooling_profile_summary.objects.dir/summary.c.o
+[22/32] Linking C static library /var/home/marc/Projects/nx_iree/iree-runtime/build/runtime/src/iree/tooling/profile/libiree_tooling_profile_summary.a
+[23/32] Building C object /var/home/marc/Projects/nx_iree/iree-runtime/build/runtime/src/iree/tooling/profile/CMakeFiles/iree_tooling_profile_memory.objects.dir/memory.c.o
+[24/32] Building C object /var/home/marc/Projects/nx_iree/iree-runtime/build/runtime/src/iree/tooling/profile/CMakeFiles/iree_tooling_profile_explain.objects.dir/explain.c.o
+[25/32] Linking C static library /var/home/marc/Projects/nx_iree/iree-runtime/build/runtime/src/iree/tooling/profile/libiree_tooling_profile_memory.a
+[26/32] Linking C static library /var/home/marc/Projects/nx_iree/iree-runtime/build/runtime/src/iree/tooling/profile/libiree_tooling_profile_explain.a
+[27/32] Building C object /var/home/marc/Projects/nx_iree/iree-runtime/build/runtime/src/iree/tooling/profile/CMakeFiles/iree_tooling_profile_export.objects.dir/export.c.o
+[28/32] Linking C static library /var/home/marc/Projects/nx_iree/iree-runtime/build/runtime/src/iree/tooling/profile/libiree_tooling_profile_export.a
+[29/32] Building C object /var/home/marc/Projects/nx_iree/iree-runtime/build/runtime/src/iree/tooling/profile/CMakeFiles/iree_tooling_profile_projection.objects.dir/projection.c.o
+[30/32] Linking C static library /var/home/marc/Projects/nx_iree/iree-runtime/build/runtime/src/iree/tooling/profile/libiree_tooling_profile_projection.a
+[31/32] Linking C static library /var/home/marc/Projects/nx_iree/iree-runtime/build/runtime/src/iree/tooling/profile/libiree_tooling_profile_commands.a
+[32/32] Linking C executable /var/home/marc/Projects/nx_iree/iree-runtime/build/tools/iree-profile

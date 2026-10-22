@@ -1,0 +1,8 @@
+/usr/bin/make -j1  O=/var/home/marc/Projects/nerves_system_okdo_c100/.claude/worktrees/base-system/.nerves/artifacts/nerves_system_okdo_c100-portable-0.1.0 HOSTCC="/usr/bin/gcc" HOSTCXX="/usr/bin/g++" syncconfig
+  GEN     /var/home/marc/Projects/nerves_system_okdo_c100/.claude/worktrees/base-system/.nerves/artifacts/nerves_system_okdo_c100-portable-0.1.0/Makefile
+>>> c100-gpu 1 Extracting
+>>> c100-gpu 1 Patching
+>>> c100-gpu 1 Configuring
+>>> c100-gpu 1 Building
+>>> c100-gpu 1 Installing to target
+/usr/bin/install -D -m 0755 /var/home/marc/Projects/nerves_system_okdo_c100/.claude/worktrees/base-system/package/c100-gpu/c100-limits /var/home/marc/Projects/nerves_system_okdo_c100/.claude/worktrees/base-system/.nerves/artifacts/nerves_system_okdo_c100-portable-0.1.0/target/usr/sbin/c100-limits

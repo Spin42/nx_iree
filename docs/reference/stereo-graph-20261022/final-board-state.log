@@ -1,0 +1,10 @@
+BOOT_ID=6f672cb9-e70d-433c-8894-7231f93bf6b7
+%{"nerves_fw_active" => "b", "nerves_fw_validated" => "1"}
+governor=simple_ondemand
+min_freq=76800000
+max_freq=921600000
+cur_freq=76800000
+ERL_CRASH_DUMP: "/root/erl_crash.dump"
+DIAGNOSTIC_ENV: nil
+CHANNEL_ERRORS=23
+:ok

@@ -1,0 +1,21 @@
+BOOT_ID=6f672cb9-e70d-433c-8894-7231f93bf6b7
+GOVERNOR=simple_ondemand
+GPU_MAX=921600000
+GPU_MIN=76800000
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+MEM copy start available_kb=3371984 process={:memory, 163560}
+MEM copy call1 available_kb=3362580 process={:memory, 197048}
+MEM copy call2 available_kb=3358116 process={:memory, 163560}
+MEM copy call3 available_kb=3358064 process={:memory, 176352}
+MEM copy afterGC available_kb=3358064 process={:memory, 163560}
+MEM transfer start available_kb=3358064 process={:memory, 197048}
+MEM transfer call1 available_kb=3357440 process={:memory, 230536}
+MEM transfer call2 available_kb=3357440 process={:memory, 163560}
+MEM transfer call3 available_kb=3357184 process={:memory, 176352}
+MEM transfer afterGC available_kb=3357184 process={:memory, 163560}
+STEREO_PATH_PASS
+CHILD_EXIT=0
+GPU_ERRORS=0
+BOARD_STEREO_PASS
+:ok

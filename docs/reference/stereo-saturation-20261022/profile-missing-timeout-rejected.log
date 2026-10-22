@@ -1,0 +1,68 @@
+[21016.628276] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21017.753376] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21018.881976] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21020.007876] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21021.138120] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21022.259695] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21023.380489] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21024.510004] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21025.635349] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21026.761239] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21027.885956] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21029.011305] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21030.366101] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21031.492870] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21032.622463] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21033.743676] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21034.868078] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21035.992632] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21037.117120] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21038.246960] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21039.372319] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21040.500981] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21041.625542] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+DIAGNOSTIC_BASELINE_GPU_ERRORS=23
+BOOT_ID=6f672cb9-e70d-433c-8894-7231f93bf6b7
+GOVERNOR=simple_ondemand
+GPU_MAX=921600000
+GPU_MIN=76800000
+Error! Failed to eval: {ok,_}=application:ensure_all_started(elixir), 'Elixir.Code':eval_file(<<"/root/nxiree/sgm-pipeline-profile-run.exs">>), halt().
+
+Runtime terminating during boot ({enoent,[{'Elixir.System',cmd,[<<"timeout">>,[<<"15">>,<<"/root/nxiree/iree-run-module-flush">>,<<"--device=vulkan">>,<<"--module=/root/nxiree/sgm-pipeline.vmfb">>,<<"--function=main">>,<<"--input=136x320xi32=@/root/nxiree/video-alley/frame_0001.left.bin">>,<<"--input=136x320xi32=@/root/nxiree/video-alley/frame_0001.right.bin">>,<<"--expected_output=136x320xf32=@/root/nxiree/sgm-next-shared-alley/frame_0001.disparity.bin">>,<<"--device_profiling_mode=dispatch-events,device-queue-events,queue-events">>,<<"--device_profiling_output=/root/nxiree/sgm-pipeline.ireeprof">>],[{stderr_to_stdout,true}]],[{file,"lib/system.ex"},{line,1141}]},{elixir_compiler,'__FILE__',1,[{file,"/root/nxiree/sgm-pipeline-profile-run.exs"},{line,12}]},{elixir,eval_external_handler,3,[{file,"src/elixir.erl"},{line,382}]},{erl_eval,do_apply,7,[{file,"erl_eval.erl"},{line,1048}]},{erl_eval,expr,6,[{file,"erl_eval.erl"},{line,792}]},{erl_eval,exprs,6,[{file,"erl_eval.erl"},{line,276}]},{elixir,erl_eval,3,[{
+
+Crash dump is being written to: /root/nxiree/sgm-pipeline-crash.dump...done
+CHILD_EXIT=1
+[21016.628276] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21017.753376] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21018.881976] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21020.007876] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21021.138120] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21022.259695] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21023.380489] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21024.510004] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21025.635349] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21026.761239] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21027.885956] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21029.011305] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21030.366101] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21031.492870] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21032.622463] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21033.743676] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21034.868078] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21035.992632] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21037.117120] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21038.246960] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21039.372319] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21040.500981] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21041.625542] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+GPU_ERRORS=23
+NEW_GPU_ERRORS=0
+**Error** ** (RuntimeError) stereo path benchmark failed
+    /root/nxiree/stereo-board-run.exs:118: (file)
+    /root/nxiree/sgm-pipeline-profile-board-run.exs:10: (file)
+    nofile:1: (file)
+    (elixir 1.20.4) src/elixir.erl:382: :elixir.eval_external_handler/3
+    (stdlib 8.1.1) erl_eval.erl:1048: :erl_eval.do_apply/7
+    (stdlib 8.1.1) erl_eval.erl:276: :erl_eval.exprs/6
+    (elixir 1.20.4) src/elixir.erl:365: :elixir.erl_eval/3
+    (elixir 1.20.4) src/elixir.erl:329: :elixir.eval_forms/4

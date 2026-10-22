@@ -1,0 +1,6 @@
+** (File.Error) could not read file "/var/home/marc/.cache/stereo-bench/census-projected-d128-fixtures/consistency_edge_left.npy": no such file or directory
+    (elixir 1.20.4) lib/file.ex:451: File.read!/2
+    stereo/census/check_projected.exs:17: anonymous fn/3 in :elixir_compiler_6.__FILE__/1
+    stereo/census/check_projected.exs:24: anonymous fn/5 in :elixir_compiler_6.__FILE__/1
+    (elixir 1.20.4) lib/enum.ex:2622: Enum."-reduce/3-lists^foldl/2-0-"/3
+    stereo/census/check_projected.exs:23: (file)

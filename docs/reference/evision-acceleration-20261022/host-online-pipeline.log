@@ -1,0 +1,989 @@
+[CLVK] print_config: 
+[CLVK]   *log: 3 (0x3)
+[CLVK] Starting initialisation
+[CLVK] 3 layers visible
+[CLVK]   VK_LAYER_MESA_device_select, spec version 1.4.303, impl version 1
+[CLVK]   VK_LAYER_INTEL_nullhw, spec version 1.1.73, impl version 1
+[CLVK]   VK_LAYER_MESA_overlay, spec version 1.4.303, impl version 1
+[CLVK] 24 extensions are supported
+[CLVK]   VK_KHR_device_group_creation, spec version 1
+[CLVK]   VK_KHR_display, spec version 23
+[CLVK]   VK_KHR_external_fence_capabilities, spec version 1
+[CLVK]     ENABLING
+[CLVK]   VK_KHR_external_memory_capabilities, spec version 1
+[CLVK]   VK_KHR_external_semaphore_capabilities, spec version 1
+[CLVK]   VK_KHR_get_display_properties2, spec version 1
+[CLVK]   VK_KHR_get_physical_device_properties2, spec version 2
+[CLVK]     ENABLING
+[CLVK]   VK_KHR_get_surface_capabilities2, spec version 1
+[CLVK]   VK_KHR_surface, spec version 25
+[CLVK]   VK_KHR_surface_protected_capabilities, spec version 1
+[CLVK]   VK_KHR_wayland_surface, spec version 6
+[CLVK]   VK_KHR_xcb_surface, spec version 6
+[CLVK]   VK_KHR_xlib_surface, spec version 6
+[CLVK]   VK_EXT_acquire_drm_display, spec version 1
+[CLVK]   VK_EXT_acquire_xlib_display, spec version 1
+[CLVK]   VK_EXT_debug_report, spec version 10
+[CLVK]     ENABLING
+[CLVK]   VK_EXT_debug_utils, spec version 2
+[CLVK]     ENABLING
+[CLVK]   VK_EXT_direct_mode_display, spec version 1
+[CLVK]   VK_EXT_display_surface_counter, spec version 1
+[CLVK]   VK_EXT_headless_surface, spec version 1
+[CLVK]   VK_EXT_surface_maintenance1, spec version 1
+[CLVK]   VK_EXT_swapchain_colorspace, spec version 5
+[CLVK]   VK_KHR_portability_enumeration, spec version 1
+[CLVK]   VK_LUNARG_direct_driver_loading, spec version 1
+[CLVK] Created the VkInstance
+[CLVK] Found 3 physical devices
+[CLVK] Initialising device AMD Ryzen 7 7800X3D 8-Core Processor (RADV RAPHAEL_MENDOCINO)
+[CLVK]   API Version: 1.4.318
+[CLVK] Physical device (Integrated GPU) has 5 queue families:
+[CLVK]   queue family 0:  1 queues | GRAPHICS COMPUTE TRANSFER SPARSE_BINDING 
+[CLVK]   queue family 1:  4 queues | COMPUTE TRANSFER SPARSE_BINDING 
+[CLVK]   queue family 2:  1 queues | 
+[CLVK]   queue family 3:  1 queues | 
+[CLVK]   queue family 4:  1 queues | SPARSE_BINDING 
+[CLVK]   queue family 0:  1 queues | GRAPHICS COMPUTE TRANSFER SPARSE_BINDING 
+[CLVK]   queue family 1:  4 queues | COMPUTE TRANSFER SPARSE_BINDING 
+[CLVK]   queue family 2:  1 queues | 
+[CLVK]   queue family 3:  1 queues | 
+[CLVK]   queue family 4:  1 queues | SPARSE_BINDING 
+[CLVK]   selecting queue 1:  4 queues | COMPUTE TRANSFER SPARSE_BINDING 
+[CLVK] 221 extensions are supported
+[CLVK]   VK_KHR_8bit_storage, spec version 1
+[CLVK]     ENABLING
+[CLVK]   VK_KHR_16bit_storage, spec version 1
+[CLVK]     ENABLING
+[CLVK]   VK_KHR_acceleration_structure, spec version 13
+[CLVK]   VK_KHR_bind_memory2, spec version 1
+[CLVK]   VK_KHR_buffer_device_address, spec version 1
+[CLVK]     ENABLING
+[CLVK]   VK_KHR_calibrated_timestamps, spec version 1
+[CLVK]   VK_KHR_compute_shader_derivatives, spec version 1
+[CLVK]   VK_KHR_copy_commands2, spec version 1
+[CLVK]   VK_KHR_create_renderpass2, spec version 1
+[CLVK]   VK_KHR_dedicated_allocation, spec version 3
+[CLVK]   VK_KHR_deferred_host_operations, spec version 4
+[CLVK]   VK_KHR_depth_clamp_zero_one, spec version 1
+[CLVK]   VK_KHR_depth_stencil_resolve, spec version 1
+[CLVK]   VK_KHR_descriptor_update_template, spec version 1
+[CLVK]   VK_KHR_device_group, spec version 4
+[CLVK]   VK_KHR_draw_indirect_count, spec version 1
+[CLVK]   VK_KHR_driver_properties, spec version 1
+[CLVK]     ENABLING
+[CLVK]   VK_KHR_dynamic_rendering, spec version 1
+[CLVK]   VK_KHR_dynamic_rendering_local_read, spec version 1
+[CLVK]   VK_KHR_external_fence, spec version 1
+[CLVK]   VK_KHR_external_fence_fd, spec version 1
+[CLVK]   VK_KHR_external_memory, spec version 1
+[CLVK]   VK_KHR_external_memory_fd, spec version 1
+[CLVK]   VK_KHR_external_semaphore, spec version 1
+[CLVK]   VK_KHR_external_semaphore_fd, spec version 1
+[CLVK]   VK_KHR_format_feature_flags2, spec version 2
+[CLVK]   VK_KHR_fragment_shader_barycentric, spec version 1
+[CLVK]   VK_KHR_fragment_shading_rate, spec version 2
+[CLVK]   VK_KHR_get_memory_requirements2, spec version 1
+[CLVK]   VK_KHR_global_priority, spec version 1
+[CLVK]     ENABLING
+[CLVK]   VK_KHR_image_format_list, spec version 1
+[CLVK]   VK_KHR_imageless_framebuffer, spec version 1
+[CLVK]   VK_KHR_incremental_present, spec version 2
+[CLVK]   VK_KHR_index_type_uint8, spec version 1
+[CLVK]   VK_KHR_line_rasterization, spec version 1
+[CLVK]   VK_KHR_load_store_op_none, spec version 1
+[CLVK]   VK_KHR_maintenance1, spec version 2
+[CLVK]   VK_KHR_maintenance2, spec version 1
+[CLVK]   VK_KHR_maintenance3, spec version 1
+[CLVK]   VK_KHR_maintenance4, spec version 2
+[CLVK]   VK_KHR_maintenance5, spec version 1
+[CLVK]   VK_KHR_maintenance6, spec version 1
+[CLVK]   VK_KHR_maintenance7, spec version 1
+[CLVK]   VK_KHR_maintenance8, spec version 1
+[CLVK]   VK_KHR_maintenance9, spec version 1
+[CLVK]   VK_KHR_map_memory2, spec version 1
+[CLVK]   VK_KHR_multiview, spec version 1
+[CLVK]   VK_KHR_performance_query, spec version 1
+[CLVK]   VK_KHR_pipeline_binary, spec version 1
+[CLVK]   VK_KHR_pipeline_executable_properties, spec version 1
+[CLVK]   VK_KHR_pipeline_library, spec version 1
+[CLVK]   VK_KHR_present_id, spec version 1
+[CLVK]   VK_KHR_present_id2, spec version 1
+[CLVK]   VK_KHR_present_wait, spec version 1
+[CLVK]   VK_KHR_present_wait2, spec version 1
+[CLVK]   VK_KHR_push_descriptor, spec version 2
+[CLVK]   VK_KHR_ray_query, spec version 1
+[CLVK]   VK_KHR_ray_tracing_maintenance1, spec version 1
+[CLVK]   VK_KHR_ray_tracing_pipeline, spec version 1
+[CLVK]   VK_KHR_ray_tracing_position_fetch, spec version 1
+[CLVK]   VK_KHR_relaxed_block_layout, spec version 1
+[CLVK]   VK_KHR_robustness2, spec version 1
+[CLVK]   VK_KHR_sampler_mirror_clamp_to_edge, spec version 3
+[CLVK]   VK_KHR_sampler_ycbcr_conversion, spec version 14
+[CLVK]   VK_KHR_separate_depth_stencil_layouts, spec version 1
+[CLVK]   VK_KHR_shader_atomic_int64, spec version 1
+[CLVK]   VK_KHR_shader_clock, spec version 1
+[CLVK]   VK_KHR_shader_draw_parameters, spec version 1
+[CLVK]   VK_KHR_shader_expect_assume, spec version 1
+[CLVK]   VK_KHR_shader_float16_int8, spec version 1
+[CLVK]     ENABLING
+[CLVK]   VK_KHR_shader_float_controls, spec version 4
+[CLVK]     ENABLING
+[CLVK]   VK_KHR_shader_float_controls2, spec version 1
+[CLVK]   VK_KHR_shader_integer_dot_product, spec version 1
+[CLVK]   VK_KHR_shader_maximal_reconvergence, spec version 1
+[CLVK]   VK_KHR_shader_non_semantic_info, spec version 1
+[CLVK]     ENABLING
+[CLVK]   VK_KHR_shader_quad_control, spec version 1
+[CLVK]   VK_KHR_shader_relaxed_extended_instruction, spec version 1
+[CLVK]   VK_KHR_shader_subgroup_extended_types, spec version 1
+[CLVK]   VK_KHR_shader_subgroup_rotate, spec version 2
+[CLVK]   VK_KHR_shader_subgroup_uniform_control_flow, spec version 1
+[CLVK]   VK_KHR_shader_terminate_invocation, spec version 1
+[CLVK]   VK_KHR_spirv_1_4, spec version 1
+[CLVK]   VK_KHR_storage_buffer_storage_class, spec version 1
+[CLVK]     ENABLING
+[CLVK]   VK_KHR_swapchain, spec version 70
+[CLVK]   VK_KHR_swapchain_mutable_format, spec version 1
+[CLVK]   VK_KHR_synchronization2, spec version 1
+[CLVK]   VK_KHR_timeline_semaphore, spec version 2
+[CLVK]   VK_KHR_uniform_buffer_standard_layout, spec version 1
+[CLVK]     ENABLING
+[CLVK]   VK_KHR_variable_pointers, spec version 1
+[CLVK]     ENABLING
+[CLVK]   VK_KHR_vertex_attribute_divisor, spec version 1
+[CLVK]   VK_KHR_video_decode_av1, spec version 1
+[CLVK]   VK_KHR_video_decode_h264, spec version 9
+[CLVK]   VK_KHR_video_decode_h265, spec version 8
+[CLVK]   VK_KHR_video_decode_queue, spec version 8
+[CLVK]   VK_KHR_video_decode_vp9, spec version 1
+[CLVK]   VK_KHR_video_encode_h264, spec version 14
+[CLVK]   VK_KHR_video_encode_h265, spec version 14
+[CLVK]   VK_KHR_video_encode_queue, spec version 12
+[CLVK]   VK_KHR_video_maintenance1, spec version 1
+[CLVK]   VK_KHR_video_maintenance2, spec version 1
+[CLVK]   VK_KHR_video_queue, spec version 8
+[CLVK]   VK_KHR_vulkan_memory_model, spec version 3
+[CLVK]     ENABLING
+[CLVK]   VK_KHR_workgroup_memory_explicit_layout, spec version 1
+[CLVK]   VK_KHR_zero_initialize_workgroup_memory, spec version 1
+[CLVK]   VK_EXT_4444_formats, spec version 1
+[CLVK]   VK_EXT_attachment_feedback_loop_dynamic_state, spec version 1
+[CLVK]   VK_EXT_attachment_feedback_loop_layout, spec version 2
+[CLVK]   VK_EXT_border_color_swizzle, spec version 1
+[CLVK]   VK_EXT_buffer_device_address, spec version 2
+[CLVK]   VK_EXT_calibrated_timestamps, spec version 2
+[CLVK]     ENABLING
+[CLVK]   VK_EXT_color_write_enable, spec version 1
+[CLVK]   VK_EXT_conditional_rendering, spec version 2
+[CLVK]   VK_EXT_conservative_rasterization, spec version 1
+[CLVK]   VK_EXT_custom_border_color, spec version 12
+[CLVK]   VK_EXT_depth_bias_control, spec version 1
+[CLVK]   VK_EXT_depth_clamp_control, spec version 1
+[CLVK]   VK_EXT_depth_clamp_zero_one, spec version 1
+[CLVK]   VK_EXT_depth_clip_control, spec version 1
+[CLVK]   VK_EXT_depth_clip_enable, spec version 1
+[CLVK]   VK_EXT_depth_range_unrestricted, spec version 1
+[CLVK]   VK_EXT_descriptor_buffer, spec version 1
+[CLVK]   VK_EXT_descriptor_indexing, spec version 2
+[CLVK]     ENABLING
+[CLVK]   VK_EXT_device_address_binding_report, spec version 1
+[CLVK]   VK_EXT_device_fault, spec version 2
+[CLVK]   VK_EXT_device_generated_commands, spec version 1
+[CLVK]   VK_EXT_device_memory_report, spec version 2
+[CLVK]   VK_EXT_discard_rectangles, spec version 2
+[CLVK]   VK_EXT_display_control, spec version 1
+[CLVK]   VK_EXT_dynamic_rendering_unused_attachments, spec version 1
+[CLVK]   VK_EXT_extended_dynamic_state, spec version 1
+[CLVK]   VK_EXT_extended_dynamic_state2, spec version 1
+[CLVK]   VK_EXT_extended_dynamic_state3, spec version 2
+[CLVK]   VK_EXT_external_memory_acquire_unmodified, spec version 1
+[CLVK]   VK_EXT_external_memory_dma_buf, spec version 1
+[CLVK]   VK_EXT_external_memory_host, spec version 1
+[CLVK]   VK_EXT_fragment_shader_interlock, spec version 1
+[CLVK]   VK_EXT_global_priority, spec version 2
+[CLVK]   VK_EXT_global_priority_query, spec version 1
+[CLVK]   VK_EXT_graphics_pipeline_library, spec version 1
+[CLVK]   VK_EXT_hdr_metadata, spec version 3
+[CLVK]   VK_EXT_host_query_reset, spec version 1
+[CLVK]   VK_EXT_image_2d_view_of_3d, spec version 1
+[CLVK]   VK_EXT_image_compression_control, spec version 1
+[CLVK]   VK_EXT_image_drm_format_modifier, spec version 2
+[CLVK]   VK_EXT_image_robustness, spec version 1
+[CLVK]   VK_EXT_image_sliced_view_of_3d, spec version 1
+[CLVK]   VK_EXT_image_view_min_lod, spec version 1
+[CLVK]   VK_EXT_index_type_uint8, spec version 1
+[CLVK]   VK_EXT_inline_uniform_block, spec version 1
+[CLVK]   VK_EXT_legacy_vertex_attributes, spec version 1
+[CLVK]   VK_EXT_line_rasterization, spec version 1
+[CLVK]   VK_EXT_load_store_op_none, spec version 1
+[CLVK]   VK_EXT_map_memory_placed, spec version 1
+[CLVK]   VK_EXT_memory_budget, spec version 1
+[CLVK]   VK_EXT_memory_priority, spec version 1
+[CLVK]   VK_EXT_mesh_shader, spec version 1
+[CLVK]   VK_EXT_multi_draw, spec version 1
+[CLVK]   VK_EXT_mutable_descriptor_type, spec version 1
+[CLVK]   VK_EXT_nested_command_buffer, spec version 1
+[CLVK]   VK_EXT_non_seamless_cube_map, spec version 1
+[CLVK]   VK_EXT_pci_bus_info, spec version 2
+[CLVK]     ENABLING
+[CLVK]   VK_EXT_physical_device_drm, spec version 1
+[CLVK]   VK_EXT_pipeline_creation_cache_control, spec version 3
+[CLVK]   VK_EXT_pipeline_creation_feedback, spec version 1
+[CLVK]   VK_EXT_pipeline_library_group_handles, spec version 1
+[CLVK]   VK_EXT_pipeline_robustness, spec version 1
+[CLVK]   VK_EXT_post_depth_coverage, spec version 1
+[CLVK]   VK_EXT_primitive_topology_list_restart, spec version 1
+[CLVK]   VK_EXT_primitives_generated_query, spec version 1
+[CLVK]   VK_EXT_private_data, spec version 1
+[CLVK]   VK_EXT_provoking_vertex, spec version 1
+[CLVK]   VK_EXT_queue_family_foreign, spec version 1
+[CLVK]   VK_EXT_robustness2, spec version 1
+[CLVK]   VK_EXT_sample_locations, spec version 1
+[CLVK]   VK_EXT_sampler_filter_minmax, spec version 2
+[CLVK]   VK_EXT_scalar_block_layout, spec version 1
+[CLVK]   VK_EXT_separate_stencil_usage, spec version 1
+[CLVK]   VK_EXT_shader_atomic_float, spec version 1
+[CLVK]   VK_EXT_shader_atomic_float2, spec version 1
+[CLVK]   VK_EXT_shader_demote_to_helper_invocation, spec version 1
+[CLVK]   VK_EXT_shader_image_atomic_int64, spec version 1
+[CLVK]   VK_EXT_shader_module_identifier, spec version 1
+[CLVK]   VK_EXT_shader_object, spec version 1
+[CLVK]   VK_EXT_shader_replicated_composites, spec version 1
+[CLVK]   VK_EXT_shader_stencil_export, spec version 1
+[CLVK]   VK_EXT_shader_subgroup_ballot, spec version 1
+[CLVK]   VK_EXT_shader_subgroup_vote, spec version 1
+[CLVK]   VK_EXT_shader_viewport_index_layer, spec version 1
+[CLVK]   VK_EXT_subgroup_size_control, spec version 2
+[CLVK]   VK_EXT_swapchain_maintenance1, spec version 1
+[CLVK]   VK_EXT_texel_buffer_alignment, spec version 1
+[CLVK]   VK_EXT_tooling_info, spec version 1
+[CLVK]   VK_EXT_transform_feedback, spec version 1
+[CLVK]   VK_EXT_vertex_attribute_divisor, spec version 3
+[CLVK]   VK_EXT_vertex_input_dynamic_state, spec version 2
+[CLVK]   VK_EXT_ycbcr_image_arrays, spec version 1
+[CLVK]   VK_EXT_zero_initialize_device_memory, spec version 1
+[CLVK]   VK_AMD_buffer_marker, spec version 1
+[CLVK]   VK_AMD_device_coherent_memory, spec version 1
+[CLVK]   VK_AMD_draw_indirect_count, spec version 2
+[CLVK]   VK_AMD_gcn_shader, spec version 1
+[CLVK]   VK_AMD_gpu_shader_half_float, spec version 2
+[CLVK]   VK_AMD_gpu_shader_int16, spec version 2
+[CLVK]   VK_AMD_memory_overallocation_behavior, spec version 1
+[CLVK]   VK_AMD_mixed_attachment_samples, spec version 1
+[CLVK]   VK_AMD_shader_ballot, spec version 1
+[CLVK]   VK_AMD_shader_core_properties, spec version 2
+[CLVK]   VK_AMD_shader_core_properties2, spec version 1
+[CLVK]   VK_AMD_shader_early_and_late_fragment_tests, spec version 1
+[CLVK]   VK_AMD_shader_explicit_vertex_parameter, spec version 1
+[CLVK]   VK_AMD_shader_fragment_mask, spec version 1
+[CLVK]   VK_AMD_shader_image_load_store_lod, spec version 1
+[CLVK]   VK_AMD_shader_trinary_minmax, spec version 1
+[CLVK]   VK_AMD_texture_gather_bias_lod, spec version 1
+[CLVK]   VK_GOOGLE_decorate_string, spec version 1
+[CLVK]   VK_GOOGLE_hlsl_functionality1, spec version 1
+[CLVK]   VK_GOOGLE_user_type, spec version 1
+[CLVK]   VK_INTEL_shader_integer_functions2, spec version 1
+[CLVK]   VK_MESA_image_alignment_control, spec version 1
+[CLVK]   VK_NV_compute_shader_derivatives, spec version 1
+[CLVK]   VK_VALVE_mutable_descriptor_type, spec version 1
+[CLVK] Getting Vulkan device properties
+[CLVK] create_cvk_device_properties: cvk_device_properties_amd
+[CLVK] cvk_device_properties: 
+[CLVK]   *clspv_native_builtins: 'ceil, copysign, exp2, fdim, floor, fmax, fmin, frexp, half_exp, half_exp10, half_exp2, half_log, half_log10, half_log2, half_powr, half_rsqrt, half_sqrt, isequal, isfinite, isgreater, isgreaterequal, isinf, isless, islessequal, islessgreater, isnan, isnormal, isnotequal, isordered, isunordered, ldexp, log, log10, log2, mad, rint, round, rsqrt, signbit, sqrt, trunc'
+[CLVK]   *clspv_options: '-hack-convert-to-float'
+[CLVK]   *vendor: 'Advanced Micro Devices, Inc. [AMD/ATI]'
+[CLVK]   *max_first_cmd_batch_size: 10 (0xa)
+[CLVK]   *max_cmd_group_size: 1 (0x1)
+[CLVK] Initialising driver behaviors
+[CLVK]   driverName = radv
+[CLVK]   driverInfo = Mesa 25.2.8-0ubuntu0.24.04.4
+[CLVK]   conformanceVersion = 1.4.0.0
+[CLVK] Driver behaviors:
+[CLVK]   use_reset_command_buffer_bit = false
+[CLVK] Initialising features
+[CLVK] 8-bit storage: SSBO = 1, UBO = 1, Push constants = 1
+[CLVK] 16-bit storage: SSBO = 1, UBO = 1, Push constants = 1
+[CLVK] subgroup extended types: 1
+[CLVK] build_extension_ils_list: extensions: 'cl_khr_global_int32_base_atomics cl_khr_global_int32_extended_atomics cl_khr_local_int32_base_atomics cl_khr_local_int32_extended_atomics cl_khr_byte_addressable_store cl_khr_extended_versioning cl_khr_create_command_queue cl_khr_il_program cl_khr_spirv_no_integer_wrap_decoration cl_arm_non_uniform_work_group_size cl_arm_printf cl_khr_suggested_local_work_size cl_khr_3d_image_writes cl_khr_spirv_linkonce_odr cl_khr_device_uuid cl_khr_subgroup_shuffle cl_khr_subgroup_rotate cl_khr_subgroup_ballot cl_khr_subgroup_non_uniform_vote cl_khr_fp16 cl_khr_pci_bus_info cl_intel_required_subgroup_size cl_khr_integer_dot_product cl_arm_integer_dot_product_int8 cl_arm_integer_dot_product_accumulate_int8 cl_arm_integer_dot_product_accumulate_saturate_int8 cl_arm_integer_dot_product_accumulate_int16 '
+[CLVK] Device supports 3 calibrateable time domains
+[CLVK]   Device
+[CLVK]   Clock monotonic
+[CLVK]   Clock monotonic raw
+[CLVK] Creating Vulkan device and queues
+[CLVK] create_vulkan_queues_and_device: queue global priority: 1
+[CLVK] create_vulkan_queues_and_device: setting queue global priority to '1': 'VK_QUEUE_GLOBAL_PRIORITY_MEDIUM_KHR' (256)
+[CLVK] Vulkan SPIR-V environment: SPIR-V 1.6 (under Vulkan 1.3 semantics)
+[CLVK] Device's resources per stage limits:
+[CLVK]     total = 8388606
+[CLVK]     uniform buffers = 8388606
+[CLVK]     storage buffers = 8388606
+[CLVK] Device's max buffer size = 4.000000 GB
+[CLVK] Device's max uniform buffer size = 4.000000 GB
+[CLVK] Device's max push constant size = 256.000000  B
+[CLVK] Device's execution capabilities:
+[CLVK]     Max work-group count: {4294967295,65535,65535}
+[CLVK]     Max invocations per work-group: 1024
+[CLVK]     Max work-group size: {1024,1024,1024}
+[CLVK]     Min subgroup size: 32
+[CLVK]     Max subgroup size: 64
+[CLVK]     Max subgroups per work-group: 4294967295
+[CLVK] Device has 11 memory types:
+[CLVK]     0: heap = 1, 20.983185 GB | DEVICE_LOCAL 
+[CLVK]     1: heap = 1, 20.983185 GB | DEVICE_LOCAL 
+[CLVK]     2: heap = 0, 10.491589 GB | HOST_VISIBLE HOST_COHERENT 
+[CLVK]     3: heap = 1, 20.983185 GB | HOST_VISIBLE HOST_COHERENT DEVICE_LOCAL 
+[CLVK]     4: heap = 1, 20.983185 GB | HOST_VISIBLE HOST_COHERENT DEVICE_LOCAL 
+[CLVK]     5: heap = 0, 10.491589 GB | HOST_VISIBLE HOST_COHERENT HOST_CACHED 
+[CLVK]     6: heap = 0, 10.491589 GB | HOST_VISIBLE HOST_COHERENT HOST_CACHED 
+[CLVK]     7: heap = 1, 20.983185 GB | DEVICE_LOCAL 
+[CLVK]     8: heap = 0, 10.491589 GB | HOST_VISIBLE HOST_COHERENT 
+[CLVK]     9: heap = 1, 20.983185 GB | HOST_VISIBLE HOST_COHERENT DEVICE_LOCAL 
+[CLVK]     10: heap = 0, 10.491589 GB | HOST_VISIBLE HOST_COHERENT HOST_CACHED 
+[CLVK] Device has 2 memory heaps:
+[CLVK]     0: 10.491589 GB | 
+[CLVK]     1: 20.983185 GB | DEVICE_LOCAL 
+[CLVK] Initialising device AMD Radeon RX 7800 XT (RADV NAVI32)
+[CLVK]   API Version: 1.4.318
+[CLVK] Physical device (Discrete GPU) has 5 queue families:
+[CLVK]   queue family 0:  1 queues | GRAPHICS COMPUTE TRANSFER SPARSE_BINDING 
+[CLVK]   queue family 1:  4 queues | COMPUTE TRANSFER SPARSE_BINDING 
+[CLVK]   queue family 2:  1 queues | 
+[CLVK]   queue family 3:  1 queues | 
+[CLVK]   queue family 4:  1 queues | SPARSE_BINDING 
+[CLVK]   queue family 0:  1 queues | GRAPHICS COMPUTE TRANSFER SPARSE_BINDING 
+[CLVK]   queue family 1:  4 queues | COMPUTE TRANSFER SPARSE_BINDING 
+[CLVK]   queue family 2:  1 queues | 
+[CLVK]   queue family 3:  1 queues | 
+[CLVK]   queue family 4:  1 queues | SPARSE_BINDING 
+[CLVK]   selecting queue 1:  4 queues | COMPUTE TRANSFER SPARSE_BINDING 
+[CLVK] 221 extensions are supported
+[CLVK]   VK_KHR_8bit_storage, spec version 1
+[CLVK]     ENABLING
+[CLVK]   VK_KHR_16bit_storage, spec version 1
+[CLVK]     ENABLING
+[CLVK]   VK_KHR_acceleration_structure, spec version 13
+[CLVK]   VK_KHR_bind_memory2, spec version 1
+[CLVK]   VK_KHR_buffer_device_address, spec version 1
+[CLVK]     ENABLING
+[CLVK]   VK_KHR_calibrated_timestamps, spec version 1
+[CLVK]   VK_KHR_compute_shader_derivatives, spec version 1
+[CLVK]   VK_KHR_cooperative_matrix, spec version 2
+[CLVK]   VK_KHR_copy_commands2, spec version 1
+[CLVK]   VK_KHR_create_renderpass2, spec version 1
+[CLVK]   VK_KHR_dedicated_allocation, spec version 3
+[CLVK]   VK_KHR_deferred_host_operations, spec version 4
+[CLVK]   VK_KHR_depth_clamp_zero_one, spec version 1
+[CLVK]   VK_KHR_depth_stencil_resolve, spec version 1
+[CLVK]   VK_KHR_descriptor_update_template, spec version 1
+[CLVK]   VK_KHR_device_group, spec version 4
+[CLVK]   VK_KHR_draw_indirect_count, spec version 1
+[CLVK]   VK_KHR_driver_properties, spec version 1
+[CLVK]     ENABLING
+[CLVK]   VK_KHR_dynamic_rendering, spec version 1
+[CLVK]   VK_KHR_dynamic_rendering_local_read, spec version 1
+[CLVK]   VK_KHR_external_fence, spec version 1
+[CLVK]   VK_KHR_external_fence_fd, spec version 1
+[CLVK]   VK_KHR_external_memory, spec version 1
+[CLVK]   VK_KHR_external_memory_fd, spec version 1
+[CLVK]   VK_KHR_external_semaphore, spec version 1
+[CLVK]   VK_KHR_external_semaphore_fd, spec version 1
+[CLVK]   VK_KHR_format_feature_flags2, spec version 2
+[CLVK]   VK_KHR_fragment_shader_barycentric, spec version 1
+[CLVK]   VK_KHR_fragment_shading_rate, spec version 2
+[CLVK]   VK_KHR_get_memory_requirements2, spec version 1
+[CLVK]   VK_KHR_global_priority, spec version 1
+[CLVK]     ENABLING
+[CLVK]   VK_KHR_image_format_list, spec version 1
+[CLVK]   VK_KHR_imageless_framebuffer, spec version 1
+[CLVK]   VK_KHR_incremental_present, spec version 2
+[CLVK]   VK_KHR_index_type_uint8, spec version 1
+[CLVK]   VK_KHR_line_rasterization, spec version 1
+[CLVK]   VK_KHR_load_store_op_none, spec version 1
+[CLVK]   VK_KHR_maintenance1, spec version 2
+[CLVK]   VK_KHR_maintenance2, spec version 1
+[CLVK]   VK_KHR_maintenance3, spec version 1
+[CLVK]   VK_KHR_maintenance4, spec version 2
+[CLVK]   VK_KHR_maintenance5, spec version 1
+[CLVK]   VK_KHR_maintenance6, spec version 1
+[CLVK]   VK_KHR_maintenance7, spec version 1
+[CLVK]   VK_KHR_maintenance8, spec version 1
+[CLVK]   VK_KHR_maintenance9, spec version 1
+[CLVK]   VK_KHR_map_memory2, spec version 1
+[CLVK]   VK_KHR_multiview, spec version 1
+[CLVK]   VK_KHR_pipeline_binary, spec version 1
+[CLVK]   VK_KHR_pipeline_executable_properties, spec version 1
+[CLVK]   VK_KHR_pipeline_library, spec version 1
+[CLVK]   VK_KHR_present_id, spec version 1
+[CLVK]   VK_KHR_present_id2, spec version 1
+[CLVK]   VK_KHR_present_wait, spec version 1
+[CLVK]   VK_KHR_present_wait2, spec version 1
+[CLVK]   VK_KHR_push_descriptor, spec version 2
+[CLVK]   VK_KHR_ray_query, spec version 1
+[CLVK]   VK_KHR_ray_tracing_maintenance1, spec version 1
+[CLVK]   VK_KHR_ray_tracing_pipeline, spec version 1
+[CLVK]   VK_KHR_ray_tracing_position_fetch, spec version 1
+[CLVK]   VK_KHR_relaxed_block_layout, spec version 1
+[CLVK]   VK_KHR_robustness2, spec version 1
+[CLVK]   VK_KHR_sampler_mirror_clamp_to_edge, spec version 3
+[CLVK]   VK_KHR_sampler_ycbcr_conversion, spec version 14
+[CLVK]   VK_KHR_separate_depth_stencil_layouts, spec version 1
+[CLVK]   VK_KHR_shader_atomic_int64, spec version 1
+[CLVK]   VK_KHR_shader_clock, spec version 1
+[CLVK]   VK_KHR_shader_draw_parameters, spec version 1
+[CLVK]   VK_KHR_shader_expect_assume, spec version 1
+[CLVK]   VK_KHR_shader_float16_int8, spec version 1
+[CLVK]     ENABLING
+[CLVK]   VK_KHR_shader_float_controls, spec version 4
+[CLVK]     ENABLING
+[CLVK]   VK_KHR_shader_float_controls2, spec version 1
+[CLVK]   VK_KHR_shader_integer_dot_product, spec version 1
+[CLVK]   VK_KHR_shader_maximal_reconvergence, spec version 1
+[CLVK]   VK_KHR_shader_non_semantic_info, spec version 1
+[CLVK]     ENABLING
+[CLVK]   VK_KHR_shader_quad_control, spec version 1
+[CLVK]   VK_KHR_shader_relaxed_extended_instruction, spec version 1
+[CLVK]   VK_KHR_shader_subgroup_extended_types, spec version 1
+[CLVK]   VK_KHR_shader_subgroup_rotate, spec version 2
+[CLVK]   VK_KHR_shader_subgroup_uniform_control_flow, spec version 1
+[CLVK]   VK_KHR_shader_terminate_invocation, spec version 1
+[CLVK]   VK_KHR_spirv_1_4, spec version 1
+[CLVK]   VK_KHR_storage_buffer_storage_class, spec version 1
+[CLVK]     ENABLING
+[CLVK]   VK_KHR_swapchain, spec version 70
+[CLVK]   VK_KHR_swapchain_mutable_format, spec version 1
+[CLVK]   VK_KHR_synchronization2, spec version 1
+[CLVK]   VK_KHR_timeline_semaphore, spec version 2
+[CLVK]   VK_KHR_unified_image_layouts, spec version 1
+[CLVK]   VK_KHR_uniform_buffer_standard_layout, spec version 1
+[CLVK]     ENABLING
+[CLVK]   VK_KHR_variable_pointers, spec version 1
+[CLVK]     ENABLING
+[CLVK]   VK_KHR_vertex_attribute_divisor, spec version 1
+[CLVK]   VK_KHR_video_decode_av1, spec version 1
+[CLVK]   VK_KHR_video_decode_h264, spec version 9
+[CLVK]   VK_KHR_video_decode_h265, spec version 8
+[CLVK]   VK_KHR_video_decode_queue, spec version 8
+[CLVK]   VK_KHR_video_decode_vp9, spec version 1
+[CLVK]   VK_KHR_video_encode_av1, spec version 1
+[CLVK]   VK_KHR_video_encode_h264, spec version 14
+[CLVK]   VK_KHR_video_encode_h265, spec version 14
+[CLVK]   VK_KHR_video_encode_queue, spec version 12
+[CLVK]   VK_KHR_video_maintenance1, spec version 1
+[CLVK]   VK_KHR_video_maintenance2, spec version 1
+[CLVK]   VK_KHR_video_queue, spec version 8
+[CLVK]   VK_KHR_vulkan_memory_model, spec version 3
+[CLVK]     ENABLING
+[CLVK]   VK_KHR_workgroup_memory_explicit_layout, spec version 1
+[CLVK]   VK_KHR_zero_initialize_workgroup_memory, spec version 1
+[CLVK]   VK_EXT_4444_formats, spec version 1
+[CLVK]   VK_EXT_attachment_feedback_loop_dynamic_state, spec version 1
+[CLVK]   VK_EXT_attachment_feedback_loop_layout, spec version 2
+[CLVK]   VK_EXT_border_color_swizzle, spec version 1
+[CLVK]   VK_EXT_buffer_device_address, spec version 2
+[CLVK]   VK_EXT_calibrated_timestamps, spec version 2
+[CLVK]     ENABLING
+[CLVK]   VK_EXT_color_write_enable, spec version 1
+[CLVK]   VK_EXT_conditional_rendering, spec version 2
+[CLVK]   VK_EXT_conservative_rasterization, spec version 1
+[CLVK]   VK_EXT_custom_border_color, spec version 12
+[CLVK]   VK_EXT_depth_bias_control, spec version 1
+[CLVK]   VK_EXT_depth_clamp_control, spec version 1
+[CLVK]   VK_EXT_depth_clamp_zero_one, spec version 1
+[CLVK]   VK_EXT_depth_clip_control, spec version 1
+[CLVK]   VK_EXT_depth_clip_enable, spec version 1
+[CLVK]   VK_EXT_depth_range_unrestricted, spec version 1
+[CLVK]   VK_EXT_descriptor_buffer, spec version 1
+[CLVK]   VK_EXT_descriptor_indexing, spec version 2
+[CLVK]     ENABLING
+[CLVK]   VK_EXT_device_address_binding_report, spec version 1
+[CLVK]   VK_EXT_device_fault, spec version 2
+[CLVK]   VK_EXT_device_generated_commands, spec version 1
+[CLVK]   VK_EXT_device_memory_report, spec version 2
+[CLVK]   VK_EXT_discard_rectangles, spec version 2
+[CLVK]   VK_EXT_display_control, spec version 1
+[CLVK]   VK_EXT_dynamic_rendering_unused_attachments, spec version 1
+[CLVK]   VK_EXT_extended_dynamic_state, spec version 1
+[CLVK]   VK_EXT_extended_dynamic_state2, spec version 1
+[CLVK]   VK_EXT_extended_dynamic_state3, spec version 2
+[CLVK]   VK_EXT_external_memory_acquire_unmodified, spec version 1
+[CLVK]   VK_EXT_external_memory_dma_buf, spec version 1
+[CLVK]   VK_EXT_external_memory_host, spec version 1
+[CLVK]   VK_EXT_fragment_shader_interlock, spec version 1
+[CLVK]   VK_EXT_global_priority, spec version 2
+[CLVK]   VK_EXT_global_priority_query, spec version 1
+[CLVK]   VK_EXT_graphics_pipeline_library, spec version 1
+[CLVK]   VK_EXT_hdr_metadata, spec version 3
+[CLVK]   VK_EXT_host_query_reset, spec version 1
+[CLVK]   VK_EXT_image_2d_view_of_3d, spec version 1
+[CLVK]   VK_EXT_image_compression_control, spec version 1
+[CLVK]   VK_EXT_image_drm_format_modifier, spec version 2
+[CLVK]   VK_EXT_image_robustness, spec version 1
+[CLVK]   VK_EXT_image_sliced_view_of_3d, spec version 1
+[CLVK]   VK_EXT_image_view_min_lod, spec version 1
+[CLVK]   VK_EXT_index_type_uint8, spec version 1
+[CLVK]   VK_EXT_inline_uniform_block, spec version 1
+[CLVK]   VK_EXT_legacy_vertex_attributes, spec version 1
+[CLVK]   VK_EXT_line_rasterization, spec version 1
+[CLVK]   VK_EXT_load_store_op_none, spec version 1
+[CLVK]   VK_EXT_map_memory_placed, spec version 1
+[CLVK]   VK_EXT_memory_budget, spec version 1
+[CLVK]   VK_EXT_memory_priority, spec version 1
+[CLVK]   VK_EXT_mesh_shader, spec version 1
+[CLVK]   VK_EXT_multi_draw, spec version 1
+[CLVK]   VK_EXT_mutable_descriptor_type, spec version 1
+[CLVK]   VK_EXT_nested_command_buffer, spec version 1
+[CLVK]   VK_EXT_non_seamless_cube_map, spec version 1
+[CLVK]   VK_EXT_pci_bus_info, spec version 2
+[CLVK]     ENABLING
+[CLVK]   VK_EXT_physical_device_drm, spec version 1
+[CLVK]   VK_EXT_pipeline_creation_cache_control, spec version 3
+[CLVK]   VK_EXT_pipeline_creation_feedback, spec version 1
+[CLVK]   VK_EXT_pipeline_library_group_handles, spec version 1
+[CLVK]   VK_EXT_pipeline_robustness, spec version 1
+[CLVK]   VK_EXT_post_depth_coverage, spec version 1
+[CLVK]   VK_EXT_primitive_topology_list_restart, spec version 1
+[CLVK]   VK_EXT_primitives_generated_query, spec version 1
+[CLVK]   VK_EXT_private_data, spec version 1
+[CLVK]   VK_EXT_provoking_vertex, spec version 1
+[CLVK]   VK_EXT_queue_family_foreign, spec version 1
+[CLVK]   VK_EXT_robustness2, spec version 1
+[CLVK]   VK_EXT_sample_locations, spec version 1
+[CLVK]   VK_EXT_sampler_filter_minmax, spec version 2
+[CLVK]   VK_EXT_scalar_block_layout, spec version 1
+[CLVK]   VK_EXT_separate_stencil_usage, spec version 1
+[CLVK]   VK_EXT_shader_atomic_float, spec version 1
+[CLVK]   VK_EXT_shader_atomic_float2, spec version 1
+[CLVK]   VK_EXT_shader_demote_to_helper_invocation, spec version 1
+[CLVK]   VK_EXT_shader_image_atomic_int64, spec version 1
+[CLVK]   VK_EXT_shader_module_identifier, spec version 1
+[CLVK]   VK_EXT_shader_object, spec version 1
+[CLVK]   VK_EXT_shader_replicated_composites, spec version 1
+[CLVK]   VK_EXT_shader_stencil_export, spec version 1
+[CLVK]   VK_EXT_shader_subgroup_ballot, spec version 1
+[CLVK]   VK_EXT_shader_subgroup_vote, spec version 1
+[CLVK]   VK_EXT_shader_viewport_index_layer, spec version 1
+[CLVK]   VK_EXT_subgroup_size_control, spec version 2
+[CLVK]   VK_EXT_swapchain_maintenance1, spec version 1
+[CLVK]   VK_EXT_texel_buffer_alignment, spec version 1
+[CLVK]   VK_EXT_tooling_info, spec version 1
+[CLVK]   VK_EXT_transform_feedback, spec version 1
+[CLVK]   VK_EXT_vertex_attribute_divisor, spec version 3
+[CLVK]   VK_EXT_vertex_input_dynamic_state, spec version 2
+[CLVK]   VK_EXT_ycbcr_image_arrays, spec version 1
+[CLVK]   VK_EXT_zero_initialize_device_memory, spec version 1
+[CLVK]   VK_AMD_buffer_marker, spec version 1
+[CLVK]   VK_AMD_device_coherent_memory, spec version 1
+[CLVK]   VK_AMD_draw_indirect_count, spec version 2
+[CLVK]   VK_AMD_gcn_shader, spec version 1
+[CLVK]   VK_AMD_gpu_shader_half_float, spec version 2
+[CLVK]   VK_AMD_gpu_shader_int16, spec version 2
+[CLVK]   VK_AMD_memory_overallocation_behavior, spec version 1
+[CLVK]   VK_AMD_mixed_attachment_samples, spec version 1
+[CLVK]   VK_AMD_shader_ballot, spec version 1
+[CLVK]   VK_AMD_shader_core_properties, spec version 2
+[CLVK]   VK_AMD_shader_core_properties2, spec version 1
+[CLVK]   VK_AMD_shader_early_and_late_fragment_tests, spec version 1
+[CLVK]   VK_AMD_shader_explicit_vertex_parameter, spec version 1
+[CLVK]   VK_AMD_shader_image_load_store_lod, spec version 1
+[CLVK]   VK_AMD_shader_trinary_minmax, spec version 1
+[CLVK]   VK_GOOGLE_decorate_string, spec version 1
+[CLVK]   VK_GOOGLE_hlsl_functionality1, spec version 1
+[CLVK]   VK_GOOGLE_user_type, spec version 1
+[CLVK]   VK_INTEL_shader_integer_functions2, spec version 1
+[CLVK]   VK_MESA_image_alignment_control, spec version 1
+[CLVK]   VK_NV_compute_shader_derivatives, spec version 1
+[CLVK]   VK_VALVE_mutable_descriptor_type, spec version 1
+[CLVK] Getting Vulkan device properties
+[CLVK] create_cvk_device_properties: cvk_device_properties_amd
+[CLVK] cvk_device_properties: 
+[CLVK]   *clspv_native_builtins: 'ceil, copysign, exp2, fdim, floor, fmax, fmin, frexp, half_exp, half_exp10, half_exp2, half_log, half_log10, half_log2, half_powr, half_rsqrt, half_sqrt, isequal, isfinite, isgreater, isgreaterequal, isinf, isless, islessequal, islessgreater, isnan, isnormal, isnotequal, isordered, isunordered, ldexp, log, log10, log2, mad, rint, round, rsqrt, signbit, sqrt, trunc'
+[CLVK]   *clspv_options: '-hack-convert-to-float'
+[CLVK]   *vendor: 'Advanced Micro Devices, Inc. [AMD/ATI]'
+[CLVK]   *max_first_cmd_batch_size: 10 (0xa)
+[CLVK]   *max_cmd_group_size: 1 (0x1)
+[CLVK] Initialising driver behaviors
+[CLVK]   driverName = radv
+[CLVK]   driverInfo = Mesa 25.2.8-0ubuntu0.24.04.4
+[CLVK]   conformanceVersion = 1.4.0.0
+[CLVK] Driver behaviors:
+[CLVK]   use_reset_command_buffer_bit = false
+[CLVK] Initialising features
+[CLVK] 8-bit storage: SSBO = 1, UBO = 1, Push constants = 1
+[CLVK] 16-bit storage: SSBO = 1, UBO = 1, Push constants = 1
+[CLVK] subgroup extended types: 1
+[CLVK] build_extension_ils_list: extensions: 'cl_khr_global_int32_base_atomics cl_khr_global_int32_extended_atomics cl_khr_local_int32_base_atomics cl_khr_local_int32_extended_atomics cl_khr_byte_addressable_store cl_khr_extended_versioning cl_khr_create_command_queue cl_khr_il_program cl_khr_spirv_no_integer_wrap_decoration cl_arm_non_uniform_work_group_size cl_arm_printf cl_khr_suggested_local_work_size cl_khr_3d_image_writes cl_khr_spirv_linkonce_odr cl_khr_device_uuid cl_khr_subgroup_shuffle cl_khr_subgroup_rotate cl_khr_subgroup_ballot cl_khr_subgroup_non_uniform_vote cl_khr_fp16 cl_khr_pci_bus_info cl_intel_required_subgroup_size cl_khr_integer_dot_product cl_arm_integer_dot_product_int8 cl_arm_integer_dot_product_accumulate_int8 cl_arm_integer_dot_product_accumulate_saturate_int8 cl_arm_integer_dot_product_accumulate_int16 '
+[CLVK] Device supports 3 calibrateable time domains
+[CLVK]   Device
+[CLVK]   Clock monotonic
+[CLVK]   Clock monotonic raw
+[CLVK] Creating Vulkan device and queues
+[CLVK] create_vulkan_queues_and_device: queue global priority: 1
+[CLVK] create_vulkan_queues_and_device: setting queue global priority to '1': 'VK_QUEUE_GLOBAL_PRIORITY_MEDIUM_KHR' (256)
+[CLVK] Vulkan SPIR-V environment: SPIR-V 1.6 (under Vulkan 1.3 semantics)
+[CLVK] Device's resources per stage limits:
+[CLVK]     total = 8388606
+[CLVK]     uniform buffers = 8388606
+[CLVK]     storage buffers = 8388606
+[CLVK] Device's max buffer size = 4.000000 GB
+[CLVK] Device's max uniform buffer size = 4.000000 GB
+[CLVK] Device's max push constant size = 256.000000  B
+[CLVK] Device's execution capabilities:
+[CLVK]     Max work-group count: {4294967295,65535,65535}
+[CLVK]     Max invocations per work-group: 1024
+[CLVK]     Max work-group size: {1024,1024,1024}
+[CLVK]     Min subgroup size: 32
+[CLVK]     Max subgroup size: 64
+[CLVK]     Max subgroups per work-group: 4294967295
+[CLVK] Device has 11 memory types:
+[CLVK]     0: heap = 1, 15.984375 GB | DEVICE_LOCAL 
+[CLVK]     1: heap = 1, 15.984375 GB | DEVICE_LOCAL 
+[CLVK]     2: heap = 0, 30.974773 GB | HOST_VISIBLE HOST_COHERENT 
+[CLVK]     3: heap = 1, 15.984375 GB | HOST_VISIBLE HOST_COHERENT DEVICE_LOCAL 
+[CLVK]     4: heap = 1, 15.984375 GB | HOST_VISIBLE HOST_COHERENT DEVICE_LOCAL 
+[CLVK]     5: heap = 0, 30.974773 GB | HOST_VISIBLE HOST_COHERENT HOST_CACHED 
+[CLVK]     6: heap = 0, 30.974773 GB | HOST_VISIBLE HOST_COHERENT HOST_CACHED 
+[CLVK]     7: heap = 1, 15.984375 GB | DEVICE_LOCAL 
+[CLVK]     8: heap = 0, 30.974773 GB | HOST_VISIBLE HOST_COHERENT 
+[CLVK]     9: heap = 1, 15.984375 GB | HOST_VISIBLE HOST_COHERENT DEVICE_LOCAL 
+[CLVK]     10: heap = 0, 30.974773 GB | HOST_VISIBLE HOST_COHERENT HOST_CACHED 
+[CLVK] Device has 2 memory heaps:
+[CLVK]     0: 30.974773 GB | 
+[CLVK]     1: 15.984375 GB | DEVICE_LOCAL 
+[CLVK] Initialising device llvmpipe (LLVM 20.1.2, 256 bits)
+[CLVK]   API Version: 1.4.318
+[CLVK] Physical device (CPU) has 1 queue families:
+[CLVK]   queue family 0:  1 queues | GRAPHICS COMPUTE TRANSFER SPARSE_BINDING 
+[CLVK]   queue family 0:  1 queues | GRAPHICS COMPUTE TRANSFER SPARSE_BINDING 
+[CLVK]   selecting queue 0:  1 queues | GRAPHICS COMPUTE TRANSFER SPARSE_BINDING 
+[CLVK] 164 extensions are supported
+[CLVK]   VK_KHR_8bit_storage, spec version 1
+[CLVK]     ENABLING
+[CLVK]   VK_KHR_16bit_storage, spec version 1
+[CLVK]     ENABLING
+[CLVK]   VK_KHR_acceleration_structure, spec version 13
+[CLVK]   VK_KHR_bind_memory2, spec version 1
+[CLVK]   VK_KHR_buffer_device_address, spec version 1
+[CLVK]     ENABLING
+[CLVK]   VK_KHR_compute_shader_derivatives, spec version 1
+[CLVK]   VK_KHR_copy_commands2, spec version 1
+[CLVK]   VK_KHR_create_renderpass2, spec version 1
+[CLVK]   VK_KHR_dedicated_allocation, spec version 3
+[CLVK]   VK_KHR_deferred_host_operations, spec version 4
+[CLVK]   VK_KHR_depth_stencil_resolve, spec version 1
+[CLVK]   VK_KHR_descriptor_update_template, spec version 1
+[CLVK]   VK_KHR_device_group, spec version 4
+[CLVK]   VK_KHR_draw_indirect_count, spec version 1
+[CLVK]   VK_KHR_driver_properties, spec version 1
+[CLVK]     ENABLING
+[CLVK]   VK_KHR_dynamic_rendering, spec version 1
+[CLVK]   VK_KHR_dynamic_rendering_local_read, spec version 1
+[CLVK]   VK_KHR_external_fence, spec version 1
+[CLVK]   VK_KHR_external_fence_fd, spec version 1
+[CLVK]   VK_KHR_external_memory, spec version 1
+[CLVK]   VK_KHR_external_memory_fd, spec version 1
+[CLVK]   VK_KHR_external_semaphore, spec version 1
+[CLVK]   VK_KHR_external_semaphore_fd, spec version 1
+[CLVK]   VK_KHR_format_feature_flags2, spec version 2
+[CLVK]   VK_KHR_get_memory_requirements2, spec version 1
+[CLVK]   VK_KHR_global_priority, spec version 1
+[CLVK]     ENABLING
+[CLVK]   VK_KHR_image_format_list, spec version 1
+[CLVK]   VK_KHR_imageless_framebuffer, spec version 1
+[CLVK]   VK_KHR_incremental_present, spec version 2
+[CLVK]   VK_KHR_index_type_uint8, spec version 1
+[CLVK]   VK_KHR_line_rasterization, spec version 1
+[CLVK]   VK_KHR_load_store_op_none, spec version 1
+[CLVK]   VK_KHR_maintenance1, spec version 2
+[CLVK]   VK_KHR_maintenance2, spec version 1
+[CLVK]   VK_KHR_maintenance3, spec version 1
+[CLVK]   VK_KHR_maintenance4, spec version 2
+[CLVK]   VK_KHR_maintenance5, spec version 1
+[CLVK]   VK_KHR_maintenance6, spec version 1
+[CLVK]   VK_KHR_maintenance7, spec version 1
+[CLVK]   VK_KHR_maintenance8, spec version 1
+[CLVK]   VK_KHR_map_memory2, spec version 1
+[CLVK]   VK_KHR_multiview, spec version 1
+[CLVK]   VK_KHR_pipeline_library, spec version 1
+[CLVK]   VK_KHR_push_descriptor, spec version 2
+[CLVK]   VK_KHR_ray_query, spec version 1
+[CLVK]   VK_KHR_ray_tracing_maintenance1, spec version 1
+[CLVK]   VK_KHR_ray_tracing_pipeline, spec version 1
+[CLVK]   VK_KHR_ray_tracing_position_fetch, spec version 1
+[CLVK]   VK_KHR_relaxed_block_layout, spec version 1
+[CLVK]   VK_KHR_sampler_mirror_clamp_to_edge, spec version 3
+[CLVK]   VK_KHR_sampler_ycbcr_conversion, spec version 14
+[CLVK]   VK_KHR_separate_depth_stencil_layouts, spec version 1
+[CLVK]   VK_KHR_shader_atomic_int64, spec version 1
+[CLVK]   VK_KHR_shader_clock, spec version 1
+[CLVK]   VK_KHR_shader_draw_parameters, spec version 1
+[CLVK]   VK_KHR_shader_expect_assume, spec version 1
+[CLVK]   VK_KHR_shader_float16_int8, spec version 1
+[CLVK]     ENABLING
+[CLVK]   VK_KHR_shader_float_controls, spec version 4
+[CLVK]     ENABLING
+[CLVK]   VK_KHR_shader_float_controls2, spec version 1
+[CLVK]   VK_KHR_shader_integer_dot_product, spec version 1
+[CLVK]   VK_KHR_shader_maximal_reconvergence, spec version 1
+[CLVK]   VK_KHR_shader_non_semantic_info, spec version 1
+[CLVK]     ENABLING
+[CLVK]   VK_KHR_shader_quad_control, spec version 1
+[CLVK]   VK_KHR_shader_relaxed_extended_instruction, spec version 1
+[CLVK]   VK_KHR_shader_subgroup_extended_types, spec version 1
+[CLVK]   VK_KHR_shader_subgroup_rotate, spec version 2
+[CLVK]   VK_KHR_shader_terminate_invocation, spec version 1
+[CLVK]   VK_KHR_spirv_1_4, spec version 1
+[CLVK]   VK_KHR_storage_buffer_storage_class, spec version 1
+[CLVK]     ENABLING
+[CLVK]   VK_KHR_swapchain, spec version 70
+[CLVK]   VK_KHR_swapchain_mutable_format, spec version 1
+[CLVK]   VK_KHR_synchronization2, spec version 1
+[CLVK]   VK_KHR_timeline_semaphore, spec version 2
+[CLVK]   VK_KHR_uniform_buffer_standard_layout, spec version 1
+[CLVK]     ENABLING
+[CLVK]   VK_KHR_variable_pointers, spec version 1
+[CLVK]     ENABLING
+[CLVK]   VK_KHR_vertex_attribute_divisor, spec version 1
+[CLVK]   VK_KHR_vulkan_memory_model, spec version 3
+[CLVK]     ENABLING
+[CLVK]   VK_KHR_workgroup_memory_explicit_layout, spec version 1
+[CLVK]   VK_KHR_zero_initialize_workgroup_memory, spec version 1
+[CLVK]   VK_EXT_4444_formats, spec version 1
+[CLVK]   VK_EXT_attachment_feedback_loop_dynamic_state, spec version 1
+[CLVK]   VK_EXT_attachment_feedback_loop_layout, spec version 2
+[CLVK]   VK_EXT_border_color_swizzle, spec version 1
+[CLVK]   VK_EXT_calibrated_timestamps, spec version 2
+[CLVK]     ENABLING
+[CLVK]   VK_EXT_color_write_enable, spec version 1
+[CLVK]   VK_EXT_conditional_rendering, spec version 2
+[CLVK]   VK_EXT_custom_border_color, spec version 12
+[CLVK]   VK_EXT_depth_bias_control, spec version 1
+[CLVK]   VK_EXT_depth_clip_control, spec version 1
+[CLVK]   VK_EXT_depth_clip_enable, spec version 1
+[CLVK]   VK_EXT_depth_range_unrestricted, spec version 1
+[CLVK]   VK_EXT_descriptor_buffer, spec version 1
+[CLVK]   VK_EXT_descriptor_indexing, spec version 2
+[CLVK]     ENABLING
+[CLVK]   VK_EXT_device_generated_commands, spec version 1
+[CLVK]   VK_EXT_dynamic_rendering_unused_attachments, spec version 1
+[CLVK]   VK_EXT_extended_dynamic_state, spec version 1
+[CLVK]   VK_EXT_extended_dynamic_state2, spec version 1
+[CLVK]   VK_EXT_extended_dynamic_state3, spec version 2
+[CLVK]   VK_EXT_external_memory_dma_buf, spec version 1
+[CLVK]   VK_EXT_external_memory_host, spec version 1
+[CLVK]   VK_EXT_fragment_shader_interlock, spec version 1
+[CLVK]   VK_EXT_graphics_pipeline_library, spec version 1
+[CLVK]   VK_EXT_hdr_metadata, spec version 3
+[CLVK]   VK_EXT_host_image_copy, spec version 1
+[CLVK]   VK_EXT_host_query_reset, spec version 1
+[CLVK]   VK_EXT_image_2d_view_of_3d, spec version 1
+[CLVK]   VK_EXT_image_drm_format_modifier, spec version 2
+[CLVK]   VK_EXT_image_robustness, spec version 1
+[CLVK]   VK_EXT_image_sliced_view_of_3d, spec version 1
+[CLVK]   VK_EXT_index_type_uint8, spec version 1
+[CLVK]   VK_EXT_inline_uniform_block, spec version 1
+[CLVK]   VK_EXT_legacy_vertex_attributes, spec version 1
+[CLVK]   VK_EXT_line_rasterization, spec version 1
+[CLVK]   VK_EXT_load_store_op_none, spec version 1
+[CLVK]   VK_EXT_memory_budget, spec version 1
+[CLVK]   VK_EXT_memory_priority, spec version 1
+[CLVK]   VK_EXT_mesh_shader, spec version 1
+[CLVK]   VK_EXT_multi_draw, spec version 1
+[CLVK]   VK_EXT_multisampled_render_to_single_sampled, spec version 1
+[CLVK]   VK_EXT_mutable_descriptor_type, spec version 1
+[CLVK]   VK_EXT_nested_command_buffer, spec version 1
+[CLVK]   VK_EXT_non_seamless_cube_map, spec version 1
+[CLVK]   VK_EXT_pageable_device_local_memory, spec version 1
+[CLVK]   VK_EXT_pipeline_creation_cache_control, spec version 3
+[CLVK]   VK_EXT_pipeline_creation_feedback, spec version 1
+[CLVK]   VK_EXT_pipeline_library_group_handles, spec version 1
+[CLVK]   VK_EXT_pipeline_protected_access, spec version 1
+[CLVK]   VK_EXT_pipeline_robustness, spec version 1
+[CLVK]   VK_EXT_post_depth_coverage, spec version 1
+[CLVK]   VK_EXT_primitive_topology_list_restart, spec version 1
+[CLVK]   VK_EXT_primitives_generated_query, spec version 1
+[CLVK]   VK_EXT_private_data, spec version 1
+[CLVK]   VK_EXT_provoking_vertex, spec version 1
+[CLVK]   VK_EXT_queue_family_foreign, spec version 1
+[CLVK]   VK_EXT_rasterization_order_attachment_access, spec version 1
+[CLVK]   VK_EXT_robustness2, spec version 1
+[CLVK]   VK_EXT_sampler_filter_minmax, spec version 2
+[CLVK]   VK_EXT_scalar_block_layout, spec version 1
+[CLVK]   VK_EXT_separate_stencil_usage, spec version 1
+[CLVK]   VK_EXT_shader_atomic_float, spec version 1
+[CLVK]   VK_EXT_shader_atomic_float2, spec version 1
+[CLVK]   VK_EXT_shader_demote_to_helper_invocation, spec version 1
+[CLVK]   VK_EXT_shader_image_atomic_int64, spec version 1
+[CLVK]   VK_EXT_shader_object, spec version 1
+[CLVK]   VK_EXT_shader_replicated_composites, spec version 1
+[CLVK]   VK_EXT_shader_stencil_export, spec version 1
+[CLVK]   VK_EXT_shader_subgroup_ballot, spec version 1
+[CLVK]   VK_EXT_shader_subgroup_vote, spec version 1
+[CLVK]   VK_EXT_shader_viewport_index_layer, spec version 1
+[CLVK]   VK_EXT_subgroup_size_control, spec version 2
+[CLVK]   VK_EXT_swapchain_maintenance1, spec version 1
+[CLVK]   VK_EXT_texel_buffer_alignment, spec version 1
+[CLVK]   VK_EXT_tooling_info, spec version 1
+[CLVK]   VK_EXT_transform_feedback, spec version 1
+[CLVK]   VK_EXT_vertex_attribute_divisor, spec version 3
+[CLVK]   VK_EXT_vertex_input_dynamic_state, spec version 2
+[CLVK]   VK_EXT_ycbcr_2plane_444_formats, spec version 1
+[CLVK]   VK_EXT_ycbcr_image_arrays, spec version 1
+[CLVK]   VK_EXT_zero_initialize_device_memory, spec version 1
+[CLVK]   VK_AMDX_shader_enqueue, spec version 2
+[CLVK]   VK_ANDROID_external_memory_android_hardware_buffer, spec version 5
+[CLVK]   VK_ARM_rasterization_order_attachment_access, spec version 1
+[CLVK]   VK_GOOGLE_decorate_string, spec version 1
+[CLVK]   VK_GOOGLE_hlsl_functionality1, spec version 1
+[CLVK] Getting Vulkan device properties
+[CLVK] create_cvk_device_properties: cvk_device_properties_llvmpipe
+[CLVK] cvk_device_properties: 
+[CLVK]   *clspv_native_builtins: 'ceil, copysign, fabs, fdim, floor, fmax, fmin, half_cos, half_exp, half_exp10, half_exp2, half_rsqrt, half_sin, half_sqrt, half_tan, isequal, isfinite, isgreater, isgreaterequal, isinf, isless, islessequal, islessgreater, isnan, isnormal, isnotequal, isordered, isunordered, mad, rint, round, rsqrt, signbit, sqrt, trunc'
+[CLVK]   *clspv_options: '-hack-convert-to-float'
+[CLVK]   *vendor: 'Mesa'
+[CLVK] Initialising driver behaviors
+[CLVK]   driverName = llvmpipe
+[CLVK]   driverInfo = Mesa 25.2.8-0ubuntu0.24.04.4 (LLVM 20.1.2)
+[CLVK]   conformanceVersion = 1.3.1.1
+[CLVK] Driver behaviors:
+[CLVK]   use_reset_command_buffer_bit = false
+[CLVK] Initialising features
+[CLVK] 8-bit storage: SSBO = 1, UBO = 1, Push constants = 1
+[CLVK] 16-bit storage: SSBO = 1, UBO = 1, Push constants = 1
+[CLVK] subgroup extended types: 1
+[CLVK] build_extension_ils_list: extensions: 'cl_khr_global_int32_base_atomics cl_khr_global_int32_extended_atomics cl_khr_local_int32_base_atomics cl_khr_local_int32_extended_atomics cl_khr_byte_addressable_store cl_khr_extended_versioning cl_khr_create_command_queue cl_khr_il_program cl_khr_spirv_no_integer_wrap_decoration cl_arm_non_uniform_work_group_size cl_arm_printf cl_khr_suggested_local_work_size cl_khr_3d_image_writes cl_khr_spirv_linkonce_odr cl_khr_device_uuid cl_khr_subgroup_shuffle cl_khr_subgroup_rotate cl_khr_subgroup_ballot cl_khr_subgroup_non_uniform_vote cl_khr_fp16 cl_intel_required_subgroup_size cl_khr_integer_dot_product cl_arm_integer_dot_product_int8 cl_arm_integer_dot_product_accumulate_int8 cl_arm_integer_dot_product_accumulate_saturate_int8 cl_arm_integer_dot_product_accumulate_int16 '
+[CLVK] Device supports 2 calibrateable time domains
+[CLVK]   Device
+[CLVK]   Clock monotonic
+[CLVK] Creating Vulkan device and queues
+[CLVK] create_vulkan_queues_and_device: queue global priority: 1
+[CLVK] create_vulkan_queues_and_device: setting queue global priority to '1': 'VK_QUEUE_GLOBAL_PRIORITY_MEDIUM_KHR' (256)
+[CLVK] Vulkan SPIR-V environment: SPIR-V 1.6 (under Vulkan 1.3 semantics)
+[CLVK] Device's resources per stage limits:
+[CLVK]     total = 1000000
+[CLVK]     uniform buffers = 1000000
+[CLVK]     storage buffers = 1000000
+[CLVK] Device's max buffer size = 128.000000 MB
+[CLVK] Device's max uniform buffer size = 64.000000 kB
+[CLVK] Device's max push constant size = 256.000000  B
+[CLVK] Device's execution capabilities:
+[CLVK]     Max work-group count: {65535,65535,65535}
+[CLVK]     Max invocations per work-group: 1024
+[CLVK]     Max work-group size: {1024,1024,1024}
+[CLVK]     Min subgroup size: 8
+[CLVK]     Max subgroup size: 8
+[CLVK]     Max subgroups per work-group: 32
+[CLVK] Device has 1 memory types:
+[CLVK]     0: heap = 0, 61.949547 GB | HOST_VISIBLE HOST_COHERENT HOST_CACHED DEVICE_LOCAL 
+[CLVK] Device has 1 memory heaps:
+[CLVK]     0: 61.949547 GB | DEVICE_LOCAL 
+[CLVK] Initialised 3 devices
+[CLVK] Initialisation complete
+EVISION_UMAT_DEVICE=AMD Radeon RX 7800 XT (RADV NAVI32) cpu_threads=4
+[CLVK] Using 100% of total memory size
+[CLVK] Using 100% of total memory size
+[CLVK] Using 100% of total memory size
+[CLVK] Using 100% of total memory size
+[CLVK] do_build_inner_online: build_from_il 0 - build_to_ir 0
+[CLVK] About to compile "-D "SRC_DEPTH=0" -D "SCN=3" -D "PIX_PER_WI_Y=1" -D "DCN=1" -D "BIDX=0" -D "STRIPE_SIZE=1" -cl-single-precision-constant -cl-kernel-arg-info -rounding-mode-rte=16,32 -fp64=0 -rewrite-packed-structs -std430-ubo-layout -decorate-nonuniform -hack-convert-to-float -arch=spir -cl-arm-integer-dot-product --use-native-builtins=ceil,copysign,exp2,fdim,floor,fmax,fmin,frexp,half_exp,half_exp10,half_exp2,half_log,half_log10,half_log2,half_powr,half_rsqrt,half_sqrt,isequal,isfinite,isgreater,isgreaterequal,isinf,isless,islessequal,islessgreater,isnan,isnormal,isnotequal,isordered,isunordered,ldexp,log,log10,log2,mad,rint,round,rsqrt,signbit,sqrt,trunc, -spv-version=1.6 -max-pushconstant-size=256 -max-ubo-size=4294967295 -global-offset -long-vector -module-constants-in-storage-buffer -denorm-preserve=16,32 -signed-zero-inf-nan-preserve=16,32 -enable-printf -printf-buffer-size=1048576 -cl-arm-non-uniform-work-group-size "
+[CLVK] SPIR-V binary is valid.
+[CLVK] parse_spirv_capabilities: Program requires SPIR-V capability 1 (spv::CapabilityShader).
+[CLVK] parse_spirv_capabilities: Program requires SPIR-V capability 22 (spv::CapabilityInt16).
+[CLVK] parse_spirv_capabilities: Program requires SPIR-V capability 39 (spv::CapabilityInt8).
+[CLVK] parse_spirv_capabilities: Program requires SPIR-V capability 4464 (spv::CapabilityDenormPreserve).
+[CLVK] parse_spirv_capabilities: Program requires SPIR-V capability 4466 (spv::CapabilitySignedZeroInfNanPreserve).
+[CLVK] clEnqueueNDRangeKernel: selected local work size: {8,8,1}
+[CLVK] created pipeline 0x7f23400d0630 for kernel RGB2Gray
+[CLVK] Using 100% of total memory size
+[CLVK] do_build_inner_online: build_from_il 0 - build_to_ir 0
+[CLVK] About to compile "-D "INTER_LINEAR" -D "SRC_DEPTH=0" -D "T=uchar" -D "T1=uchar" -D "WT=int" -D "CONVERT_TO_WT=convert_int" -D "CONVERT_TO_DT=convert_uchar_sat" -D "CN=1" -D "INTER_RESIZE_COEF_BITS=11" -cl-single-precision-constant -cl-kernel-arg-info -rounding-mode-rte=16,32 -fp64=0 -rewrite-packed-structs -std430-ubo-layout -decorate-nonuniform -hack-convert-to-float -arch=spir -cl-arm-integer-dot-product --use-native-builtins=ceil,copysign,exp2,fdim,floor,fmax,fmin,frexp,half_exp,half_exp10,half_exp2,half_log,half_log10,half_log2,half_powr,half_rsqrt,half_sqrt,isequal,isfinite,isgreater,isgreaterequal,isinf,isless,islessequal,islessgreater,isnan,isnormal,isnotequal,isordered,isunordered,ldexp,log,log10,log2,mad,rint,round,rsqrt,signbit,sqrt,trunc, -spv-version=1.6 -max-pushconstant-size=256 -max-ubo-size=4294967295 -global-offset -long-vector -module-constants-in-storage-buffer -denorm-preserve=16,32 -signed-zero-inf-nan-preserve=16,32 -enable-printf -printf-buffer-size=1048576 -cl-arm-non-uniform-work-group-size "
+[CLVK] SPIR-V binary is valid.
+[CLVK] parse_spirv_capabilities: Program requires SPIR-V capability 1 (spv::CapabilityShader).
+[CLVK] parse_spirv_capabilities: Program requires SPIR-V capability 39 (spv::CapabilityInt8).
+[CLVK] parse_spirv_capabilities: Program requires SPIR-V capability 4464 (spv::CapabilityDenormPreserve).
+[CLVK] parse_spirv_capabilities: Program requires SPIR-V capability 4466 (spv::CapabilitySignedZeroInfNanPreserve).
+[CLVK] parse_spirv_capabilities: Program requires SPIR-V capability 4467 (spv::CapabilityRoundingModeRTE).
+[CLVK] clEnqueueNDRangeKernel: selected local work size: {8,8,1}
+[CLVK] created pipeline 0x7f2341d44f50 for kernel resizeLN
+[CLVK] do_build_inner_online: build_from_il 0 - build_to_ir 0
+[CLVK] About to compile "-D "T=uchar" -D "T1=uchar" -D "cn=1" -cl-single-precision-constant -cl-kernel-arg-info -rounding-mode-rte=16,32 -fp64=0 -rewrite-packed-structs -std430-ubo-layout -decorate-nonuniform -hack-convert-to-float -arch=spir -cl-arm-integer-dot-product --use-native-builtins=ceil,copysign,exp2,fdim,floor,fmax,fmin,frexp,half_exp,half_exp10,half_exp2,half_log,half_log10,half_log2,half_powr,half_rsqrt,half_sqrt,isequal,isfinite,isgreater,isgreaterequal,isinf,isless,islessequal,islessgreater,isnan,isnormal,isnotequal,isordered,isunordered,ldexp,log,log10,log2,mad,rint,round,rsqrt,signbit,sqrt,trunc, -spv-version=1.6 -max-pushconstant-size=256 -max-ubo-size=4294967295 -global-offset -long-vector -module-constants-in-storage-buffer -denorm-preserve=16,32 -signed-zero-inf-nan-preserve=16,32 -enable-printf -printf-buffer-size=1048576 -cl-arm-non-uniform-work-group-size "
+[CLVK] SPIR-V binary is valid.
+[CLVK] parse_spirv_capabilities: Program requires SPIR-V capability 1 (spv::CapabilityShader).
+[CLVK] parse_spirv_capabilities: Program requires SPIR-V capability 39 (spv::CapabilityInt8).
+[CLVK] parse_spirv_capabilities: Program requires SPIR-V capability 4464 (spv::CapabilityDenormPreserve).
+[CLVK] parse_spirv_capabilities: Program requires SPIR-V capability 4466 (spv::CapabilitySignedZeroInfNanPreserve).
+[CLVK] Using 100% of total memory size
+[CLVK] created pipeline 0x7f2341df2aa0 for kernel medianFilter3
+[CLVK] Using 100% of total memory size
+[CLVK] do_build_inner_online: build_from_il 0 - build_to_ir 0
+[CLVK] About to compile "-D "INTER_LINEAR" -D "BORDER_CONSTANT" -D "T=uchar" -D "ROWS_PER_WI=1" -D "WARP_RELATIVE=0" -D "WT=float" -D "CONVERT_TO_T=convert_uchar_sat_rte" -D "CONVERT_TO_WT=convert_float" -D "CONVERT_TO_WT2=convert_float2" -D "WT2=float2" -D "T=uchar" -D "T1=uchar" -D "CN=1" -D "ST=uchar" -D "SRC_DEPTH=0" -cl-single-precision-constant -cl-kernel-arg-info -rounding-mode-rte=16,32 -fp64=0 -rewrite-packed-structs -std430-ubo-layout -decorate-nonuniform -hack-convert-to-float -arch=spir -cl-arm-integer-dot-product --use-native-builtins=ceil,copysign,exp2,fdim,floor,fmax,fmin,frexp,half_exp,half_exp10,half_exp2,half_log,half_log10,half_log2,half_powr,half_rsqrt,half_sqrt,isequal,isfinite,isgreater,isgreaterequal,isinf,isless,islessequal,islessgreater,isnan,isnormal,isnotequal,isordered,isunordered,ldexp,log,log10,log2,mad,rint,round,rsqrt,signbit,sqrt,trunc, -spv-version=1.6 -max-pushconstant-size=256 -max-ubo-size=4294967295 -global-offset -long-vector -module-constants-in-storage-buffer -denorm-preserve=16,32 -signed-zero-inf-nan-preserve=16,32 -enable-printf -printf-buffer-size=1048576 -cl-arm-non-uniform-work-group-size "
+[CLVK] SPIR-V binary is valid.
+[CLVK] parse_spirv_capabilities: Program requires SPIR-V capability 1 (spv::CapabilityShader).
+[CLVK] parse_spirv_capabilities: Program requires SPIR-V capability 11 (spv::CapabilityInt64).
+[CLVK] parse_spirv_capabilities: Program requires SPIR-V capability 22 (spv::CapabilityInt16).
+[CLVK] parse_spirv_capabilities: Program requires SPIR-V capability 39 (spv::CapabilityInt8).
+[CLVK] parse_spirv_capabilities: Program requires SPIR-V capability 4464 (spv::CapabilityDenormPreserve).
+[CLVK] parse_spirv_capabilities: Program requires SPIR-V capability 4466 (spv::CapabilitySignedZeroInfNanPreserve).
+[CLVK] parse_spirv_capabilities: Program requires SPIR-V capability 4467 (spv::CapabilityRoundingModeRTE).
+[CLVK] clEnqueueNDRangeKernel: selected local work size: {8,8,1}
+[CLVK] created pipeline 0x7f2341d987f0 for kernel remap_2_32FC1
+[CLVK] executing batch of 4 commands
+EVISION_UMAT_CHECK stage=gray max_abs=0 changed_pixels=0
+EVISION_UMAT_CHECK stage=resize max_abs=0 changed_pixels=0
+EVISION_UMAT_CHECK stage=median max_abs=0 changed_pixels=0
+EVISION_UMAT_CHECK stage=remap max_abs=0 changed_pixels=0
+EVISION_UMAT_RESULT mode=cpu frames=1 mean_ms=0.241 p50_ms=0.241 p95_ms=0.241 includes=mat_creation_upload_standard_calls_final_readback_binary_copy excludes=map_creation_decode_startup_compile warmup=3
+[CLVK] Using 100% of total memory size
+[CLVK] Using 100% of total memory size
+[CLVK] clEnqueueNDRangeKernel: selected local work size: {8,8,1}
+[CLVK] reusing pipeline 0x7f23400d0630 for kernel RGB2Gray
+[CLVK] Using 100% of total memory size
+[CLVK] clEnqueueNDRangeKernel: selected local work size: {8,8,1}
+[CLVK] reusing pipeline 0x7f2341d44f50 for kernel resizeLN
+[CLVK] Using 100% of total memory size
+[CLVK] reusing pipeline 0x7f2341df2aa0 for kernel medianFilter3
+[CLVK] Using 100% of total memory size
+[CLVK] clEnqueueNDRangeKernel: selected local work size: {8,8,1}
+[CLVK] reusing pipeline 0x7f2341d987f0 for kernel remap_2_32FC1
+[CLVK] executing batch of 4 commands
+[CLVK] Using 100% of total memory size
+[CLVK] Using 100% of total memory size
+[CLVK] clEnqueueNDRangeKernel: selected local work size: {8,8,1}
+[CLVK] reusing pipeline 0x7f23400d0630 for kernel RGB2Gray
+[CLVK] Using 100% of total memory size
+[CLVK] clEnqueueNDRangeKernel: selected local work size: {8,8,1}
+[CLVK] reusing pipeline 0x7f2341d44f50 for kernel resizeLN
+[CLVK] Using 100% of total memory size
+[CLVK] reusing pipeline 0x7f2341df2aa0 for kernel medianFilter3
+[CLVK] Using 100% of total memory size
+[CLVK] clEnqueueNDRangeKernel: selected local work size: {8,8,1}
+[CLVK] reusing pipeline 0x7f2341d987f0 for kernel remap_2_32FC1
+[CLVK] executing batch of 4 commands
+[CLVK] Using 100% of total memory size
+[CLVK] Using 100% of total memory size
+[CLVK] clEnqueueNDRangeKernel: selected local work size: {8,8,1}
+[CLVK] reusing pipeline 0x7f23400d0630 for kernel RGB2Gray
+[CLVK] Using 100% of total memory size
+[CLVK] clEnqueueNDRangeKernel: selected local work size: {8,8,1}
+[CLVK] reusing pipeline 0x7f2341d44f50 for kernel resizeLN
+[CLVK] Using 100% of total memory size
+[CLVK] reusing pipeline 0x7f2341df2aa0 for kernel medianFilter3
+[CLVK] Using 100% of total memory size
+[CLVK] clEnqueueNDRangeKernel: selected local work size: {8,8,1}
+[CLVK] reusing pipeline 0x7f2341d987f0 for kernel remap_2_32FC1
+[CLVK] executing batch of 4 commands
+[CLVK] Using 100% of total memory size
+[CLVK] Using 100% of total memory size
+[CLVK] clEnqueueNDRangeKernel: selected local work size: {8,8,1}
+[CLVK] reusing pipeline 0x7f23400d0630 for kernel RGB2Gray
+[CLVK] Using 100% of total memory size
+[CLVK] clEnqueueNDRangeKernel: selected local work size: {8,8,1}
+[CLVK] reusing pipeline 0x7f2341d44f50 for kernel resizeLN
+[CLVK] Using 100% of total memory size
+[CLVK] reusing pipeline 0x7f2341df2aa0 for kernel medianFilter3
+[CLVK] Using 100% of total memory size
+[CLVK] clEnqueueNDRangeKernel: selected local work size: {8,8,1}
+[CLVK] reusing pipeline 0x7f2341d987f0 for kernel remap_2_32FC1
+[CLVK] executing batch of 4 commands
+EVISION_UMAT_RESULT mode=gpu frames=1 mean_ms=0.431 p50_ms=0.431 p95_ms=0.431 includes=mat_creation_upload_standard_calls_final_readback_binary_copy excludes=map_creation_decode_startup_compile warmup=3
+EVISION_UMAT_NUMERICAL_PASS dispatch_evidence=required_separately

@@ -1,0 +1,184 @@
+BOOT_ID=6f672cb9-e70d-433c-8894-7231f93bf6b7
+PROFILE_STAGE=census DISPATCH_REPEAT=1
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+2026-10-22T12:19:33+00:00
+Running /root/nxiree/iree-benchmark-module-flush
+Run on (4 X 1555.5 MHz CPU s)
+Load Average: 0.00, 0.01, 0.04
+***WARNING*** CPU scaling is enabled, the benchmark real time measurements may be noisy and will incur extra overhead.
+***WARNING*** ASLR is enabled, the results may have unreproducible noise in them.
+------------------------------------------------------------------------------------------------
+Benchmark                                      Time             CPU   Iterations UserCounters...
+------------------------------------------------------------------------------------------------
+BM_main/process_time/real_time             0.929 ms        0.294 ms          109 items_per_second=1.07659k/s
+BM_main/process_time/real_time              1.08 ms        0.410 ms          109 items_per_second=922.621/s
+BM_main/process_time/real_time              1.45 ms        0.706 ms          109 items_per_second=687.905/s
+BM_main/process_time/real_time_mean         1.16 ms        0.470 ms            3 items_per_second=895.706/s
+BM_main/process_time/real_time_median       1.08 ms        0.410 ms            3 items_per_second=922.621/s
+BM_main/process_time/real_time_stddev      0.270 ms        0.212 ms            3 items_per_second=195.737/s
+BM_main/process_time/real_time_cv          23.34 %         45.20 %             3 items_per_second=21.85%
+PROFILE_STAGE=paths DISPATCH_REPEAT=1
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+2026-10-22T12:19:34+00:00
+Running /root/nxiree/iree-benchmark-module-flush
+Run on (4 X 1555.5 MHz CPU s)
+Load Average: 0.00, 0.01, 0.04
+***WARNING*** CPU scaling is enabled, the benchmark real time measurements may be noisy and will incur extra overhead.
+***WARNING*** ASLR is enabled, the results may have unreproducible noise in them.
+------------------------------------------------------------------------------------------------
+Benchmark                                      Time             CPU   Iterations UserCounters...
+------------------------------------------------------------------------------------------------
+BM_main/process_time/real_time              6.38 ms         1.51 ms           24 items_per_second=156.656/s
+BM_main/process_time/real_time              6.38 ms         1.47 ms           24 items_per_second=156.681/s
+BM_main/process_time/real_time              5.52 ms        0.874 ms           24 items_per_second=181.244/s
+BM_main/process_time/real_time_mean         6.09 ms         1.29 ms            3 items_per_second=164.86/s
+BM_main/process_time/real_time_median       6.38 ms         1.47 ms            3 items_per_second=156.681/s
+BM_main/process_time/real_time_stddev      0.500 ms        0.357 ms            3 items_per_second=14.1887/s
+BM_main/process_time/real_time_cv           8.20 %         27.77 %             3 items_per_second=8.61%
+PROFILE_STAGE=select DISPATCH_REPEAT=1
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+2026-10-22T12:19:35+00:00
+Running /root/nxiree/iree-benchmark-module-flush
+Run on (4 X 1555.5 MHz CPU s)
+Load Average: 0.00, 0.01, 0.04
+***WARNING*** CPU scaling is enabled, the benchmark real time measurements may be noisy and will incur extra overhead.
+***WARNING*** ASLR is enabled, the results may have unreproducible noise in them.
+------------------------------------------------------------------------------------------------
+Benchmark                                      Time             CPU   Iterations UserCounters...
+------------------------------------------------------------------------------------------------
+BM_main/process_time/real_time              4.03 ms         1.45 ms           41 items_per_second=248.259/s
+BM_main/process_time/real_time              3.29 ms        0.865 ms           41 items_per_second=303.898/s
+BM_main/process_time/real_time              3.34 ms        0.836 ms           41 items_per_second=299.519/s
+BM_main/process_time/real_time_mean         3.55 ms         1.05 ms            3 items_per_second=283.892/s
+BM_main/process_time/real_time_median       3.34 ms        0.865 ms            3 items_per_second=299.519/s
+BM_main/process_time/real_time_stddev      0.413 ms        0.349 ms            3 items_per_second=30.9366/s
+BM_main/process_time/real_time_cv          11.61 %         33.18 %             3 items_per_second=10.90%
+PROFILE_STAGE=consistency_projected DISPATCH_REPEAT=1
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+2026-10-22T12:19:35+00:00
+Running /root/nxiree/iree-benchmark-module-flush
+Run on (4 X 1555.5 MHz CPU s)
+Load Average: 0.00, 0.01, 0.04
+***WARNING*** CPU scaling is enabled, the benchmark real time measurements may be noisy and will incur extra overhead.
+***WARNING*** ASLR is enabled, the results may have unreproducible noise in them.
+------------------------------------------------------------------------------------------------
+Benchmark                                      Time             CPU   Iterations UserCounters...
+------------------------------------------------------------------------------------------------
+BM_main/process_time/real_time              2.98 ms         1.33 ms           47 items_per_second=335.214/s
+BM_main/process_time/real_time              2.27 ms        0.780 ms           47 items_per_second=440.621/s
+BM_main/process_time/real_time              2.23 ms        0.798 ms           47 items_per_second=448.395/s
+BM_main/process_time/real_time_mean         2.49 ms        0.971 ms            3 items_per_second=408.076/s
+BM_main/process_time/real_time_median       2.27 ms        0.798 ms            3 items_per_second=440.621/s
+BM_main/process_time/real_time_stddev      0.424 ms        0.315 ms            3 items_per_second=63.2204/s
+BM_main/process_time/real_time_cv          16.99 %         32.49 %             3 items_per_second=15.49%
+PROFILE_STAGE=filter DISPATCH_REPEAT=1
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+2026-10-22T12:19:36+00:00
+Running /root/nxiree/iree-benchmark-module-flush
+Run on (4 X 1555.5 MHz CPU s)
+Load Average: 0.00, 0.01, 0.04
+***WARNING*** CPU scaling is enabled, the benchmark real time measurements may be noisy and will incur extra overhead.
+***WARNING*** ASLR is enabled, the results may have unreproducible noise in them.
+------------------------------------------------------------------------------------------------
+Benchmark                                      Time             CPU   Iterations UserCounters...
+------------------------------------------------------------------------------------------------
+BM_main/process_time/real_time             0.461 ms        0.259 ms          391 items_per_second=2.16806k/s
+BM_main/process_time/real_time              38.1 ms        0.292 ms          391 items_per_second=26.2622/s
+BM_main/process_time/real_time              29.6 ms        0.401 ms          391 items_per_second=33.7781/s
+BM_main/process_time/real_time_mean         22.7 ms        0.317 ms            3 items_per_second=742.699/s
+BM_main/process_time/real_time_median       29.6 ms        0.292 ms            3 items_per_second=33.7781/s
+BM_main/process_time/real_time_stddev       19.7 ms        0.074 ms            3 items_per_second=1.2344k/s
+BM_main/process_time/real_time_cv          86.87 %         23.36 %             3 items_per_second=166.20%
+PROFILE_STAGE=census DISPATCH_REPEAT=32
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+2026-10-22T12:20:03+00:00
+Running /root/nxiree/iree-benchmark-module-flush
+Run on (4 X 1555.5 MHz CPU s)
+Load Average: 0.39, 0.11, 0.07
+***WARNING*** CPU scaling is enabled, the benchmark real time measurements may be noisy and will incur extra overhead.
+***WARNING*** ASLR is enabled, the results may have unreproducible noise in them.
+------------------------------------------------------------------------------------------------
+Benchmark                                      Time             CPU   Iterations UserCounters...
+------------------------------------------------------------------------------------------------
+BM_main/process_time/real_time              20.0 ms         1.18 ms            7 items_per_second=49.9821/s
+BM_main/process_time/real_time              21.4 ms         2.36 ms            7 items_per_second=46.816/s
+BM_main/process_time/real_time              21.9 ms         2.81 ms            7 items_per_second=45.5636/s
+BM_main/process_time/real_time_mean         21.1 ms         2.12 ms            3 items_per_second=47.4539/s
+BM_main/process_time/real_time_median       21.4 ms         2.36 ms            3 items_per_second=46.816/s
+BM_main/process_time/real_time_stddev      0.995 ms        0.841 ms            3 items_per_second=2.27729/s
+BM_main/process_time/real_time_cv           4.71 %         39.76 %             3 items_per_second=4.80%
+PROFILE_STAGE=paths DISPATCH_REPEAT=32
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+2026-10-22T12:20:04+00:00
+Running /root/nxiree/iree-benchmark-module-flush
+Run on (4 X 1555.5 MHz CPU s)
+Load Average: 0.39, 0.11, 0.07
+***WARNING*** CPU scaling is enabled, the benchmark real time measurements may be noisy and will incur extra overhead.
+***WARNING*** ASLR is enabled, the results may have unreproducible noise in them.
+------------------------------------------------------------------------------------------------
+Benchmark                                      Time             CPU   Iterations UserCounters...
+------------------------------------------------------------------------------------------------
+BM_main/process_time/real_time               177 ms         1.70 ms            1 items_per_second=5.63746/s
+BM_main/process_time/real_time               134 ms        0.900 ms            1 items_per_second=7.44732/s
+BM_main/process_time/real_time               133 ms        0.770 ms            1 items_per_second=7.511/s
+BM_main/process_time/real_time_mean          148 ms         1.12 ms            3 items_per_second=6.86526/s
+BM_main/process_time/real_time_median        134 ms        0.900 ms            3 items_per_second=7.44732/s
+BM_main/process_time/real_time_stddev       25.2 ms        0.505 ms            3 items_per_second=1.06378/s
+BM_main/process_time/real_time_cv          17.01 %         44.91 %             3 items_per_second=15.50%
+PROFILE_STAGE=select DISPATCH_REPEAT=32
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+2026-10-22T12:20:05+00:00
+Running /root/nxiree/iree-benchmark-module-flush
+Run on (4 X 1555.5 MHz CPU s)
+Load Average: 0.39, 0.11, 0.07
+***WARNING*** CPU scaling is enabled, the benchmark real time measurements may be noisy and will incur extra overhead.
+***WARNING*** ASLR is enabled, the results may have unreproducible noise in them.
+------------------------------------------------------------------------------------------------
+Benchmark                                      Time             CPU   Iterations UserCounters...
+------------------------------------------------------------------------------------------------
+BM_main/process_time/real_time               138 ms         1.24 ms            1 items_per_second=7.25068/s
+BM_main/process_time/real_time              64.1 ms         2.12 ms            1 items_per_second=15.5886/s
+BM_main/process_time/real_time              63.6 ms        0.982 ms            1 items_per_second=15.7267/s
+BM_main/process_time/real_time_mean         88.6 ms         1.45 ms            3 items_per_second=12.8553/s
+BM_main/process_time/real_time_median       64.1 ms         1.24 ms            3 items_per_second=15.5886/s
+BM_main/process_time/real_time_stddev       42.8 ms        0.599 ms            3 items_per_second=4.85426/s
+BM_main/process_time/real_time_cv          48.28 %         41.31 %             3 items_per_second=37.76%
+PROFILE_STAGE=consistency_projected DISPATCH_REPEAT=32
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+2026-10-22T12:20:05+00:00
+Running /root/nxiree/iree-benchmark-module-flush
+Run on (4 X 1555.5 MHz CPU s)
+Load Average: 0.39, 0.11, 0.07
+***WARNING*** CPU scaling is enabled, the benchmark real time measurements may be noisy and will incur extra overhead.
+***WARNING*** ASLR is enabled, the results may have unreproducible noise in them.
+------------------------------------------------------------------------------------------------
+Benchmark                                      Time             CPU   Iterations UserCounters...
+------------------------------------------------------------------------------------------------
+BM_main/process_time/real_time               102 ms         1.24 ms            1 items_per_second=9.83643/s
+BM_main/process_time/real_time              39.6 ms         1.76 ms            1 items_per_second=25.27/s
+BM_main/process_time/real_time              39.1 ms        0.812 ms            1 items_per_second=25.5892/s
+BM_main/process_time/real_time_mean         60.1 ms         1.27 ms            3 items_per_second=20.2319/s
+BM_main/process_time/real_time_median       39.6 ms         1.24 ms            3 items_per_second=25.27/s
+BM_main/process_time/real_time_stddev       36.0 ms        0.475 ms            3 items_per_second=9.00415/s
+BM_main/process_time/real_time_cv          59.88 %         37.35 %             3 items_per_second=44.50%
+PROFILE_STAGE=filter DISPATCH_REPEAT=32
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+2026-10-22T12:20:06+00:00
+Running /root/nxiree/iree-benchmark-module-flush
+Run on (4 X 1555.5 MHz CPU s)
+Load Average: 0.39, 0.11, 0.07
+***WARNING*** CPU scaling is enabled, the benchmark real time measurements may be noisy and will incur extra overhead.
+***WARNING*** ASLR is enabled, the results may have unreproducible noise in them.
+------------------------------------------------------------------------------------------------
+Benchmark                                      Time             CPU   Iterations UserCounters...
+------------------------------------------------------------------------------------------------
+BM_main/process_time/real_time              7.37 ms         2.05 ms           21 items_per_second=135.767/s
+BM_main/process_time/real_time              8.02 ms         2.66 ms           21 items_per_second=124.756/s
+BM_main/process_time/real_time              7.97 ms         2.58 ms           21 items_per_second=125.513/s
+BM_main/process_time/real_time_mean         7.78 ms         2.43 ms            3 items_per_second=128.679/s
+BM_main/process_time/real_time_median       7.97 ms         2.58 ms            3 items_per_second=125.513/s
+BM_main/process_time/real_time_stddev      0.362 ms        0.334 ms            3 items_per_second=6.1503/s
+BM_main/process_time/real_time_cv           4.65 %         13.74 %             3 items_per_second=4.78%
+GPU_ERRORS=0
+NATIVE_REPEAT_PROFILE_PASS
+:ok

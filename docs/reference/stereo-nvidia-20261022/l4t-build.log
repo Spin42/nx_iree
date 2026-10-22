@@ -1,0 +1,419 @@
+debconf: delaying package configuration, since apt-utils is not installed
+-- The C compiler identification is GNU 7.5.0
+-- The CXX compiler identification is GNU 7.5.0
+-- The ASM compiler identification is GNU
+-- Found assembler: /usr/bin/cc
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Could not find nvcc, please set CUDAToolkit_ROOT.
+-- IREE HAL drivers:
+--   - local-sync
+--   - local-task
+--   - vulkan
+-- IREE HAL local executable library loaders:
+--   - embedded-elf
+--   - system-library
+--   - vmvx-module
+-- IREE HAL local executable plugin mechanisms:
+--   - embedded-elf
+--   - system-library
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Failed
+-- Check if compiler accepts -pthread
+-- Check if compiler accepts -pthread - yes
+-- Found Threads: TRUE
+-- Looking for dlopen
+-- Looking for dlopen - found
+-- Performing Test IREE_SUPPORTS_VISIBILITY_DEFAULT
+-- Performing Test IREE_SUPPORTS_VISIBILITY_DEFAULT - Success
+-- Found Git: /usr/bin/git (found version "2.17.1")
+fatal: detected dubious ownership in repository at '/iree'
+To add an exception for this directory, call:
+
+	git config --global --add safe.directory /iree
+-- Not adding LLVM/MLIR because the configuration does not require it
+-- Failed to find LLVM FileCheck
+-- Google Benchmark version: v1.9.5, normalized to 1.9.5
+-- Looking for shm_open in rt
+-- Looking for shm_open in rt - found
+-- Performing Test HAVE_CXX_FLAG_WALL
+-- Performing Test HAVE_CXX_FLAG_WALL - Success
+-- Performing Test HAVE_CXX_FLAG_WEXTRA
+-- Performing Test HAVE_CXX_FLAG_WEXTRA - Success
+-- Performing Test HAVE_CXX_FLAG_WSHADOW
+-- Performing Test HAVE_CXX_FLAG_WSHADOW - Success
+-- Performing Test HAVE_CXX_FLAG_WFLOAT_EQUAL
+-- Performing Test HAVE_CXX_FLAG_WFLOAT_EQUAL - Success
+-- Performing Test HAVE_CXX_FLAG_WOLD_STYLE_CAST
+-- Performing Test HAVE_CXX_FLAG_WOLD_STYLE_CAST - Success
+-- Performing Test HAVE_CXX_FLAG_WCONVERSION
+-- Performing Test HAVE_CXX_FLAG_WCONVERSION - Success
+-- Performing Test HAVE_CXX_FLAG_WFORMAT_2
+-- Performing Test HAVE_CXX_FLAG_WFORMAT_2 - Success
+-- Performing Test HAVE_CXX_FLAG_WERROR
+-- Performing Test HAVE_CXX_FLAG_WERROR - Success
+-- Performing Test HAVE_CXX_FLAG_WSUGGEST_OVERRIDE
+-- Performing Test HAVE_CXX_FLAG_WSUGGEST_OVERRIDE - Success
+-- Performing Test HAVE_CXX_FLAG_PEDANTIC
+-- Performing Test HAVE_CXX_FLAG_PEDANTIC - Success
+-- Performing Test HAVE_CXX_FLAG_PEDANTIC_ERRORS
+-- Performing Test HAVE_CXX_FLAG_PEDANTIC_ERRORS - Success
+-- Performing Test HAVE_CXX_FLAG_WSHORTEN_64_TO_32
+-- Performing Test HAVE_CXX_FLAG_WSHORTEN_64_TO_32 - Failed
+-- Performing Test HAVE_CXX_FLAG_FSTRICT_ALIASING
+-- Performing Test HAVE_CXX_FLAG_FSTRICT_ALIASING - Success
+-- Performing Test HAVE_CXX_FLAG_WNO_DEPRECATED_DECLARATIONS
+-- Performing Test HAVE_CXX_FLAG_WNO_DEPRECATED_DECLARATIONS - Success
+-- Performing Test HAVE_CXX_FLAG_WNO_DEPRECATED
+-- Performing Test HAVE_CXX_FLAG_WNO_DEPRECATED - Success
+-- Performing Test HAVE_CXX_FLAG_WSTRICT_ALIASING
+-- Performing Test HAVE_CXX_FLAG_WSTRICT_ALIASING - Success
+-- Performing Test HAVE_CXX_FLAG_WTHREAD_SAFETY
+-- Performing Test HAVE_CXX_FLAG_WTHREAD_SAFETY - Failed
+-- Performing Test HAVE_CXX_FLAG_COVERAGE
+-- Performing Test HAVE_CXX_FLAG_COVERAGE - Success
+-- Performing Test STD_REGEX -- success
+-- Performing Test STEADY_CLOCK -- success
+-- Performing Test PTHREAD_AFFINITY -- failed
+-- *Not* building or importing IREE's compiler tools.
+   Set IREE_BUILD_COMPILER to build them or IREE_HOST_BIN_DIR to import them.
+-- Configuring IREE runtime plugins
+-- Runtime tracing disabled
+-- iree_allocator_system() using `IREE_ALLOCATOR_LIBC_*`
+-- IREE task topology: using sysfs (Linux)
+-- Looking for dl_iterate_phdr
+-- Looking for dl_iterate_phdr - found
+-- Configuring done (3.3s)
+-- Generating done (2.5s)
+-- Build files have been written to: /work/host-tools-build
+[0/2] Re-checking globbed directories...
+[1/29] Building C object build_tools/third_party/flatcc/CMakeFiles/iree-flatcc-cli.dir/__/__/__/third_party/flatcc/external/hash/cmetrohash64.c.o
+[2/29] Building C object build_tools/third_party/flatcc/CMakeFiles/iree-flatcc-cli.dir/__/__/__/third_party/flatcc/src/cli/flatcc_cli.c.o
+[3/29] Building C object build_tools/third_party/flatcc/CMakeFiles/iree-flatcc-cli.dir/__/__/__/third_party/flatcc/external/hash/ptr_set.c.o
+[4/29] Building C object build_tools/third_party/flatcc/CMakeFiles/iree-flatcc-cli.dir/__/__/__/third_party/flatcc/src/compiler/hash_tables/scope_table.c.o
+[5/29] Building C object build_tools/third_party/flatcc/CMakeFiles/iree-flatcc-cli.dir/__/__/__/third_party/flatcc/src/compiler/hash_tables/value_set.c.o
+[6/29] Building C object build_tools/third_party/flatcc/CMakeFiles/iree-flatcc-cli.dir/__/__/__/third_party/flatcc/src/compiler/fileio.c.o
+[7/29] Building C object build_tools/third_party/flatcc/CMakeFiles/iree-flatcc-cli.dir/__/__/__/third_party/flatcc/src/compiler/coerce.c.o
+[8/29] Building C object build_tools/third_party/flatcc/CMakeFiles/iree-flatcc-cli.dir/__/__/__/third_party/flatcc/external/hash/str_set.c.o
+[9/29] Building C object build_tools/third_party/flatcc/CMakeFiles/iree-flatcc-cli.dir/__/__/__/third_party/flatcc/src/compiler/hash_tables/schema_table.c.o
+[10/29] Building C object build_tools/third_party/flatcc/CMakeFiles/iree-flatcc-cli.dir/__/__/__/third_party/flatcc/src/compiler/hash_tables/name_table.c.o
+[11/29] Building C object build_tools/third_party/flatcc/CMakeFiles/iree-flatcc-cli.dir/__/__/__/third_party/flatcc/src/compiler/hash_tables/symbol_table.c.o
+[12/29] Building C object build_tools/third_party/flatcc/CMakeFiles/iree-flatcc-cli.dir/__/__/__/third_party/flatcc/src/compiler/codegen_c_sort.c.o
+[13/29] Building C object build_tools/third_party/flatcc/CMakeFiles/iree-flatcc-cli.dir/__/__/__/third_party/flatcc/src/compiler/flatcc.c.o
+[14/29] Building C object build_tools/third_party/flatcc/CMakeFiles/iree-flatcc-cli.dir/__/__/__/third_party/flatcc/src/compiler/codegen_c.c.o
+[15/29] Building C object build_tools/third_party/flatcc/CMakeFiles/iree-flatcc-cli.dir/__/__/__/third_party/flatcc/src/compiler/codegen_c_verifier.c.o
+[16/29] Building C object build_tools/third_party/flatcc/CMakeFiles/iree-flatcc-cli.dir/__/__/__/third_party/flatcc/src/compiler/codegen_c_sorter.c.o
+[17/29] Building C object build_tools/third_party/flatcc/CMakeFiles/iree-flatcc-cli.dir/__/__/__/third_party/flatcc/src/compiler/codegen_schema.c.o
+[18/29] Building C object build_tools/third_party/flatcc/CMakeFiles/iree-flatcc-cli.dir/__/__/__/third_party/flatcc/src/compiler/codegen_c_json_printer.c.o
+[19/29] Building C object build_tools/third_party/flatcc/CMakeFiles/iree-flatcc-cli.dir/__/__/__/third_party/flatcc/src/runtime/emitter.c.o
+[20/29] Building C object build_tools/third_party/flatcc/CMakeFiles/iree-flatcc-cli.dir/__/__/__/third_party/flatcc/src/compiler/codegen_c_reader.c.o
+[21/29] Building C object build_tools/third_party/flatcc/CMakeFiles/iree-flatcc-cli.dir/__/__/__/third_party/flatcc/src/runtime/refmap.c.o
+[22/29] Building C object build_tools/third_party/flatcc/CMakeFiles/iree-flatcc-cli.dir/__/__/__/third_party/flatcc/src/compiler/codegen_c_builder.c.o
+[23/29] Building C object build_tools/third_party/flatcc/CMakeFiles/iree-flatcc-cli.dir/__/__/__/third_party/flatcc/src/compiler/semantics.c.o
+[24/29] Building C object build_tools/third_party/flatcc/CMakeFiles/iree-flatcc-cli.dir/__/__/__/third_party/flatcc/src/compiler/codegen_c_json_parser.c.o
+[25/29] Building C object build_tools/third_party/flatcc/CMakeFiles/iree-flatcc-cli.dir/__/__/__/third_party/flatcc/src/compiler/parser.c.o
+[26/29] Building C object build_tools/third_party/flatcc/CMakeFiles/iree-flatcc-cli.dir/__/__/__/third_party/flatcc/src/runtime/builder.c.o
+[27/29] Linking C executable tools/iree-flatcc-cli
+[28/29] Building CXX object build_tools/embed_data/CMakeFiles/iree-c-embed-data.dir/iree-c-embed-data-main.cc.o
+[29/29] Linking CXX executable tools/iree-c-embed-data
+-- The C compiler identification is GNU 7.5.0
+-- The CXX compiler identification is GNU 7.5.0
+-- The ASM compiler identification is GNU
+-- Found assembler: /usr/bin/aarch64-linux-gnu-gcc
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/aarch64-linux-gnu-gcc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/aarch64-linux-gnu-g++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Could not find nvcc, please set CUDAToolkit_ROOT.
+-- IREE HAL drivers:
+--   - local-sync
+--   - vulkan
+-- IREE HAL local executable library loaders:
+--   - vmvx-module
+-- IREE HAL local executable plugin mechanisms:
+--   - embedded-elf
+--   - system-library
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Failed
+-- Check if compiler accepts -pthread
+-- Check if compiler accepts -pthread - yes
+-- Found Threads: TRUE
+-- Looking for dlopen
+-- Looking for dlopen - found
+-- Performing Test IREE_SUPPORTS_VISIBILITY_DEFAULT
+-- Performing Test IREE_SUPPORTS_VISIBILITY_DEFAULT - Success
+-- Found Git: /usr/bin/git (found version "2.17.1")
+fatal: detected dubious ownership in repository at '/iree'
+To add an exception for this directory, call:
+
+	git config --global --add safe.directory /iree
+-- Not adding LLVM/MLIR because the configuration does not require it
+-- Google Benchmark version: v1.9.5, normalized to 1.9.5
+-- Looking for shm_open in rt
+-- Looking for shm_open in rt - found
+-- Performing Test HAVE_CXX_FLAG_WALL
+-- Performing Test HAVE_CXX_FLAG_WALL - Success
+-- Performing Test HAVE_CXX_FLAG_WEXTRA
+-- Performing Test HAVE_CXX_FLAG_WEXTRA - Success
+-- Performing Test HAVE_CXX_FLAG_WSHADOW
+-- Performing Test HAVE_CXX_FLAG_WSHADOW - Success
+-- Performing Test HAVE_CXX_FLAG_WFLOAT_EQUAL
+-- Performing Test HAVE_CXX_FLAG_WFLOAT_EQUAL - Success
+-- Performing Test HAVE_CXX_FLAG_WOLD_STYLE_CAST
+-- Performing Test HAVE_CXX_FLAG_WOLD_STYLE_CAST - Success
+-- Performing Test HAVE_CXX_FLAG_WCONVERSION
+-- Performing Test HAVE_CXX_FLAG_WCONVERSION - Success
+-- Performing Test HAVE_CXX_FLAG_WFORMAT_2
+-- Performing Test HAVE_CXX_FLAG_WFORMAT_2 - Success
+-- Performing Test HAVE_CXX_FLAG_WERROR
+-- Performing Test HAVE_CXX_FLAG_WERROR - Success
+-- Performing Test HAVE_CXX_FLAG_WSUGGEST_OVERRIDE
+-- Performing Test HAVE_CXX_FLAG_WSUGGEST_OVERRIDE - Success
+-- Performing Test HAVE_CXX_FLAG_PEDANTIC
+-- Performing Test HAVE_CXX_FLAG_PEDANTIC - Success
+-- Performing Test HAVE_CXX_FLAG_PEDANTIC_ERRORS
+-- Performing Test HAVE_CXX_FLAG_PEDANTIC_ERRORS - Success
+-- Performing Test HAVE_CXX_FLAG_WSHORTEN_64_TO_32
+-- Performing Test HAVE_CXX_FLAG_WSHORTEN_64_TO_32 - Failed
+-- Performing Test HAVE_CXX_FLAG_FSTRICT_ALIASING
+-- Performing Test HAVE_CXX_FLAG_FSTRICT_ALIASING - Success
+-- Performing Test HAVE_CXX_FLAG_WNO_DEPRECATED_DECLARATIONS
+-- Performing Test HAVE_CXX_FLAG_WNO_DEPRECATED_DECLARATIONS - Success
+-- Performing Test HAVE_CXX_FLAG_WNO_DEPRECATED
+-- Performing Test HAVE_CXX_FLAG_WNO_DEPRECATED - Success
+-- Performing Test HAVE_CXX_FLAG_WSTRICT_ALIASING
+-- Performing Test HAVE_CXX_FLAG_WSTRICT_ALIASING - Success
+-- Performing Test HAVE_CXX_FLAG_WTHREAD_SAFETY
+-- Performing Test HAVE_CXX_FLAG_WTHREAD_SAFETY - Failed
+-- Performing Test HAVE_CXX_FLAG_COVERAGE
+-- Performing Test HAVE_CXX_FLAG_COVERAGE - Success
+CMake Warning at third_party/benchmark/cmake/CXXFeatureCheck.cmake:65 (message):
+  If you see build failures due to cross compilation, try setting
+  HAVE_STD_REGEX to 0
+Call Stack (most recent call first):
+  third_party/benchmark/CMakeLists.txt:314 (cxx_feature_check)
+
+
+-- Performing Test STD_REGEX -- success
+-- Performing Test STEADY_CLOCK -- success
+CMake Warning at third_party/benchmark/cmake/CXXFeatureCheck.cmake:65 (message):
+  If you see build failures due to cross compilation, try setting
+  HAVE_STEADY_CLOCK to 0
+Call Stack (most recent call first):
+  third_party/benchmark/CMakeLists.txt:332 (cxx_feature_check)
+
+
+-- Performing Test PTHREAD_AFFINITY -- failed
+CMake Warning (dev) at build_tools/cmake/iree_import_binary.cmake:56 (file):
+  Given path:
+
+    /work/host-tools-build/tools/iree-tblgen
+
+  does not refer to an existing path on disk.
+Call Stack (most recent call first):
+  tools/CMakeLists.txt:43 (iree_import_binary)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+CMake Warning at build_tools/cmake/iree_import_binary.cmake:61 (message):
+  Could not find optional 'iree-tblgen' under '/work/host-tools-build/tools'.
+  Features that depend on it may fail to build.
+Call Stack (most recent call first):
+  tools/CMakeLists.txt:43 (iree_import_binary)
+
+
+CMake Warning (dev) at build_tools/cmake/iree_import_binary.cmake:56 (file):
+  Given path:
+
+    /work/host-tools-build/tools/iree-compile
+
+  does not refer to an existing path on disk.
+Call Stack (most recent call first):
+  tools/CMakeLists.txt:44 (iree_import_binary)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+CMake Warning at build_tools/cmake/iree_import_binary.cmake:61 (message):
+  Could not find optional 'iree-compile' under
+  '/work/host-tools-build/tools'.  Features that depend on it may fail to
+  build.
+Call Stack (most recent call first):
+  tools/CMakeLists.txt:44 (iree_import_binary)
+
+
+CMake Warning (dev) at build_tools/cmake/iree_import_binary.cmake:56 (file):
+  Given path:
+
+    /work/host-tools-build/tools/iree-link
+
+  does not refer to an existing path on disk.
+Call Stack (most recent call first):
+  tools/CMakeLists.txt:45 (iree_import_binary)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+CMake Warning at build_tools/cmake/iree_import_binary.cmake:61 (message):
+  Could not find optional 'iree-link' under '/work/host-tools-build/tools'.
+  Features that depend on it may fail to build.
+Call Stack (most recent call first):
+  tools/CMakeLists.txt:45 (iree_import_binary)
+
+
+CMake Warning (dev) at build_tools/cmake/iree_import_binary.cmake:56 (file):
+  Given path:
+
+    /work/host-tools-build/tools/iree-opt
+
+  does not refer to an existing path on disk.
+Call Stack (most recent call first):
+  tools/CMakeLists.txt:46 (iree_import_binary)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+CMake Warning at build_tools/cmake/iree_import_binary.cmake:61 (message):
+  Could not find optional 'iree-opt' under '/work/host-tools-build/tools'.
+  Features that depend on it may fail to build.
+Call Stack (most recent call first):
+  tools/CMakeLists.txt:46 (iree_import_binary)
+
+
+CMake Warning (dev) at build_tools/cmake/iree_import_binary.cmake:56 (file):
+  Given path:
+
+    /work/host-tools-build/tools/iree-run-mlir
+
+  does not refer to an existing path on disk.
+Call Stack (most recent call first):
+  tools/CMakeLists.txt:47 (iree_import_binary)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+CMake Warning at build_tools/cmake/iree_import_binary.cmake:61 (message):
+  Could not find optional 'iree-run-mlir' under
+  '/work/host-tools-build/tools'.  Features that depend on it may fail to
+  build.
+Call Stack (most recent call first):
+  tools/CMakeLists.txt:47 (iree_import_binary)
+
+
+CMake Warning (dev) at build_tools/cmake/iree_import_binary.cmake:56 (file):
+  Given path:
+
+    /work/host-tools-build/tools/FileCheck
+
+  does not refer to an existing path on disk.
+Call Stack (most recent call first):
+  tools/CMakeLists.txt:48 (iree_import_binary)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+CMake Warning at build_tools/cmake/iree_import_binary.cmake:61 (message):
+  Could not find optional 'FileCheck' under '/work/host-tools-build/tools'.
+  Features that depend on it may fail to build.
+Call Stack (most recent call first):
+  tools/CMakeLists.txt:48 (iree_import_binary)
+
+
+CMake Warning (dev) at build_tools/cmake/iree_import_binary.cmake:56 (file):
+  Given path:
+
+    /work/host-tools-build/tools/not
+
+  does not refer to an existing path on disk.
+Call Stack (most recent call first):
+  tools/CMakeLists.txt:49 (iree_import_binary)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+CMake Warning at build_tools/cmake/iree_import_binary.cmake:61 (message):
+  Could not find optional 'not' under '/work/host-tools-build/tools'.
+  Features that depend on it may fail to build.
+Call Stack (most recent call first):
+  tools/CMakeLists.txt:49 (iree_import_binary)
+
+
+CMake Warning (dev) at build_tools/cmake/iree_import_binary.cmake:56 (file):
+  Given path:
+
+    /work/host-tools-build/tools/clang
+
+  does not refer to an existing path on disk.
+Call Stack (most recent call first):
+  tools/CMakeLists.txt:50 (iree_import_binary)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+CMake Warning at build_tools/cmake/iree_import_binary.cmake:61 (message):
+  Could not find optional 'clang' under '/work/host-tools-build/tools'.
+  Features that depend on it may fail to build.
+Call Stack (most recent call first):
+  tools/CMakeLists.txt:50 (iree_import_binary)
+
+
+CMake Warning (dev) at build_tools/cmake/iree_import_binary.cmake:56 (file):
+  Given path:
+
+    /work/host-tools-build/tools/llvm-link
+
+  does not refer to an existing path on disk.
+Call Stack (most recent call first):
+  tools/CMakeLists.txt:51 (iree_import_binary)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+CMake Warning at build_tools/cmake/iree_import_binary.cmake:61 (message):
+  Could not find optional 'llvm-link' under '/work/host-tools-build/tools'.
+  Features that depend on it may fail to build.
+Call Stack (most recent call first):
+  tools/CMakeLists.txt:51 (iree_import_binary)
+
+
+-- Configuring IREE runtime plugins
+-- Runtime tracing disabled
+-- iree_allocator_system() using `IREE_ALLOCATOR_LIBC_*`
+-- Performing Test IREE_UK_BUILD_ARM_64_FULLFP16
+-- Performing Test IREE_UK_BUILD_ARM_64_FULLFP16 - Success
+-- Performing Test IREE_UK_BUILD_ARM_64_FP16FML
+-- Performing Test IREE_UK_BUILD_ARM_64_FP16FML - Failed
+-- Performing Test IREE_UK_BUILD_ARM_64_BF16
+-- Performing Test IREE_UK_BUILD_ARM_64_BF16 - Failed
+-- Performing Test IREE_UK_BUILD_ARM_64_DOTPROD
+-- Performing Test IREE_UK_BUILD_ARM_64_DOTPROD - Success
+-- Performing Test IREE_UK_BUILD_ARM_64_I8MM
+-- Performing Test IREE_UK_BUILD_ARM_64_I8MM - Failed
+-- IREE task topology: using sysfs (Linux)
+-- Looking for dl_iterate_phdr
+-- Looking for dl_iterate_phdr - found
+-- Configuring done (3.7s)
+-- Generating done (1.3s)
+-- Build files have been written to: /work/l4t-build
+[0/2] Re-checking globbed directories...
+[1/466] Building CXX object third_party/benchmark/src/CMakeFiles/benchmark.dir/check.cc.o
+[2/466] Building CXX object third_party/benchmark/src/CMakeFiles/benchmark.dir/colorprint.cc.o
+[3/466] Building CXX object third_party/benchmark/src/CMakeFiles/benchmark.dir/benchmark_name.cc.o
+[4/466] Building CXX object third_party/benchmark/src/CMakeFiles/benchmark.dir/benchmark_api_internal.cc.o
+[5/466] Building CXX object third_party/benchmark/src/CMakeFiles/benchmark.dir/commandlineflags.cc.o
+[6/466] Building CXX object third_party/benchmark/src/CMakeFiles/benchmark.dir/counter.cc.o
+[7/466] Building CXX object third_party/benchmark/src/CMakeFiles/benchmark.dir/console_reporter.cc.o
+[8/466] Building CXX object third_party/benchmark/src/CMakeFiles/benchmark.dir/complexity.cc.o
+[9/466] Building CXX object third_party/benchmark/src/CMakeFiles/benchmark.dir/csv_reporter.cc.o
+[10/466] Building CXX object third_party/benchmark/src/CMakeFiles/benchmark.dir/perf_counters.cc.o
+[11/466] Building CXX object third_party/benchmark/src/CMakeFiles/benchmark.dir/reporter.cc.o
+[12/466] Building CXX object third_party/benchmark/src/CMakeFiles/benchmark.dir/benchmark_runner.cc.o
+[13/466] Building C object build_tools/third_party/flatcc/CMakeFiles/flatcc_parsing.dir/__/__/__/third_party/flatcc/src/runtime/verifier.c.o
+FAILED: build_tools/third_party/flatcc/CMakeFiles/flatcc_parsing.dir/__/__/__/third_party/flatcc/src/runtime/verifier.c.o 
+/usr/bin/aarch64-linux-gnu-gcc  -I/iree -I/work/l4t-build -isystem /iree/third_party/flatcc/include -O3 -DNDEBUG -fPIC -fvisibility=hidden -Wall -Werror -Wno-error=deprecated-declarations -Wno-address -Wno-address-of-packed-member -Wno-comment -Wno-format-zero-length -Wno-uninitialized -Wno-pointer-sign -Wno-sign-compare -Wno-unused-function -Wno-unknown-pragmas -Wno-unused-but-set-variable -Wno-misleading-indentation -fmacro-prefix-map=/iree=iree -DIREE_THREADING_ENABLE=1 -MD -MT build_tools/third_party/flatcc/CMakeFiles/flatcc_parsing.dir/__/__/__/third_party/flatcc/src/runtime/verifier.c.o -MF build_tools/third_party/flatcc/CMakeFiles/flatcc_parsing.dir/__/__/__/third_party/flatcc/src/runtime/verifier.c.o.d -o build_tools/third_party/flatcc/CMakeFiles/flatcc_parsing.dir/__/__/__/third_party/flatcc/src/runtime/verifier.c.o -c /iree/third_party/flatcc/src/runtime/verifier.c
+aarch64-linux-gnu-gcc: error: unrecognized command line option '-fmacro-prefix-map=/iree=iree'
+[14/466] Building CXX object third_party/benchmark/src/CMakeFiles/benchmark.dir/json_reporter.cc.o
+[15/466] Building CXX object third_party/benchmark/src/CMakeFiles/benchmark.dir/timers.cc.o
+[16/466] Building CXX object third_party/benchmark/src/CMakeFiles/benchmark.dir/string_util.cc.o
+[17/466] Building CXX object third_party/benchmark/src/CMakeFiles/benchmark.dir/statistics.cc.o
+[18/466] Building CXX object third_party/benchmark/src/CMakeFiles/benchmark.dir/sysinfo.cc.o
+[19/466] Building CXX object third_party/benchmark/src/CMakeFiles/benchmark.dir/benchmark.cc.o
+[20/466] Building CXX object third_party/benchmark/src/CMakeFiles/benchmark.dir/benchmark_register.cc.o
+ninja: build stopped: subcommand failed.

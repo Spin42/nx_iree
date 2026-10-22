@@ -1,0 +1,55 @@
+PIPELINE_DEVICE=vulkan://GPU-00000000030000000000000000000000 inflight=2 frames=50
+PIPELINE_CPU_TICKS=31 source=linux_proc_self_stat_user_plus_system
+PIPELINE_HEARTBEAT count=76 p95_us=2096 max_us=2178
+PIPELINE_FRAME=frame_0001 latency_ms=7.308
+PIPELINE_FRAME=frame_0002 latency_ms=6.373
+PIPELINE_FRAME=frame_0003 latency_ms=6.177
+PIPELINE_FRAME=frame_0004 latency_ms=6.157
+PIPELINE_FRAME=frame_0005 latency_ms=5.695
+PIPELINE_FRAME=frame_0006 latency_ms=5.646
+PIPELINE_FRAME=frame_0007 latency_ms=5.713
+PIPELINE_FRAME=frame_0008 latency_ms=5.699
+PIPELINE_FRAME=frame_0009 latency_ms=5.708
+PIPELINE_FRAME=frame_0010 latency_ms=6.258
+PIPELINE_FRAME=frame_0011 latency_ms=5.715
+PIPELINE_FRAME=frame_0012 latency_ms=5.865
+PIPELINE_FRAME=frame_0013 latency_ms=5.848
+PIPELINE_FRAME=frame_0014 latency_ms=5.832
+PIPELINE_FRAME=frame_0015 latency_ms=5.858
+PIPELINE_FRAME=frame_0016 latency_ms=5.827
+PIPELINE_FRAME=frame_0017 latency_ms=5.868
+PIPELINE_FRAME=frame_0018 latency_ms=5.757
+PIPELINE_FRAME=frame_0019 latency_ms=5.909
+PIPELINE_FRAME=frame_0020 latency_ms=5.971
+PIPELINE_FRAME=frame_0021 latency_ms=5.834
+PIPELINE_FRAME=frame_0022 latency_ms=5.791
+PIPELINE_FRAME=frame_0023 latency_ms=5.842
+PIPELINE_FRAME=frame_0024 latency_ms=5.8
+PIPELINE_FRAME=frame_0025 latency_ms=5.799
+PIPELINE_FRAME=frame_0026 latency_ms=7.82
+PIPELINE_FRAME=frame_0027 latency_ms=6.281
+PIPELINE_FRAME=frame_0028 latency_ms=6.357
+PIPELINE_FRAME=frame_0029 latency_ms=6.06
+PIPELINE_FRAME=frame_0030 latency_ms=5.723
+PIPELINE_FRAME=frame_0031 latency_ms=5.705
+PIPELINE_FRAME=frame_0032 latency_ms=5.679
+PIPELINE_FRAME=frame_0033 latency_ms=5.723
+PIPELINE_FRAME=frame_0034 latency_ms=5.75
+PIPELINE_FRAME=frame_0035 latency_ms=6.226
+PIPELINE_FRAME=frame_0036 latency_ms=5.737
+PIPELINE_FRAME=frame_0037 latency_ms=5.846
+PIPELINE_FRAME=frame_0038 latency_ms=5.926
+PIPELINE_FRAME=frame_0039 latency_ms=5.855
+PIPELINE_FRAME=frame_0040 latency_ms=5.887
+PIPELINE_FRAME=frame_0041 latency_ms=5.788
+PIPELINE_FRAME=frame_0042 latency_ms=5.884
+PIPELINE_FRAME=frame_0043 latency_ms=5.725
+PIPELINE_FRAME=frame_0044 latency_ms=5.897
+PIPELINE_FRAME=frame_0045 latency_ms=5.927
+PIPELINE_FRAME=frame_0046 latency_ms=5.845
+PIPELINE_FRAME=frame_0047 latency_ms=5.831
+PIPELINE_FRAME=frame_0048 latency_ms=5.842
+PIPELINE_FRAME=frame_0049 latency_ms=5.855
+PIPELINE_FRAME=frame_0050 latency_ms=5.789
+PIPELINE_RESULT inflight=2 fps=333.5267788650751 wall_ms=149.913 latency_p50_ms=5.842 latency_p95_ms=6.373 includes=upload_graph_readback_synchronization_pool_scheduling_guards excludes=disk_io_input_preparation warmup_per_context=3
+PIPELINE_THROUGHPUT_PASS

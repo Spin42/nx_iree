@@ -1,0 +1,18 @@
+%{
+  flags: ["--iree-hal-target-backends=vulkan-spirv",
+   "--iree-execution-model=async-internal", "--iree-hal-memoization=false",
+   "--iree-hal-external-resources-mappable=true"],
+  name: "vga-d64",
+  shape: {480, 640},
+  inputs: [{{480, 640}, {:s, 32}}, {{480, 640}, {:s, 32}}],
+  hash: "8af923b895ac80cdf807321e9276db36ce45f256be0d1560588cba9ae143d71d"
+}
+%{
+  flags: ["--iree-hal-target-backends=vulkan-spirv",
+   "--iree-execution-model=async-internal", "--iree-hal-memoization=false",
+   "--iree-hal-external-resources-mappable=true"],
+  name: "720-d64",
+  shape: {720, 1280},
+  inputs: [{{720, 1280}, {:s, 32}}, {{720, 1280}, {:s, 32}}],
+  hash: "7ed624a4cac9120b8fccb520bdf0c47b0ebffb979ff992bb4225f873c9bbae20"
+}

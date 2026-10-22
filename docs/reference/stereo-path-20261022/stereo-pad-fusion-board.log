@@ -1,0 +1,68 @@
+BOOT_ID=6f672cb9-e70d-433c-8894-7231f93bf6b7
+GOVERNOR=simple_ondemand
+GPU_MAX=921600000
+GPU_MIN=76800000
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+DEVICE=vulkan://GPU-2b01de10000000000000000100000000
+MODEL shape={1, 2, 3} written_inputs=[]
+MODEL shape={3, 1, 3} written_inputs=[]
+MODEL shape={3, 1, 4} written_inputs=[]
+MODEL shape={4, 1, 1} written_inputs=[]
+MODEL shape={17, 5, 32} written_inputs=[]
+MODEL shape={32, 24, 32} written_inputs=[]
+MODEL shape={160, 120, 64} written_inputs=[]
+MEM_AVAILABLE_KB=3306532
+PASS first pixel: 6 exact values
+INPUTS_UNCHANGED first pixel
+MEM_AVAILABLE_KB=3297964
+PASS one disparity: 4 exact values
+INPUTS_UNCHANGED one disparity
+MEM_AVAILABLE_KB=3295788
+PASS no disparity wrap: 12 exact values
+INPUTS_UNCHANGED no disparity wrap
+MEM_AVAILABLE_KB=3294636
+PASS zero penalties: 9 exact values
+INPUTS_UNCHANGED zero penalties
+MEM_AVAILABLE_KB=3293612
+PASS large common offset: 9 exact values
+INPUTS_UNCHANGED large common offset
+MEM_AVAILABLE_KB=3292208
+PASS many independent lines: 2720 exact values
+INPUTS_UNCHANGED many independent lines
+MEM_AVAILABLE_KB=3288848
+PASS changed input: 2720 exact values
+INPUTS_UNCHANGED changed input
+MEM_AVAILABLE_KB=3286160
+PASS {32, 24, 32}: 24576 exact values
+MEM_AVAILABLE_KB=3283920
+MEM_AVAILABLE_KB=3283820
+MEM_AVAILABLE_KB=3283820
+MEM_AVAILABLE_KB=3292012
+MEM_AVAILABLE_KB=3292012
+MEM_AVAILABLE_KB=3292012
+MEM_AVAILABLE_KB=3292012
+MEM_AVAILABLE_KB=3292012
+MEM_AVAILABLE_KB=3292012
+MEM_AVAILABLE_KB=3292012
+PATH_BENCH shape={32, 24, 32} ms=[37.381, 68.579, 74.076, 67.749, 76.799, 67.605, 71.027, 74.594, 58.342, 72.151] input_bytes=98304 output_bytes=98304 includes=invoke_and_readback
+INPUTS_UNCHANGED {32, 24, 32}
+MEM_AVAILABLE_KB=3292012
+PASS {160, 120, 64}: 1228800 exact values
+MEM_AVAILABLE_KB=3268176
+MEM_AVAILABLE_KB=3265776
+MEM_AVAILABLE_KB=3261096
+MEM_AVAILABLE_KB=3261028
+MEM_AVAILABLE_KB=3260776
+MEM_AVAILABLE_KB=3262668
+MEM_AVAILABLE_KB=3262668
+MEM_AVAILABLE_KB=3268068
+MEM_AVAILABLE_KB=3267816
+MEM_AVAILABLE_KB=3269332
+PATH_BENCH shape={160, 120, 64} ms=[407.481, 314.296, 398.814, 401.215, 334.509, 401.747, 408.572, 373.421, 304.694, 418.881] input_bytes=4915200 output_bytes=4915200 includes=invoke_and_readback
+INPUTS_UNCHANGED {160, 120, 64}
+STEREO_PATH_PASS
+CHILD_EXIT=0
+GPU_ERRORS=0
+BOARD_STEREO_PASS
+:ok

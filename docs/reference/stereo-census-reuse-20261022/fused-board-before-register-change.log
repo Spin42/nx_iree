@@ -1,0 +1,125 @@
+BOOT_ID=6f672cb9-e70d-433c-8894-7231f93bf6b7
+GOVERNOR=simple_ondemand
+GPU_MAX=921600000
+GPU_MIN=76800000
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+CENSUS_DEVICE=vulkan://GPU-2b01de10000000000000000100000000 shape={136, 320} parameters=%{block: 8, paths: 8, disparities: 64, p1: 8, p2: 64, uniqueness: 1.0526315789473684, selector: "fused", schedule: "tiled", census: "classic"}
+CENSUS_FRAME=frame_0001 total_ms=31.596 phases_ms=%{:upload => 1.912, :readback => 1.485, "census" => 1.926, "filter" => 1.313, "paths" => 15.835, "select" => 8.991}
+CENSUS_FRAME=frame_0002 total_ms=34.384 phases_ms=%{:upload => 2.429, :readback => 1.0, "census" => 1.881, "filter" => 1.748, "paths" => 15.747, "select" => 11.446}
+CENSUS_FRAME=frame_0003 total_ms=40.997 phases_ms=%{:upload => 3.026, :readback => 1.719, "census" => 2.625, "filter" => 2.738, "paths" => 18.838, "select" => 11.859}
+CENSUS_FRAME=frame_0004 total_ms=39.574 phases_ms=%{:upload => 4.339, :readback => 1.688, "census" => 3.408, "filter" => 2.538, "paths" => 17.069, "select" => 10.327}
+CENSUS_FRAME=frame_0005 total_ms=39.332 phases_ms=%{:upload => 4.181, :readback => 1.715, "census" => 3.098, "filter" => 2.881, "paths" => 16.969, "select" => 10.283}
+CENSUS_FRAME=frame_0006 total_ms=39.357 phases_ms=%{:upload => 4.141, :readback => 1.745, "census" => 3.267, "filter" => 2.641, "paths" => 17.065, "select" => 10.297}
+CENSUS_FRAME=frame_0007 total_ms=39.66 phases_ms=%{:upload => 4.406, :readback => 1.705, "census" => 3.163, "filter" => 2.85, "paths" => 17.015, "select" => 10.317}
+CENSUS_FRAME=frame_0008 total_ms=40.167 phases_ms=%{:upload => 4.217, :readback => 2.096, "census" => 3.492, "filter" => 2.522, "paths" => 17.176, "select" => 10.456}
+CENSUS_FRAME=frame_0009 total_ms=41.174 phases_ms=%{:upload => 4.378, :readback => 1.796, "census" => 3.358, "filter" => 2.883, "paths" => 17.548, "select" => 11.006}
+CENSUS_FRAME=frame_0010 total_ms=40.899 phases_ms=%{:upload => 4.078, :readback => 1.903, "census" => 3.334, "filter" => 2.779, "paths" => 17.652, "select" => 10.942}
+CENSUS_FRAME=frame_0011 total_ms=41.435 phases_ms=%{:upload => 4.674, :readback => 2.152, "census" => 3.264, "filter" => 2.527, "paths" => 17.653, "select" => 10.955}
+CENSUS_FRAME=frame_0012 total_ms=40.744 phases_ms=%{:upload => 4.029, :readback => 2.063, "census" => 3.396, "filter" => 2.413, "paths" => 17.595, "select" => 11.037}
+CENSUS_FRAME=frame_0013 total_ms=41.39 phases_ms=%{:upload => 4.526, :readback => 1.725, "census" => 3.523, "filter" => 2.863, "paths" => 17.53, "select" => 11.015}
+CENSUS_FRAME=frame_0014 total_ms=37.534 phases_ms=%{:upload => 4.228, :readback => 2.142, "census" => 2.409, "filter" => 1.644, "paths" => 16.647, "select" => 10.258}
+CENSUS_FRAME=frame_0015 total_ms=37.62 phases_ms=%{:upload => 4.481, :readback => 1.985, "census" => 2.667, "filter" => 2.174, "paths" => 16.554, "select" => 9.547}
+CENSUS_FRAME=frame_0016 total_ms=36.257 phases_ms=%{:upload => 4.236, :readback => 2.17, "census" => 2.085, "filter" => 1.742, "paths" => 16.162, "select" => 9.66}
+CENSUS_FRAME=frame_0017 total_ms=36.379 phases_ms=%{:upload => 4.348, :readback => 2.167, "census" => 2.177, "filter" => 1.62, "paths" => 16.232, "select" => 9.623}
+CENSUS_FRAME=frame_0018 total_ms=41.1 phases_ms=%{:upload => 4.525, :readback => 2.006, "census" => 6.42, "filter" => 2.049, "paths" => 16.403, "select" => 9.489}
+CENSUS_FRAME=frame_0019 total_ms=35.786 phases_ms=%{:upload => 3.788, :readback => 1.428, "census" => 2.48, "filter" => 2.07, "paths" => 16.346, "select" => 9.468}
+CENSUS_FRAME=frame_0020 total_ms=34.782 phases_ms=%{:upload => 3.477, :readback => 1.66, "census" => 2.531, "filter" => 1.458, "paths" => 15.99, "select" => 9.463}
+CENSUS_FRAME=frame_0021 total_ms=34.786 phases_ms=%{:upload => 3.15, :readback => 1.691, "census" => 2.474, "filter" => 1.911, "paths" => 15.889, "select" => 9.464}
+CENSUS_FRAME=frame_0022 total_ms=35.631 phases_ms=%{:upload => 3.027, :readback => 1.414, "census" => 2.463, "filter" => 1.786, "paths" => 15.885, "select" => 10.856}
+CENSUS_FRAME=frame_0023 total_ms=34.613 phases_ms=%{:upload => 3.151, :readback => 1.498, "census" => 2.243, "filter" => 2.068, "paths" => 16.01, "select" => 9.438}
+CENSUS_FRAME=frame_0024 total_ms=34.97 phases_ms=%{:upload => 3.459, :readback => 1.597, "census" => 2.281, "filter" => 1.53, "paths" => 16.241, "select" => 9.659}
+CENSUS_FRAME=frame_0025 total_ms=35.18 phases_ms=%{:upload => 3.476, :readback => 1.608, "census" => 2.54, "filter" => 1.841, "paths" => 15.984, "select" => 9.529}
+CENSUS_FRAME=frame_0026 total_ms=34.545 phases_ms=%{:upload => 3.301, :readback => 1.423, "census" => 2.265, "filter" => 1.746, "paths" => 16.054, "select" => 9.558}
+CENSUS_FRAME=frame_0027 total_ms=34.743 phases_ms=%{:upload => 3.317, :readback => 1.59, "census" => 2.214, "filter" => 1.737, "paths" => 16.046, "select" => 9.63}
+CENSUS_FRAME=frame_0028 total_ms=34.486 phases_ms=%{:upload => 3.129, :readback => 1.621, "census" => 2.186, "filter" => 2.054, "paths" => 15.946, "select" => 9.346}
+CENSUS_FRAME=frame_0029 total_ms=39.331 phases_ms=%{:upload => 3.326, :readback => 1.641, "census" => 2.351, "filter" => 2.014, "paths" => 20.222, "select" => 9.57}
+CENSUS_FRAME=frame_0030 total_ms=33.185 phases_ms=%{:upload => 3.294, :readback => 1.456, "census" => 1.967, "filter" => 1.973, "paths" => 15.467, "select" => 8.837}
+CENSUS_FRAME=frame_0031 total_ms=39.026 phases_ms=%{:upload => 2.94, :readback => 1.601, "census" => 2.313, "filter" => 6.715, "paths" => 15.93, "select" => 9.321}
+CENSUS_FRAME=frame_0032 total_ms=34.489 phases_ms=%{:upload => 3.298, :readback => 1.669, "census" => 2.403, "filter" => 1.427, "paths" => 15.896, "select" => 9.595}
+CENSUS_FRAME=frame_0033 total_ms=34.554 phases_ms=%{:upload => 3.176, :readback => 1.316, "census" => 2.432, "filter" => 1.966, "paths" => 15.87, "select" => 9.531}
+CENSUS_FRAME=frame_0034 total_ms=34.125 phases_ms=%{:upload => 3.063, :readback => 1.596, "census" => 2.134, "filter" => 1.654, "paths" => 16.002, "select" => 9.472}
+CENSUS_FRAME=frame_0035 total_ms=34.162 phases_ms=%{:upload => 3.181, :readback => 1.413, "census" => 2.182, "filter" => 1.768, "paths" => 15.956, "select" => 9.454}
+CENSUS_FRAME=frame_0036 total_ms=34.255 phases_ms=%{:upload => 3.13, :readback => 1.635, "census" => 2.309, "filter" => 1.87, "paths" => 15.753, "select" => 9.349}
+CENSUS_FRAME=frame_0037 total_ms=34.302 phases_ms=%{:upload => 3.158, :readback => 1.402, "census" => 2.206, "filter" => 1.612, "paths" => 16.007, "select" => 9.714}
+CENSUS_FRAME=frame_0038 total_ms=36.889 phases_ms=%{:upload => 3.122, :readback => 1.66, "census" => 2.295, "filter" => 1.643, "paths" => 16.033, "select" => 11.927}
+CENSUS_FRAME=frame_0039 total_ms=34.448 phases_ms=%{:upload => 3.136, :readback => 1.502, "census" => 2.217, "filter" => 2.177, "paths" => 15.823, "select" => 9.308}
+CENSUS_FRAME=frame_0040 total_ms=34.786 phases_ms=%{:upload => 3.193, :readback => 1.605, "census" => 2.345, "filter" => 1.824, "paths" => 16.083, "select" => 9.534}
+CENSUS_FRAME=frame_0041 total_ms=34.131 phases_ms=%{:upload => 3.183, :readback => 1.524, "census" => 1.989, "filter" => 1.675, "paths" => 15.891, "select" => 9.662}
+CENSUS_FRAME=frame_0042 total_ms=34.55 phases_ms=%{:upload => 3.144, :readback => 1.492, "census" => 2.381, "filter" => 2.0, "paths" => 15.939, "select" => 9.389}
+CENSUS_FRAME=frame_0043 total_ms=34.808 phases_ms=%{:upload => 3.334, :readback => 1.645, "census" => 2.471, "filter" => 1.573, "paths" => 15.929, "select" => 9.651}
+CENSUS_FRAME=frame_0044 total_ms=34.458 phases_ms=%{:upload => 3.248, :readback => 1.469, "census" => 2.26, "filter" => 2.075, "paths" => 15.843, "select" => 9.358}
+CENSUS_FRAME=frame_0045 total_ms=34.702 phases_ms=%{:upload => 3.131, :readback => 1.624, "census" => 2.375, "filter" => 1.998, "paths" => 15.976, "select" => 9.393}
+CENSUS_FRAME=frame_0046 total_ms=34.916 phases_ms=%{:upload => 2.601, :readback => 1.597, "census" => 2.012, "filter" => 1.556, "paths" => 16.703, "select" => 10.244}
+CENSUS_FRAME=frame_0047 total_ms=34.99 phases_ms=%{:upload => 3.308, :readback => 1.486, "census" => 2.276, "filter" => 1.616, "paths" => 16.511, "select" => 9.584}
+CENSUS_FRAME=frame_0048 total_ms=34.779 phases_ms=%{:upload => 3.034, :readback => 1.469, "census" => 2.621, "filter" => 2.173, "paths" => 15.844, "select" => 9.435}
+CENSUS_FRAME=frame_0049 total_ms=34.906 phases_ms=%{:upload => 3.324, :readback => 1.618, "census" => 2.539, "filter" => 1.706, "paths" => 16.0, "select" => 9.513}
+CENSUS_FRAME=frame_0050 total_ms=34.312 phases_ms=%{:upload => 3.302, :readback => 1.54, "census" => 2.141, "filter" => 1.677, "paths" => 15.727, "select" => 9.717}
+CENSUS_RESULT fps=27.484230922508214 p50_ms=34.906 p95_ms=41.174 includes=upload_census_paths_selection_median_consistency_readback excludes=decode_disk_io warmup=3
+CENSUS_STEREO_PASS
+CHILD_EXIT=0
+GPU_ERRORS=0
+BOARD_STEREO_PASS
+BOOT_ID=6f672cb9-e70d-433c-8894-7231f93bf6b7
+GOVERNOR=simple_ondemand
+GPU_MAX=921600000
+GPU_MIN=76800000
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+CENSUS_DEVICE=vulkan://GPU-2b01de10000000000000000100000000 shape={136, 320} parameters=%{block: 8, paths: 8, disparities: 64, p1: 8, p2: 64, uniqueness: 1.0526315789473684, selector: "fused", schedule: "tiled", census: "classic"}
+CENSUS_FRAME=frame_0001 total_ms=43.182 phases_ms=%{:upload => 9.015, :readback => 2.135, "census" => 2.868, "filter" => 2.116, "paths" => 16.732, "select" => 10.113}
+CENSUS_FRAME=frame_0002 total_ms=47.154 phases_ms=%{:upload => 3.223, :readback => 1.638, "census" => 2.556, "filter" => 2.447, "paths" => 19.393, "select" => 17.764}
+CENSUS_FRAME=frame_0003 total_ms=37.778 phases_ms=%{:upload => 3.752, :readback => 1.706, "census" => 2.783, "filter" => 2.565, "paths" => 16.891, "select" => 9.879}
+CENSUS_FRAME=frame_0004 total_ms=37.793 phases_ms=%{:upload => 3.941, :readback => 1.814, "census" => 3.014, "filter" => 2.345, "paths" => 16.67, "select" => 9.805}
+CENSUS_FRAME=frame_0005 total_ms=37.936 phases_ms=%{:upload => 3.775, :readback => 1.716, "census" => 3.021, "filter" => 2.483, "paths" => 16.822, "select" => 9.914}
+CENSUS_FRAME=frame_0006 total_ms=38.139 phases_ms=%{:upload => 3.994, :readback => 1.781, "census" => 3.053, "filter" => 2.271, "paths" => 16.802, "select" => 10.036}
+CENSUS_FRAME=frame_0007 total_ms=38.851 phases_ms=%{:upload => 3.85, :readback => 2.031, "census" => 2.825, "filter" => 2.779, "paths" => 16.902, "select" => 10.254}
+CENSUS_FRAME=frame_0008 total_ms=38.938 phases_ms=%{:upload => 4.278, :readback => 2.121, "census" => 3.065, "filter" => 2.38, "paths" => 16.945, "select" => 9.939}
+CENSUS_FRAME=frame_0009 total_ms=40.731 phases_ms=%{:upload => 4.427, :readback => 2.174, "census" => 3.404, "filter" => 2.661, "paths" => 17.166, "select" => 10.688}
+CENSUS_FRAME=frame_0010 total_ms=39.61 phases_ms=%{:upload => 4.236, :readback => 2.196, "census" => 3.442, "filter" => 2.188, "paths" => 17.258, "select" => 10.081}
+CENSUS_FRAME=frame_0011 total_ms=39.225 phases_ms=%{:upload => 4.266, :readback => 2.149, "census" => 3.212, "filter" => 2.425, "paths" => 16.762, "select" => 10.199}
+CENSUS_FRAME=frame_0012 total_ms=39.512 phases_ms=%{:upload => 4.34, :readback => 2.19, "census" => 3.424, "filter" => 2.469, "paths" => 16.768, "select" => 10.111}
+CENSUS_FRAME=frame_0013 total_ms=39.298 phases_ms=%{:upload => 4.093, :readback => 2.268, "census" => 3.206, "filter" => 2.469, "paths" => 16.784, "select" => 10.267}
+CENSUS_FRAME=frame_0014 total_ms=36.003 phases_ms=%{:upload => 4.389, :readback => 2.23, "census" => 2.106, "filter" => 1.692, "paths" => 16.14, "select" => 9.238}
+CENSUS_FRAME=frame_0015 total_ms=35.767 phases_ms=%{:upload => 3.936, :readback => 2.179, "census" => 2.371, "filter" => 1.776, "paths" => 16.04, "select" => 9.261}
+CENSUS_FRAME=frame_0016 total_ms=36.293 phases_ms=%{:upload => 4.371, :readback => 2.163, "census" => 2.59, "filter" => 1.771, "paths" => 16.111, "select" => 9.079}
+CENSUS_FRAME=frame_0017 total_ms=39.464 phases_ms=%{:upload => 4.435, :readback => 2.178, "census" => 5.73, "filter" => 1.525, "paths" => 16.203, "select" => 9.186}
+CENSUS_FRAME=frame_0018 total_ms=36.794 phases_ms=%{:upload => 4.479, :readback => 2.215, "census" => 2.587, "filter" => 2.043, "paths" => 15.917, "select" => 9.344}
+CENSUS_FRAME=frame_0019 total_ms=35.749 phases_ms=%{:upload => 3.881, :readback => 1.675, "census" => 2.095, "filter" => 1.994, "paths" => 16.07, "select" => 9.842}
+CENSUS_FRAME=frame_0020 total_ms=35.071 phases_ms=%{:upload => 3.165, :readback => 1.626, "census" => 2.304, "filter" => 1.612, "paths" => 16.756, "select" => 9.4}
+CENSUS_FRAME=frame_0021 total_ms=35.184 phases_ms=%{:upload => 3.307, :readback => 1.632, "census" => 2.332, "filter" => 1.942, "paths" => 15.919, "select" => 9.848}
+CENSUS_FRAME=frame_0022 total_ms=34.67 phases_ms=%{:upload => 3.197, :readback => 1.689, "census" => 2.361, "filter" => 2.134, "paths" => 15.902, "select" => 9.18}
+CENSUS_FRAME=frame_0023 total_ms=34.84 phases_ms=%{:upload => 3.35, :readback => 1.675, "census" => 2.49, "filter" => 1.611, "paths" => 16.203, "select" => 9.306}
+CENSUS_FRAME=frame_0024 total_ms=32.365 phases_ms=%{:upload => 1.847, :readback => 1.589, "census" => 1.582, "filter" => 1.034, "paths" => 16.253, "select" => 9.874}
+CENSUS_FRAME=frame_0025 total_ms=33.922 phases_ms=%{:upload => 2.366, :readback => 1.695, "census" => 2.253, "filter" => 1.938, "paths" => 16.213, "select" => 9.248}
+CENSUS_FRAME=frame_0026 total_ms=34.397 phases_ms=%{:upload => 3.292, :readback => 1.57, "census" => 2.365, "filter" => 1.56, "paths" => 15.913, "select" => 9.491}
+CENSUS_FRAME=frame_0027 total_ms=35.195 phases_ms=%{:upload => 3.462, :readback => 1.785, "census" => 2.519, "filter" => 2.147, "paths" => 15.885, "select" => 9.181}
+CENSUS_FRAME=frame_0028 total_ms=34.203 phases_ms=%{:upload => 3.062, :readback => 1.46, "census" => 2.469, "filter" => 1.749, "paths" => 16.206, "select" => 9.05}
+CENSUS_FRAME=frame_0029 total_ms=34.096 phases_ms=%{:upload => 3.121, :readback => 1.453, "census" => 2.206, "filter" => 1.885, "paths" => 15.936, "select" => 9.211}
+CENSUS_FRAME=frame_0030 total_ms=35.397 phases_ms=%{:upload => 2.977, :readback => 1.522, "census" => 2.219, "filter" => 2.108, "paths" => 16.652, "select" => 9.72}
+CENSUS_FRAME=frame_0031 total_ms=34.64 phases_ms=%{:upload => 3.104, :readback => 1.552, "census" => 2.342, "filter" => 1.984, "paths" => 16.347, "select" => 9.101}
+CENSUS_FRAME=frame_0032 total_ms=33.973 phases_ms=%{:upload => 3.291, :readback => 1.391, "census" => 2.332, "filter" => 1.273, "paths" => 16.092, "select" => 9.394}
+CENSUS_FRAME=frame_0033 total_ms=38.35 phases_ms=%{:upload => 2.764, :readback => 1.319, "census" => 7.217, "filter" => 1.846, "paths" => 15.826, "select" => 9.17}
+CENSUS_FRAME=frame_0034 total_ms=33.812 phases_ms=%{:upload => 3.03, :readback => 1.61, "census" => 2.373, "filter" => 1.319, "paths" => 15.981, "select" => 9.29}
+CENSUS_FRAME=frame_0035 total_ms=33.395 phases_ms=%{:upload => 2.877, :readback => 1.315, "census" => 2.51, "filter" => 1.772, "paths" => 15.603, "select" => 9.116}
+CENSUS_FRAME=frame_0036 total_ms=34.365 phases_ms=%{:upload => 2.862, :readback => 1.511, "census" => 2.243, "filter" => 1.431, "paths" => 16.443, "select" => 9.662}
+CENSUS_FRAME=frame_0037 total_ms=34.266 phases_ms=%{:upload => 3.116, :readback => 1.327, "census" => 2.273, "filter" => 1.922, "paths" => 16.287, "select" => 9.137}
+CENSUS_FRAME=frame_0038 total_ms=32.793 phases_ms=%{:upload => 2.794, :readback => 1.466, "census" => 2.238, "filter" => 1.524, "paths" => 15.67, "select" => 8.893}
+CENSUS_FRAME=frame_0039 total_ms=33.309 phases_ms=%{:upload => 2.921, :readback => 1.327, "census" => 2.206, "filter" => 1.915, "paths" => 15.815, "select" => 8.924}
+CENSUS_FRAME=frame_0040 total_ms=36.017 phases_ms=%{:upload => 2.998, :readback => 1.315, "census" => 4.882, "filter" => 1.888, "paths" => 15.828, "select" => 8.898}
+CENSUS_FRAME=frame_0041 total_ms=33.449 phases_ms=%{:upload => 3.067, :readback => 1.395, "census" => 2.261, "filter" => 1.412, "paths" => 15.841, "select" => 9.265}
+CENSUS_FRAME=frame_0042 total_ms=33.443 phases_ms=%{:upload => 2.772, :readback => 1.322, "census" => 2.351, "filter" => 1.831, "paths" => 15.729, "select" => 9.234}
+CENSUS_FRAME=frame_0043 total_ms=33.316 phases_ms=%{:upload => 2.865, :readback => 1.329, "census" => 2.065, "filter" => 1.724, "paths" => 15.875, "select" => 9.255}
+CENSUS_FRAME=frame_0044 total_ms=33.374 phases_ms=%{:upload => 2.831, :readback => 1.51, "census" => 2.449, "filter" => 1.284, "paths" => 15.838, "select" => 9.259}
+CENSUS_FRAME=frame_0045 total_ms=33.711 phases_ms=%{:upload => 2.786, :readback => 1.317, "census" => 2.592, "filter" => 1.95, "paths" => 15.725, "select" => 9.14}
+CENSUS_FRAME=frame_0046 total_ms=33.551 phases_ms=%{:upload => 3.073, :readback => 1.385, "census" => 2.485, "filter" => 1.441, "paths" => 15.97, "select" => 8.994}
+CENSUS_FRAME=frame_0047 total_ms=38.239 phases_ms=%{:upload => 1.781, :readback => 1.321, "census" => 6.997, "filter" => 1.945, "paths" => 16.499, "select" => 9.493}
+CENSUS_FRAME=frame_0048 total_ms=35.035 phases_ms=%{:upload => 3.064, :readback => 1.456, "census" => 2.205, "filter" => 1.699, "paths" => 16.758, "select" => 9.639}
+CENSUS_FRAME=frame_0049 total_ms=33.789 phases_ms=%{:upload => 2.888, :readback => 1.329, "census" => 2.111, "filter" => 1.95, "paths" => 16.218, "select" => 9.087}
+CENSUS_FRAME=frame_0050 total_ms=33.151 phases_ms=%{:upload => 2.842, :readback => 1.405, "census" => 2.279, "filter" => 1.42, "paths" => 15.988, "select" => 9.014}
+CENSUS_RESULT fps=27.72333223364115 p50_ms=35.071 p95_ms=40.731 includes=upload_census_paths_selection_median_consistency_readback excludes=decode_disk_io warmup=3
+CENSUS_STEREO_PASS
+CHILD_EXIT=0
+GPU_ERRORS=0
+BOARD_STEREO_PASS
+:ok

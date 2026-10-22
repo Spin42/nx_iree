@@ -1,0 +1,13 @@
+EXPORTED cost_left 10746 bytes
+EXPORTED cost_right 10746 bytes
+EXPORTED select 15178 bytes
+EXPORTED consistent 8763 bytes
+EXPORTED path0 21098 bytes
+EXPORTED path1 21630 bytes
+EXPORTED path2 21598 bytes
+EXPORTED path3 21630 bytes
+EXPORTED path4 21582 bytes
+EXPORTED path5 21614 bytes
+EXPORTED path6 21614 bytes
+EXPORTED path7 21630 bytes
+WROTE /tmp/video-packed-pixels4-320.bin

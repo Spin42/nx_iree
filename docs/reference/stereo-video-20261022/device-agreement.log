@@ -1,0 +1,2 @@
+alley-board PASS frames= 50 max_absolute_disparity_difference= 3.814697265625e-06 invalid_masks=exact
+alley-board-max PASS frames= 50 max_absolute_disparity_difference= 3.814697265625e-06 invalid_masks=exact

@@ -1,0 +1,18 @@
+CONTROLLED_GPU_MIN=921600000
+CONTROLLED_COMPILER=vulkan-stream.bin
+BOOT_ID=6f672cb9-e70d-433c-8894-7231f93bf6b7
+GOVERNOR=simple_ondemand
+GPU_MAX=921600000
+GPU_MIN=921600000
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+STREAM_DEVICE=vulkan://GPU-2b01de10000000000000000100000000
+STREAM_RESULT words=1048576 bytes_read_written=8388608 median_ms=1.116 GBps=7.516673835125448 ms=[1.224, 1.263, 1.159, 1.221, 1.107, 1.238, 1.097, 5.166, 1.068, 1.166, 1.077, 1.137, 1.084, 1.133, 1.064, 1.118, 1.068, 1.083, 1.052, 1.116] includes=runtime_allocation_completed_dispatch excludes=upload_readback_release
+STREAM_RESULT words=4194304 bytes_read_written=33554432 median_ms=2.951 GBps=11.370529312097593 ms=[2.816, 2.802, 4.961, 2.889, 2.997, 2.856, 3.028, 3.036, 3.016, 2.947, 3.004, 2.834, 2.785, 2.783, 3.009, 3.032, 3.096, 3.032, 2.951, 2.828] includes=runtime_allocation_completed_dispatch excludes=upload_readback_release
+VULKAN_STREAM_PASS
+CHILD_EXIT=0
+GPU_ERRORS=0
+BOARD_STEREO_PASS
+RESTORED_GPU_MIN=76800000
+RESTORED_GOVERNOR=simple_ondemand
+:ok

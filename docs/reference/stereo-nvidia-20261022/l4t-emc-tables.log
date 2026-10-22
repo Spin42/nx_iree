@@ -1,0 +1,15 @@
+Table Version Info (Table version, rev, rate):
+13_1600000_12_V9.8.7_V1.6
+7
+1600000
+13_204000_12_V9.8.7_V1.6
+7
+204000
+DRAM strap: 0
+Manufacturer ID (MR5): 255
+Revision ID-1 (MR6): 0
+Revision ID-2 (MR7): 1
+IO Width/Density/Type (MR8): 0x10
+204000000
+0
+4aab98ddb0a25848b1d95212f8c2e7af4725c89d16f9b7cf150341f935e983a2  /boot/tegra210-porg-p3448-emc-a00.dtbo

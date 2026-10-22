@@ -1,0 +1,5 @@
+AGREEMENT_PASS name=packed-host frames=50 max_absolute_disparity_difference=0.0 invalid_mask_differences=0
+AGREEMENT_PASS name=fused-host frames=50 max_absolute_disparity_difference=0.0 invalid_mask_differences=0
+AGREEMENT_PASS name=packed-board frames=50 max_absolute_disparity_difference=0.0 invalid_mask_differences=0
+AGREEMENT_PASS name=packed-pixels4-board frames=50 max_absolute_disparity_difference=0.0 invalid_mask_differences=0
+AGREEMENT_PASS name=fused-board frames=50 max_absolute_disparity_difference=0.0 invalid_mask_differences=0

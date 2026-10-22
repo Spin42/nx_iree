@@ -1,0 +1,11 @@
+CENSUS_DEVICE=vulkan://GPU-00000000030000000000000000000000 shape={17, 73} parameters=%{paths: 8, disparities: 64, p1: 10, p2: 120, uniqueness: 1.1}
+CENSUS_ORACLE_PASS frame_0001
+** (RuntimeError) oracle disagreement: left_disparity first=[{{9.0, 8.5}, 301}]
+    stereo/census/run.exs:132: anonymous fn/3 in CensusStereoBench.pipeline/3
+    (elixir 1.20.4) lib/enum.ex:2622: Enum."-reduce/3-lists^foldl/2-0-"/3
+    stereo/census/run.exs:121: CensusStereoBench.pipeline/3
+    stereo/census/run.exs:140: CensusStereoBench.pipeline/3
+    stereo/census/run.exs:94: CensusStereoBench.process/3
+    stereo/census/run.exs:38: anonymous fn/5 in CensusStereoBench.run/0
+    (elixir 1.20.4) lib/enum.ex:2622: Enum."-reduce/3-lists^foldl/2-0-"/3
+    stereo/census/run.exs:37: CensusStereoBench.run/0

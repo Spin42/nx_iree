@@ -1,0 +1,8 @@
+g++ -shared -o /var/home/marc/Projects/nx_iree/cache/libnx_iree.so cache/objs/nx_iree.o -Lcache/iree-runtime -lnx_iree_runtime -shared -Wl,-rpath,'$ORIGIN/iree-runtime'
+Compiling 1 file (.ex)
+Running ExUnit with seed: 768050, max_cases: 32
+
+...
+Finished in 0.03 seconds (0.03s async, 0.00s sync)
+
+Result: 3 passed

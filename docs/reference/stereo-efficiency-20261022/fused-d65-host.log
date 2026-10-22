@@ -1,0 +1,22 @@
+     warning: the variable "words_per_pixel" is accessed inside size(...) of a bitstring but it was defined outside of the match. You must precede it with the pin operator
+     │
+ 244 │       for <<pixel::binary-size(words_per_pixel * 4) <- binary>>, into: <<>> do
+     │                                ~
+     │
+     └─ stereo/video/run.exs:244:32: StereoVideoBench.oracle_binary/3
+
+VIDEO_DEVICE=vulkan://GPU-00000000030000000000000000000000 shape={13, 70} disparities=65 frames=4
+VIDEO_INTERMEDIATES_PASS frame_0001
+VIDEO_INTERMEDIATES_PASS frame_0002
+VIDEO_INTERMEDIATES_PASS frame_0003
+VIDEO_INTERMEDIATES_PASS frame_0004
+VIDEO_ORACLE_PASS frame_0001
+VIDEO_FRAME=frame_0001 total_ms=2.821 phases_ms=%{left: %{select: 0.144, paths: 0.965, cost: 0.097}, right: %{select: 0.145, paths: 0.948, cost: 0.092}, upload: 0.203, readback: 0.127, consistency: 0.086}
+VIDEO_ORACLE_PASS frame_0002
+VIDEO_FRAME=frame_0002 total_ms=3.117 phases_ms=%{left: %{select: 0.139, paths: 0.93, cost: 0.125}, right: %{select: 0.144, paths: 0.941, cost: 0.089}, upload: 0.533, readback: 0.126, consistency: 0.081}
+VIDEO_ORACLE_PASS frame_0003
+VIDEO_FRAME=frame_0003 total_ms=2.92 phases_ms=%{left: %{select: 0.143, paths: 0.965, cost: 0.109}, right: %{select: 0.141, paths: 0.941, cost: 0.084}, upload: 0.314, readback: 0.131, consistency: 0.085}
+VIDEO_ORACLE_PASS frame_0004
+VIDEO_FRAME=frame_0004 total_ms=2.928 phases_ms=%{left: %{select: 0.142, paths: 0.97, cost: 0.109}, right: %{select: 0.145, paths: 0.945, cost: 0.089}, upload: 0.304, readback: 0.13, consistency: 0.086}
+VIDEO_RESULT fps=339.3857118615306 p50_ms=2.92 p95_ms=3.117 p99_ms=3.117 includes=upload_cost_16paths_select_consistency_readback excludes=decode_disk_io_validation warmup=3
+STEREO_PATH_PASS

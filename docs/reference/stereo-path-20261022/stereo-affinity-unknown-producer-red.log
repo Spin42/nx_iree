@@ -1,0 +1,137 @@
+compiler/src/iree/compiler/Dialect/Stream/Transforms/test/elide_async_copies_scf.mlir:87:12: error: CHECK: expected string not found in input
+ // CHECK: stream.async.transfer
+           ^
+<stdin>:64:71: note: scanning from here
+ util.func public @inferred_transfer_preserves_unknown_select_affinity(%arg0: index, %arg1: i1) -> !stream.resource<*> {
+                                                                      ^
+<stdin>:66:7: note: possible intended match here
+ %0 = stream.async.splat on(#hal.device.promise<@dev_a>) %c123_i32 : i32 -> !stream.resource<*>{%arg0}
+      ^
+
+Input file: <stdin>
+Check file: compiler/src/iree/compiler/Dialect/Stream/Transforms/test/elide_async_copies_scf.mlir
+
+-dump-input=help explains the following input dump.
+
+Input was:
+<<<<<<
+            .
+            .
+            .
+           59:  } 
+           60: } 
+           61:  
+           62: // ----- 
+           63: module attributes {stream.affinity.default = #hal.device.promise<@dev_a>} { 
+           64:  util.func public @inferred_transfer_preserves_unknown_select_affinity(%arg0: index, %arg1: i1) -> !stream.resource<*> { 
+check:87'0                                                                          {                                                     search range start (exclusive)
+check:87'1                                                                                                                                error: no match found in search range
+           65:  %c123_i32 = arith.constant 123 : i32 
+           66:  %0 = stream.async.splat on(#hal.device.promise<@dev_a>) %c123_i32 : i32 -> !stream.resource<*>{%arg0} 
+check:87'2           ?                                                                                                  possible intended match
+           67:  %1 = stream.async.splat on(#hal.device.promise<@dev_b>) %c123_i32 : i32 -> !stream.resource<*>{%arg0} 
+           68:  %2 = arith.select %arg1, %0, %1 : !stream.resource<*> 
+           69:  util.return %2 : !stream.resource<*> 
+           70:  } 
+           71: } 
+           72:  
+           73: // ----- 
+           74: module { 
+           75:  util.func public @scf_for_inferred_transfer_preserves_borrowed_copy(%arg0: !util.buffer, %arg1: index) -> !stream.resource<external> { 
+check:87'3                                                                         }                                                                     search range end (exclusive)
+           76:  %c0 = arith.constant 0 : index 
+           77:  %c1 = arith.constant 1 : index 
+           78:  %c4 = arith.constant 4 : index 
+           79:  %c123_i32 = arith.constant 123 : i32 
+           80:  %0 = stream.tensor.import on(#hal.device.promise<@dev_a>) %arg0 : !util.buffer -> tensor<1xi32> in !stream.resource<external>{%c4} 
+            .
+            .
+            .
+>>>>>>
+compiler/src/iree/compiler/Dialect/Stream/Transforms/test/elide_async_copies_scf.mlir:87:12: error: CHECK: expected string not found in input
+ // CHECK: stream.async.transfer
+           ^
+<stdin>:64:71: note: scanning from here
+ util.func public @inferred_transfer_preserves_unknown_select_affinity(%arg0: index, %arg1: i1) -> !stream.resource<*> {
+                                                                      ^
+<stdin>:66:7: note: possible intended match here
+ %0 = stream.async.splat on(#hal.device.promise<@dev_a>) %c123_i32 : i32 -> !stream.resource<*>{%arg0}
+      ^
+compiler/src/iree/compiler/Dialect/Stream/Transforms/test/elide_async_copies_scf.mlir:187:12: error: CHECK: expected string not found in input
+ // CHECK: %[[COPY:.+]] = stream.async.transfer
+           ^
+<stdin>:141:60: note: scanning from here
+ util.func private @inferred_transfer_before_unknown_caller(%arg0: !stream.resource<external>, %arg1: index) -> !stream.resource<external> {
+                                                           ^
+<stdin>:141:60: note: pattern attempts to capture variables: "COPY"
+ util.func private @inferred_transfer_before_unknown_caller(%arg0: !stream.resource<external>, %arg1: index) -> !stream.resource<external> {
+                                                           ^
+<stdin>:144:2: note: possible intended match here
+ %0 = stream.async.fill on(#hal.device.promise<@dev_a>) %c123_i32, %arg0[%c0 to %arg1 for %arg1] : i32 -> %arg0 as !stream.resource<external>{%arg1}
+ ^
+
+Input file: <stdin>
+Check file: compiler/src/iree/compiler/Dialect/Stream/Transforms/test/elide_async_copies_scf.mlir
+
+-dump-input=help explains the following input dump.
+
+Input was:
+<<<<<<
+             .
+             .
+             .
+            59:  } 
+            60: } 
+            61:  
+            62: // ----- 
+            63: module attributes {stream.affinity.default = #hal.device.promise<@dev_a>} { 
+            64:  util.func public @inferred_transfer_preserves_unknown_select_affinity(%arg0: index, %arg1: i1) -> !stream.resource<*> { 
+check:87'0                                                                           {                                                     search range start (exclusive)
+check:87'1                                                                                                                                 error: no match found in search range
+            65:  %c123_i32 = arith.constant 123 : i32 
+            66:  %0 = stream.async.splat on(#hal.device.promise<@dev_a>) %c123_i32 : i32 -> !stream.resource<*>{%arg0} 
+check:87'2            ?                                                                                                  possible intended match
+            67:  %1 = stream.async.splat on(#hal.device.promise<@dev_b>) %c123_i32 : i32 -> !stream.resource<*>{%arg0} 
+            68:  %2 = arith.select %arg1, %0, %1 : !stream.resource<*> 
+            69:  util.return %2 : !stream.resource<*> 
+            70:  } 
+            71: } 
+            72:  
+            73: // ----- 
+            74: module { 
+            75:  util.func public @scf_for_inferred_transfer_preserves_borrowed_copy(%arg0: !util.buffer, %arg1: index) -> !stream.resource<external> { 
+check:87'3                                                                          }                                                                     search range end (exclusive)
+            76:  %c0 = arith.constant 0 : index 
+            77:  %c1 = arith.constant 1 : index 
+            78:  %c4 = arith.constant 4 : index 
+            79:  %c123_i32 = arith.constant 123 : i32 
+            80:  %0 = stream.tensor.import on(#hal.device.promise<@dev_a>) %arg0 : !util.buffer -> tensor<1xi32> in !stream.resource<external>{%c4} 
+             .
+             .
+             .
+           136:  } 
+           137: } 
+           138:  
+           139: // ----- 
+           140: module { 
+           141:  util.func private @inferred_transfer_before_unknown_caller(%arg0: !stream.resource<external>, %arg1: index) -> !stream.resource<external> { 
+check:187'0                                                               {                                                                                    search range start (exclusive)
+check:187'1                                                                                                                                                    error: no match found in search range
+check:187'2                                                                                                                                                    pattern attempts to capture variables: "COPY"
+           142:  %c0 = arith.constant 0 : index 
+           143:  %c123_i32 = arith.constant 123 : i32 
+           144:  %0 = stream.async.fill on(#hal.device.promise<@dev_a>) %c123_i32, %arg0[%c0 to %arg1 for %arg1] : i32 -> %arg0 as !stream.resource<external>{%arg1} 
+check:187'3      ?                                                                                                                                                     possible intended match
+           145:  util.return %0 : !stream.resource<external> 
+           146:  } 
+           147:  util.func public @unknown_caller_with_elidable_clone(%arg0: !util.buffer, %arg1: !util.buffer, %arg2: i1) -> !stream.resource<external> { 
+check:187'4                                                          }                                                                                       search range end (exclusive)
+           148:  %c4 = arith.constant 4 : index 
+           149:  %0 = stream.tensor.import on(#hal.device.promise<@dev_a>) %arg0 : !util.buffer -> tensor<1xi32> in !stream.resource<external>{%c4} 
+           150:  %1 = stream.tensor.import on(#hal.device.promise<@dev_a>) consume %arg1 : !util.buffer -> tensor<1xi32> in !stream.resource<external>{%c4} 
+           151:  %2 = arith.select %arg2, %0, %1 : !stream.resource<external> 
+           152:  %3 = util.call @inferred_transfer_before_unknown_caller(%2, %c4) : (!stream.resource<external>, index) -> !stream.resource<external> 
+             .
+             .
+             .
+>>>>>>

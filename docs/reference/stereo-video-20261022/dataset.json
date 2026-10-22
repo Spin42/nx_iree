@@ -1,0 +1,13 @@
+{
+  "source": "https://sintel.is.tuebingen.mpg.de/stereo",
+  "archive": "sintel-index.zip",
+  "sequence": "alley_1",
+  "pass": "clean",
+  "width": 320,
+  "height": 136,
+  "frames": 50,
+  "image_resampling": "Lanczos",
+  "ground_truth_resampling": "nearest",
+  "disparity_scale": 0.3125,
+  "official_leaderboard_comparable": false
+}

@@ -1,0 +1,12 @@
+VULKANINFO_RC=0
+	deviceName        = NVK GM20B
+	subgroupSize                      = 32
+	driverInfo                                           = Mesa 26.1.8
+	shaderInt64                             = true
+	shaderInt16                             = true
+	storageBuffer16BitAccess           = true
+	storageBuffer8BitAccess                            = true
+	shaderFloat16                                      = true
+	shaderInt8                                         = true
+	subgroupSizeControl                                = true
+:ok

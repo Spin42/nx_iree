@@ -1,0 +1,2 @@
+TWO_CONTEXTS_BYTE_IDENTICAL board-two-alley frames=50
+TWO_CONTEXTS_BYTE_IDENTICAL board-two-temple frames=50

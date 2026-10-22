@@ -1,0 +1,25 @@
+{
+  "census-three-alley-board": {
+    "fps": 38.56584423718303,
+    "full_visible": {
+      "evaluated_pixels": 1886631.0,
+      "coverage_percent": 98.87959012652713,
+      "mae_accepted_px": 0.4722932878084885,
+      "bad1_accepted_percent": 3.2926952821586575,
+      "bad3_accepted_percent": 1.3226530466745252,
+      "bad1_or_invalid_percent": 4.37621347258685,
+      "bad3_or_invalid_percent": 2.4282437848206673
+    },
+    "common_x_ge_64": {
+      "evaluated_pixels": 1547446.0,
+      "coverage_percent": 98.9306896654229,
+      "mae_accepted_px": 0.5187117495307662,
+      "bad1_accepted_percent": 3.820304278727728,
+      "bad3_accepted_percent": 1.5320409772297192,
+      "bad1_or_invalid_percent": 4.848763704840104,
+      "bad3_or_invalid_percent": 2.584969039307349
+    },
+    "visible_gt_outside_search_percent": 0.0,
+    "max_visible_gt_disparity_px": 42.63671875
+  }
+}

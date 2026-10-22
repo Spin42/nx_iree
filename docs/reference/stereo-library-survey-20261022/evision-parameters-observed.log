@@ -1,0 +1,18 @@
+BOOT_ID=6f672cb9-e70d-433c-8894-7231f93bf6b7
+GOVERNOR=simple_ondemand
+GPU_MAX=921600000
+GPU_MIN=76800000
+{:getMinDisparity, 0}
+{:getNumDisparities, 64}
+{:getBlockSize, 3}
+{:getP1, 0}
+{:getP2, 0}
+{:getDisp12MaxDiff, 1}
+{:getPreFilterCap, 31}
+{:getUniquenessRatio, 10}
+{:getMode, 1}
+EVISION_PROBE_PASS
+CHILD_EXIT=0
+GPU_ERRORS=0
+BOARD_STEREO_PASS
+:ok

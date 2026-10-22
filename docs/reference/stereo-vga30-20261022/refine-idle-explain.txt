@@ -1,0 +1,34 @@
+IREE HAL profile explain
+health: records=129 chunks=127 unknown_records=0 unknown_chunks=0 truncated_chunks=0 dropped_records=0
+coverage: dispatches=250 valid=250 invalid=0 host_dispatches=0 valid_host=0 invalid_host=0 queues=2 queue_events=200 command_buffers=50 command_operations=500 memory_events=0
+devices:
+  device[0]: clock_fit=true clock_samples=2 visible_span_ticks=1136199488.000 active_dispatch_ticks=1001362304 active_over_visible=0.881
+    visible_span_ns=1849324160.668 active_dispatch_ns=1629857716 tick_frequency_hz=614386332.134
+queues:
+  queue device=0 ordinal=0 stream=0: submissions=50 valid=50 invalid=0 busy_ticks=1001515040.000 total_dispatch_ticks=1001362304 busy_ns=1630106315.225 total_dispatch_ns=1629857716 gaps=49 total_gap_ticks=134684448.000 max_gap_ticks=19227328.000 total_gap_ns=219217845.443 max_gap_ns=31295175.355
+  queue device=0 ordinal=1 stream=1: submissions=0 valid=0 invalid=0 busy_ticks=0.000 total_dispatch_ticks=0 gaps=0 total_gap_ticks=0.000 max_gap_ticks=0.000 total_gap_ns=0.000 max_gap_ns=0.000
+top functions by total dispatch time:
+  #1 main device=0 executable=2 function=0 count=25 valid=25 invalid=0 timing_source=device_dispatch_event total_ticks=208880096 max_ticks=25354560 total_ns=339981678 avg_ns=13599267.111 max_ns=41268106
+  #2 main device=0 executable=3 function=0 count=25 valid=25 invalid=0 timing_source=device_dispatch_event total_ticks=205120032 max_ticks=8242080 total_ns=333861646 avg_ns=13354465.832 max_ns=13415142
+  #3 main device=0 executable=8 function=0 count=25 valid=25 invalid=0 timing_source=device_dispatch_event total_ticks=205014688 max_ticks=8228096 total_ns=333690184 avg_ns=13347607.346 max_ns=13392381
+  #4 main device=0 executable=7 function=0 count=25 valid=25 invalid=0 timing_source=device_dispatch_event total_ticks=191260800 max_ticks=7805952 total_ns=311303800 avg_ns=12452152.009 max_ns=12705283
+  #5 main device=0 executable=1 function=0 count=25 valid=25 invalid=0 timing_source=device_dispatch_event total_ticks=81526496 max_ticks=27053376 total_ns=132695817 avg_ns=5307832.661 max_ns=44033167
+  #6 main device=0 executable=6 function=0 count=25 valid=25 invalid=0 timing_source=device_dispatch_event total_ticks=56633024 max_ticks=2271712 total_ns=92178196 avg_ns=3687127.857 max_ns=3697530
+  #7 main device=0 executable=5 function=0 count=25 valid=25 invalid=0 timing_source=device_dispatch_event total_ticks=14723936 max_ticks=610592 total_ns=23965273 avg_ns=958610.908 max_ns=993824
+  #8 main device=0 executable=10 function=0 count=25 valid=25 invalid=0 timing_source=device_dispatch_event total_ticks=14704640 max_ticks=601984 total_ns=23933866 avg_ns=957354.631 max_ns=979813
+  #9 main device=0 executable=4 function=0 count=25 valid=25 invalid=0 timing_source=device_dispatch_event total_ticks=11839136 max_ticks=476224 total_ns=19269856 avg_ns=770794.230 max_ns=775121
+  #10 main device=0 executable=9 function=0 count=25 valid=25 invalid=0 timing_source=device_dispatch_event total_ticks=11659456 max_ticks=471232 total_ns=18977401 avg_ns=759096.053 max_ns=766996
+top individual dispatches:
+  #1 event=1 submission=4 main device=0 queue=0 stream=0 timing_source=device_dispatch_event duration_ticks=27053376 duration_ns=44033167
+  #2 event=2 submission=4 main device=0 queue=0 stream=0 timing_source=device_dispatch_event duration_ticks=25354560 duration_ns=41268106
+  #3 event=108 submission=87 main device=0 queue=0 stream=0 timing_source=device_dispatch_event duration_ticks=8242080 duration_ns=13415142
+  #4 event=3 submission=4 main device=0 queue=0 stream=0 timing_source=device_dispatch_event duration_ticks=8240480 duration_ns=13412538
+  #5 event=18 submission=14 main device=0 queue=0 stream=0 timing_source=device_dispatch_event duration_ticks=8229536 duration_ns=13394725
+  #6 event=73 submission=59 main device=0 queue=0 stream=0 timing_source=device_dispatch_event duration_ticks=8228096 duration_ns=13392381
+  #7 event=63 submission=51 main device=0 queue=0 stream=0 timing_source=device_dispatch_event duration_ticks=8221152 duration_ns=13381079
+  #8 event=38 submission=30 main device=0 queue=0 stream=0 timing_source=device_dispatch_event duration_ticks=8217472 duration_ns=13375089
+queue operations: events=200 strategies none/inline/device_barrier/software_defer=100/3/0/97
+  transfer_payload_bytes copy/fill/update/read/write=0/0/0/0/0
+  operation_counts dispatch/execute/alloca/dealloca/host_call=0/50/100/50/0
+memory pressure:
+hints:

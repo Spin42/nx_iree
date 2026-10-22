@@ -1,0 +1,56 @@
+PIPELINE_DEVICE=vulkan://GPU-00000000030000000000000000000000 inflight=2 frames=100 repeats=2
+PIPELINE_CPU_TICKS=63 source=linux_proc_self_stat_user_plus_system
+PIPELINE_HEARTBEAT count=157 p95_us=2079 max_us=2123
+PIPELINE_FRAME=frame_0037 latency_ms=5.542 occurrences=2
+PIPELINE_FRAME=frame_0026 latency_ms=5.662 occurrences=2
+PIPELINE_FRAME=frame_0006 latency_ms=7.595 occurrences=2
+PIPELINE_FRAME=frame_0043 latency_ms=5.573 occurrences=2
+PIPELINE_FRAME=frame_0049 latency_ms=5.594 occurrences=2
+PIPELINE_FRAME=frame_0029 latency_ms=5.653 occurrences=2
+PIPELINE_FRAME=frame_0011 latency_ms=7.388 occurrences=2
+PIPELINE_FRAME=frame_0047 latency_ms=5.662 occurrences=2
+PIPELINE_FRAME=frame_0042 latency_ms=5.745 occurrences=2
+PIPELINE_FRAME=frame_0036 latency_ms=5.543 occurrences=2
+PIPELINE_FRAME=frame_0033 latency_ms=5.675 occurrences=2
+PIPELINE_FRAME=frame_0025 latency_ms=5.63 occurrences=2
+PIPELINE_FRAME=frame_0004 latency_ms=7.72 occurrences=2
+PIPELINE_FRAME=frame_0041 latency_ms=5.543 occurrences=2
+PIPELINE_FRAME=frame_0039 latency_ms=5.576 occurrences=2
+PIPELINE_FRAME=frame_0027 latency_ms=5.64 occurrences=2
+PIPELINE_FRAME=frame_0046 latency_ms=5.522 occurrences=2
+PIPELINE_FRAME=frame_0014 latency_ms=7.446 occurrences=2
+PIPELINE_FRAME=frame_0017 latency_ms=5.78 occurrences=2
+PIPELINE_FRAME=frame_0038 latency_ms=5.567 occurrences=2
+PIPELINE_FRAME=frame_0010 latency_ms=7.36 occurrences=2
+PIPELINE_FRAME=frame_0012 latency_ms=7.402 occurrences=2
+PIPELINE_FRAME=frame_0034 latency_ms=5.532 occurrences=2
+PIPELINE_FRAME=frame_0005 latency_ms=7.63 occurrences=2
+PIPELINE_FRAME=frame_0032 latency_ms=5.648 occurrences=2
+PIPELINE_FRAME=frame_0023 latency_ms=5.649 occurrences=2
+PIPELINE_FRAME=frame_0016 latency_ms=6.789 occurrences=2
+PIPELINE_FRAME=frame_0031 latency_ms=5.577 occurrences=2
+PIPELINE_FRAME=frame_0024 latency_ms=5.712 occurrences=2
+PIPELINE_FRAME=frame_0048 latency_ms=5.641 occurrences=2
+PIPELINE_FRAME=frame_0030 latency_ms=5.653 occurrences=2
+PIPELINE_FRAME=frame_0008 latency_ms=7.362 occurrences=2
+PIPELINE_FRAME=frame_0035 latency_ms=5.583 occurrences=2
+PIPELINE_FRAME=frame_0028 latency_ms=5.608 occurrences=2
+PIPELINE_FRAME=frame_0050 latency_ms=5.666 occurrences=2
+PIPELINE_FRAME=frame_0003 latency_ms=7.723 occurrences=2
+PIPELINE_FRAME=frame_0018 latency_ms=5.738 occurrences=2
+PIPELINE_FRAME=frame_0022 latency_ms=5.581 occurrences=2
+PIPELINE_FRAME=frame_0019 latency_ms=5.619 occurrences=2
+PIPELINE_FRAME=frame_0013 latency_ms=7.5 occurrences=2
+PIPELINE_FRAME=frame_0045 latency_ms=6.292 occurrences=2
+PIPELINE_FRAME=frame_0015 latency_ms=7.55 occurrences=2
+PIPELINE_FRAME=frame_0021 latency_ms=5.631 occurrences=2
+PIPELINE_FRAME=frame_0009 latency_ms=7.479 occurrences=2
+PIPELINE_FRAME=frame_0001 latency_ms=7.66 occurrences=2
+PIPELINE_FRAME=frame_0040 latency_ms=5.504 occurrences=2
+PIPELINE_FRAME=frame_0007 latency_ms=7.385 occurrences=2
+PIPELINE_FRAME=frame_0044 latency_ms=5.549 occurrences=2
+PIPELINE_FRAME=frame_0020 latency_ms=5.609 occurrences=2
+PIPELINE_FRAME=frame_0002 latency_ms=7.278 occurrences=2
+PIPELINE_REPEAT_OUTPUTS_PASS frames=100 unique=50
+PIPELINE_RESULT inflight=2 fps=319.21855298229934 wall_ms=313.265 latency_p50_ms=5.653 latency_p95_ms=7.66 includes=upload_graph_readback_synchronization_pool_scheduling_guards excludes=disk_io_input_preparation warmup_per_context=3
+PIPELINE_THROUGHPUT_PASS

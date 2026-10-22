@@ -1,0 +1,12 @@
+==> nx_iree
+Cloned IREE into /var/home/marc/.cache/nx_iree/iree-v3.13.0
+** (NxIREE.CompileError) iree-compile exited with status 1:
+/tmp/-576460752303413820-nx-iree-tempfile.mlir:1:1: error: runtime error in consteval: <vm>:0: INCOMPATIBLE; HAL device `__device_0` not found or unavailable: #hal.device.target<"local", [#hal.executable.target<"vmvx", "vmvx-bytecode-fb", {iree.encoding.resolver = #iree_cpu.vmvx_encoding_resolver<>, ukernels = "none"}>]>; 
+    (nx_iree 0.1.0-dev) lib/nx_iree.ex:84: NxIREE.compile/3
+    (nx_iree 0.1.0-dev) lib/nx_iree/compiler.ex:189: NxIREE.Compiler.compile_module/5
+    (nx_iree 0.1.0-dev) lib/nx_iree/compiler.ex:124: NxIREE.Compiler.compile_without_graph_splitter/7
+    (nx 1.0.0) lib/nx/defn/compiler.ex:152: Nx.Defn.Compiler.__compile__/3
+    (nx 1.0.0) lib/nx/defn.ex:324: Nx.Defn.compile/3
+    (nx_iree 0.1.0-dev) lib/nx_iree/compiler.ex:13: NxIREE.Compiler.to_bytecode/3
+    (nx_iree 0.1.0-dev) lib/nx_iree.ex:295: NxIREE.export/3
+    stereo/export.exs:30: anonymous fn/1 in :elixir_compiler_6.__FILE__/1

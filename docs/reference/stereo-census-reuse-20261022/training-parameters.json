@@ -1,0 +1,65 @@
+{
+  "classic-p10_120": {
+    "fps": 544.3776674505705,
+    "full_visible": {
+      "evaluated_pixels": 1886631.0,
+      "coverage_percent": 98.92914936731137,
+      "mae_accepted_px": 0.46025620708121684,
+      "bad1_accepted_percent": 3.0924311036911147,
+      "bad3_accepted_percent": 1.2711446677825236,
+      "bad1_or_invalid_percent": 4.130166418340417,
+      "bad3_or_invalid_percent": 2.3283832397538258
+    },
+    "common_x_ge_64": {
+      "evaluated_pixels": 1547446.0,
+      "coverage_percent": 98.9444542814418,
+      "mae_accepted_px": 0.5119390171314067,
+      "bad1_accepted_percent": 3.633568282398675,
+      "bad3_accepted_percent": 1.4983880996295502,
+      "bad1_or_invalid_percent": 4.6507600265211195,
+      "bad3_or_invalid_percent": 2.538117646754717
+    }
+  },
+  "classic-p16_120": {
+    "fps": 566.2193533774984,
+    "full_visible": {
+      "evaluated_pixels": 1886631.0,
+      "coverage_percent": 99.14477181812448,
+      "mae_accepted_px": 0.46119911354079435,
+      "bad1_accepted_percent": 3.049137768805707,
+      "bad3_accepted_percent": 1.2624458967033343,
+      "bad1_or_invalid_percent": 3.8782888651781935,
+      "bad3_or_invalid_percent": 2.106877285489319
+    },
+    "common_x_ge_64": {
+      "evaluated_pixels": 1547446.0,
+      "coverage_percent": 99.13735277353781,
+      "mae_accepted_px": 0.5125750933964203,
+      "bad1_accepted_percent": 3.6040093944515896,
+      "bad3_accepted_percent": 1.4856296570555838,
+      "bad1_or_invalid_percent": 4.4355667338311,
+      "bad3_or_invalid_percent": 2.3354611404856778
+    }
+  },
+  "classic-p8_64": {
+    "fps": 564.8696280898369,
+    "full_visible": {
+      "evaluated_pixels": 1886631.0,
+      "coverage_percent": 99.09897589936772,
+      "mae_accepted_px": 0.43248035509830596,
+      "bad1_accepted_percent": 2.96095702255845,
+      "bad3_accepted_percent": 1.1566982165474275,
+      "bad1_or_invalid_percent": 3.835302186808125,
+      "bad3_or_invalid_percent": 2.0473001874770422
+    },
+    "common_x_ge_64": {
+      "evaluated_pixels": 1547446.0,
+      "coverage_percent": 99.07505657709542,
+      "mae_accepted_px": 0.4793201922324863,
+      "bad1_accepted_percent": 3.4672790945077825,
+      "bad3_accepted_percent": 1.3613952605546942,
+      "bad1_or_invalid_percent": 4.360152147473967,
+      "bad3_or_invalid_percent": 2.2737465475370384
+    }
+  }
+}

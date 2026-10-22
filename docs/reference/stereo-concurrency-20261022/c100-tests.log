@@ -1,0 +1,11 @@
+==> nx_iree
+Cloned IREE into /var/home/marc/.cache/nx_iree/iree-v3.13.0
+Compiling 3 files (.ex)
+Generated nx_iree app
+==> c100_gpu
+Running ExUnit with seed: 297854, max_cases: 32
+Excluding tags: [hardware: true]
+
+...
+Finished in 0.3 seconds (0.3s async, 0.00s sync)
+4 tests, 0 failures, 1 excluded

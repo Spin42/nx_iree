@@ -1,0 +1,214 @@
+CONTROLLED_GPU_MIN=921600000
+CONTROLLED_COMPILER=stereo-opt-final-subgroup.bin
+BOOT_ID=6f672cb9-e70d-433c-8894-7231f93bf6b7
+GOVERNOR=simple_ondemand
+GPU_MAX=921600000
+GPU_MIN=921600000
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+DEVICE=vulkan://GPU-2b01de10000000000000000100000000
+MODEL shape={1, 2, 3} written_inputs=[]
+MODEL shape={3, 1, 2} written_inputs=[]
+MODEL shape={3, 1, 3} written_inputs=[]
+MODEL shape={3, 1, 4} written_inputs=[]
+MODEL shape={4, 1, 1} written_inputs=[]
+MODEL shape={5, 3, 2} written_inputs=[]
+MODEL shape={5, 3, 31} written_inputs=[]
+MODEL shape={5, 3, 33} written_inputs=[]
+MODEL shape={5, 3, 63} written_inputs=[]
+MODEL shape={5, 3, 65} written_inputs=[]
+MODEL shape={5, 3, 97} written_inputs=[]
+MODEL shape={5, 3, 128} written_inputs=[]
+MODEL shape={17, 5, 32} written_inputs=[]
+MODEL shape={32, 24, 32} written_inputs=[]
+MODEL shape={160, 120, 64} written_inputs=[]
+MEM_AVAILABLE_KB=3387156
+PASS first pixel: 6 exact values
+INPUTS_UNCHANGED first pixel
+MEM_AVAILABLE_KB=3313712
+PASS one disparity: 4 exact values
+INPUTS_UNCHANGED one disparity
+MEM_AVAILABLE_KB=3312944
+PASS no disparity wrap: 12 exact values
+INPUTS_UNCHANGED no disparity wrap
+MEM_AVAILABLE_KB=3312176
+PASS zero penalties: 9 exact values
+INPUTS_UNCHANGED zero penalties
+MEM_AVAILABLE_KB=3311408
+PASS large common offset: 9 exact values
+INPUTS_UNCHANGED large common offset
+MEM_AVAILABLE_KB=3310640
+PASS large penalty overflow: 6 exact values
+INPUTS_UNCHANGED large penalty overflow
+MEM_AVAILABLE_KB=3309872
+PASS large boundary exclusion: 12 exact values
+INPUTS_UNCHANGED large boundary exclusion
+MEM_AVAILABLE_KB=3308856
+PASS many independent lines: 2720 exact values
+INPUTS_UNCHANGED many independent lines
+MEM_AVAILABLE_KB=3309076
+PASS changed input: 2720 exact values
+INPUTS_UNCHANGED changed input
+MEM_AVAILABLE_KB=3308436
+PASS disparity boundary 2: 30 exact values
+INPUTS_UNCHANGED disparity boundary 2
+MEM_AVAILABLE_KB=3308132
+PASS disparity boundary 31: 465 exact values
+INPUTS_UNCHANGED disparity boundary 31
+MEM_AVAILABLE_KB=3307756
+PASS disparity boundary 33: 495 exact values
+INPUTS_UNCHANGED disparity boundary 33
+MEM_AVAILABLE_KB=3307628
+PASS disparity boundary 63: 945 exact values
+INPUTS_UNCHANGED disparity boundary 63
+MEM_AVAILABLE_KB=3307496
+PASS disparity boundary 65: 975 exact values
+INPUTS_UNCHANGED disparity boundary 65
+MEM_AVAILABLE_KB=3307368
+PASS disparity boundary 97: 1455 exact values
+INPUTS_UNCHANGED disparity boundary 97
+MEM_AVAILABLE_KB=3307240
+PASS disparity boundary 128: 1920 exact values
+INPUTS_UNCHANGED disparity boundary 128
+MEM_AVAILABLE_KB=3307112
+PASS {32, 24, 32}: 24576 exact values
+MEM_AVAILABLE_KB=3306984
+MEM_AVAILABLE_KB=3306856
+MEM_AVAILABLE_KB=3306728
+MEM_AVAILABLE_KB=3306600
+MEM_AVAILABLE_KB=3306472
+MEM_AVAILABLE_KB=3306344
+MEM_AVAILABLE_KB=3306216
+MEM_AVAILABLE_KB=3306088
+MEM_AVAILABLE_KB=3305960
+MEM_AVAILABLE_KB=3305832
+PATH_BENCH shape={32, 24, 32} ms=[1.322, 1.313, 1.274, 1.182, 1.202, 1.197, 1.172, 1.425, 1.316, 1.306] pause_ms=0 input_bytes=98304 output_bytes=98304 includes=invoke_and_readback
+PATH_PHASES shape={32, 24, 32} invoke_ms=[0.826, 0.815, 0.792, 0.789, 0.808, 0.808, 0.78, 0.876, 0.816, 0.815] readback_ms=[0.491, 0.493, 0.477, 0.388, 0.389, 0.385, 0.388, 0.545, 0.495, 0.487]
+INPUTS_UNCHANGED {32, 24, 32}
+MEM_AVAILABLE_KB=3305704
+PASS {160, 120, 64}: 1228800 exact values
+MEM_AVAILABLE_KB=3300660
+MEM_AVAILABLE_KB=3298600
+MEM_AVAILABLE_KB=3298472
+MEM_AVAILABLE_KB=3293492
+MEM_AVAILABLE_KB=3286520
+MEM_AVAILABLE_KB=3286392
+MEM_AVAILABLE_KB=3286264
+MEM_AVAILABLE_KB=3286136
+MEM_AVAILABLE_KB=3286008
+MEM_AVAILABLE_KB=3285880
+PATH_BENCH shape={160, 120, 64} ms=[14.425, 10.863, 12.071, 14.69, 10.806, 10.919, 11.589, 10.863, 10.991, 10.901] pause_ms=0 input_bytes=4915200 output_bytes=4915200 includes=invoke_and_readback
+PATH_PHASES shape={160, 120, 64} invoke_ms=[3.322, 3.361, 3.368, 3.424, 3.278, 3.391, 3.358, 3.298, 3.36, 3.384] readback_ms=[11.098, 7.496, 8.698, 11.26, 7.522, 7.522, 8.225, 7.56, 7.625, 7.512]
+INPUTS_UNCHANGED {160, 120, 64}
+STEREO_PATH_PASS
+CHILD_EXIT=0
+GPU_ERRORS=0
+BOARD_STEREO_PASS
+CONTROLLED_COMPILER=stereo-opt-optimized.bin
+BOOT_ID=6f672cb9-e70d-433c-8894-7231f93bf6b7
+GOVERNOR=simple_ondemand
+GPU_MAX=921600000
+GPU_MIN=921600000
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+DEVICE=vulkan://GPU-2b01de10000000000000000100000000
+MODEL shape={1, 2, 3} written_inputs=[]
+MODEL shape={3, 1, 2} written_inputs=[]
+MODEL shape={3, 1, 3} written_inputs=[]
+MODEL shape={3, 1, 4} written_inputs=[]
+MODEL shape={4, 1, 1} written_inputs=[]
+MODEL shape={5, 3, 2} written_inputs=[]
+MODEL shape={5, 3, 31} written_inputs=[]
+MODEL shape={5, 3, 33} written_inputs=[]
+MODEL shape={5, 3, 63} written_inputs=[]
+MODEL shape={5, 3, 65} written_inputs=[]
+MODEL shape={5, 3, 97} written_inputs=[]
+MODEL shape={5, 3, 128} written_inputs=[]
+MODEL shape={17, 5, 32} written_inputs=[]
+MODEL shape={32, 24, 32} written_inputs=[]
+MODEL shape={160, 120, 64} written_inputs=[]
+MEM_AVAILABLE_KB=3388120
+PASS first pixel: 6 exact values
+INPUTS_UNCHANGED first pixel
+MEM_AVAILABLE_KB=3316692
+PASS one disparity: 4 exact values
+INPUTS_UNCHANGED one disparity
+MEM_AVAILABLE_KB=3315924
+PASS no disparity wrap: 12 exact values
+INPUTS_UNCHANGED no disparity wrap
+MEM_AVAILABLE_KB=3315156
+PASS zero penalties: 9 exact values
+INPUTS_UNCHANGED zero penalties
+MEM_AVAILABLE_KB=3314388
+PASS large common offset: 9 exact values
+INPUTS_UNCHANGED large common offset
+MEM_AVAILABLE_KB=3313620
+PASS large penalty overflow: 6 exact values
+INPUTS_UNCHANGED large penalty overflow
+MEM_AVAILABLE_KB=3312852
+PASS large boundary exclusion: 12 exact values
+INPUTS_UNCHANGED large boundary exclusion
+MEM_AVAILABLE_KB=3311832
+PASS many independent lines: 2720 exact values
+INPUTS_UNCHANGED many independent lines
+MEM_AVAILABLE_KB=3311064
+PASS changed input: 2720 exact values
+INPUTS_UNCHANGED changed input
+MEM_AVAILABLE_KB=3310296
+PASS disparity boundary 2: 30 exact values
+INPUTS_UNCHANGED disparity boundary 2
+MEM_AVAILABLE_KB=3309544
+PASS disparity boundary 31: 465 exact values
+INPUTS_UNCHANGED disparity boundary 31
+MEM_AVAILABLE_KB=3309416
+PASS disparity boundary 33: 495 exact values
+INPUTS_UNCHANGED disparity boundary 33
+MEM_AVAILABLE_KB=3309288
+PASS disparity boundary 63: 945 exact values
+INPUTS_UNCHANGED disparity boundary 63
+MEM_AVAILABLE_KB=3309160
+PASS disparity boundary 65: 975 exact values
+INPUTS_UNCHANGED disparity boundary 65
+MEM_AVAILABLE_KB=3309032
+PASS disparity boundary 97: 1455 exact values
+INPUTS_UNCHANGED disparity boundary 97
+MEM_AVAILABLE_KB=3308904
+PASS disparity boundary 128: 1920 exact values
+INPUTS_UNCHANGED disparity boundary 128
+MEM_AVAILABLE_KB=3308776
+PASS {32, 24, 32}: 24576 exact values
+MEM_AVAILABLE_KB=3308648
+MEM_AVAILABLE_KB=3308520
+MEM_AVAILABLE_KB=3308392
+MEM_AVAILABLE_KB=3308264
+MEM_AVAILABLE_KB=3308136
+MEM_AVAILABLE_KB=3308008
+MEM_AVAILABLE_KB=3307880
+MEM_AVAILABLE_KB=3307752
+MEM_AVAILABLE_KB=3307624
+MEM_AVAILABLE_KB=3307496
+PATH_BENCH shape={32, 24, 32} ms=[1.372, 1.276, 1.36, 1.183, 1.207, 1.179, 1.162, 1.326, 1.325, 1.273] pause_ms=0 input_bytes=98304 output_bytes=98304 includes=invoke_and_readback
+PATH_PHASES shape={32, 24, 32} invoke_ms=[0.845, 0.784, 0.801, 0.785, 0.789, 0.795, 0.774, 0.781, 0.782, 0.797] readback_ms=[0.523, 0.487, 0.555, 0.394, 0.414, 0.381, 0.384, 0.54, 0.538, 0.472]
+INPUTS_UNCHANGED {32, 24, 32}
+MEM_AVAILABLE_KB=3307368
+PASS {160, 120, 64}: 1228800 exact values
+MEM_AVAILABLE_KB=3305376
+MEM_AVAILABLE_KB=3298272
+MEM_AVAILABLE_KB=3298220
+MEM_AVAILABLE_KB=3295364
+MEM_AVAILABLE_KB=3290320
+MEM_AVAILABLE_KB=3290192
+MEM_AVAILABLE_KB=3289816
+MEM_AVAILABLE_KB=3289684
+MEM_AVAILABLE_KB=3289556
+MEM_AVAILABLE_KB=3289428
+PATH_BENCH shape={160, 120, 64} ms=[14.394, 11.562, 13.923, 13.023, 11.084, 10.937, 11.612, 11.101, 11.137, 11.033] pause_ms=0 input_bytes=4915200 output_bytes=4915200 includes=invoke_and_readback
+PATH_PHASES shape={160, 120, 64} invoke_ms=[3.362, 3.89, 3.436, 3.441, 3.439, 3.406, 3.476, 3.427, 3.432, 3.433] readback_ms=[11.026, 7.666, 10.48, 9.574, 7.64, 7.524, 8.13, 7.668, 7.699, 7.595]
+INPUTS_UNCHANGED {160, 120, 64}
+STEREO_PATH_PASS
+CHILD_EXIT=0
+GPU_ERRORS=0
+BOARD_STEREO_PASS
+RESTORED_GPU_MIN=76800000
+RESTORED_GOVERNOR=simple_ondemand
+:ok

@@ -1,0 +1,2 @@
+4cdf12ff9efd38f7f7c50df5e90a93c79cf87d7a8f7e907b12c9e2b1088b38fe  patches/iree/0001-reuse-all-free-tlsf-slabs.patch
+69b9dce7442e2efee4bdf92239a2913316332bc58954a1e04864230d620ddd47  patches/iree/0002-elide-proven-same-device-transfers.patch

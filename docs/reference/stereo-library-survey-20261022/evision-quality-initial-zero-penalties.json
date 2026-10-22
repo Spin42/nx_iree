@@ -1,0 +1,86 @@
+{
+  "sgbm": {
+    "fps": 25.394232766584846,
+    "full_visible": {
+      "evaluated_pixels": 1886631.0,
+      "coverage_percent": 78.6760103062019,
+      "mae_accepted_px": 0.738858268389786,
+      "bad1_accepted_percent": 5.50963871817916,
+      "bad3_accepted_percent": 3.6898228556260553,
+      "bad1_or_invalid_percent": 25.658753619547223,
+      "bad3_or_invalid_percent": 24.226995103971046
+    },
+    "common_x_ge_64": {
+      "evaluated_pixels": 1547446.0,
+      "coverage_percent": 95.92102083045224,
+      "mae_accepted_px": 0.738858268389786,
+      "bad1_accepted_percent": 5.50963871817916,
+      "bad3_accepted_percent": 3.6898228556260553,
+      "bad1_or_invalid_percent": 9.363880872095052,
+      "bad3_or_invalid_percent": 7.618294919499614
+    }
+  },
+  "hh": {
+    "fps": 15.727118143998752,
+    "full_visible": {
+      "evaluated_pixels": 1886631.0,
+      "coverage_percent": 78.66275917230237,
+      "mae_accepted_px": 0.7361837676323938,
+      "bad1_accepted_percent": 5.496147097587994,
+      "bad3_accepted_percent": 3.671510084389209,
+      "bad1_or_invalid_percent": 25.660661782828758,
+      "bad3_or_invalid_percent": 24.225351963367505
+    },
+    "common_x_ge_64": {
+      "evaluated_pixels": 1547446.0,
+      "coverage_percent": 95.90486517784788,
+      "mae_accepted_px": 0.7361837676323938,
+      "bad1_accepted_percent": 5.496147097587994,
+      "bad3_accepted_percent": 3.671510084389209,
+      "bad1_or_invalid_percent": 9.366207286070079,
+      "bad3_or_invalid_percent": 7.616291618576674
+    }
+  },
+  "3way": {
+    "fps": 94.89286595433755,
+    "full_visible": {
+      "evaluated_pixels": 1886631.0,
+      "coverage_percent": 78.68125775522611,
+      "mae_accepted_px": 0.749889641875221,
+      "bad1_accepted_percent": 5.5913232396382435,
+      "bad3_accepted_percent": 3.758155514761608,
+      "bad1_or_invalid_percent": 25.71806569488151,
+      "bad3_or_invalid_percent": 24.27570627218571
+    },
+    "common_x_ge_64": {
+      "evaluated_pixels": 1547446.0,
+      "coverage_percent": 95.92741846888357,
+      "mae_accepted_px": 0.749889641875221,
+      "bad1_accepted_percent": 5.5913232396382435,
+      "bad3_accepted_percent": 3.758155514761608,
+      "bad1_or_invalid_percent": 9.43619357315215,
+      "bad3_or_invalid_percent": 7.677683098473226
+    }
+  },
+  "hh4": {
+    "fps": 63.690129685842074,
+    "full_visible": {
+      "evaluated_pixels": 1886631.0,
+      "coverage_percent": 78.707123968598,
+      "mae_accepted_px": 0.7521208148800216,
+      "bad1_accepted_percent": 5.600462788055596,
+      "bad3_accepted_percent": 3.76318343229536,
+      "bad1_or_invalid_percent": 25.700839220812124,
+      "bad3_or_invalid_percent": 24.254769480624457
+    },
+    "common_x_ge_64": {
+      "evaluated_pixels": 1547446.0,
+      "coverage_percent": 95.95895430276727,
+      "mae_accepted_px": 0.7521208148800216,
+      "bad1_accepted_percent": 5.600462788055596,
+      "bad3_accepted_percent": 3.76318343229536,
+      "bad1_or_invalid_percent": 9.415191224766486,
+      "bad3_or_invalid_percent": 7.652157167358344
+    }
+  }
+}

@@ -1,0 +1,28 @@
+Cloned IREE into /var/home/marc/.cache/nx_iree/iree-v3.13.0
+Running ExUnit with seed: 616017, max_cases: 32
+Excluding tags: [:test]
+Including tags: [location: {"test/nx_iree/backend_test.exs", 24}]
+
+
+
+  1) test reshape and squeeze keep independent resident views without compilation (NxIREE.BackendTest)
+     test/nx_iree/backend_test.exs:23
+     ** (NxIREE.CompileError) iree-compile exited with status 1:
+     iree-compile: Unknown command line argument '--invalid-metadata-compile'.  Try: '/var/home/marc/Projects/nx_iree/_build/test/lib/nx_iree/priv/iree-compile --help'
+     iree-compile: Did you mean '--inline-max-stacksize'?
+
+     code: reshaped = Nx.reshape(source, {1, 3, 2})
+     stacktrace:
+       (nx_iree 0.1.0-dev) lib/nx_iree.ex:84: NxIREE.compile/3
+       (nx_iree 0.1.0-dev) lib/nx_iree/compiler.ex:189: NxIREE.Compiler.compile_module/5
+       (nx_iree 0.1.0-dev) lib/nx_iree/compiler.ex:124: NxIREE.Compiler.compile_without_graph_splitter/7
+       (nx_iree 0.1.0-dev) lib/nx_iree/compiler.ex:486: NxIREE.Compiler.__jit__/5
+       (nx 1.0.0) lib/nx/defn/compiler.ex:161: Nx.Defn.Compiler.__jit__/4
+       (nx 1.0.0) lib/nx/defn.ex:457: Nx.Defn.do_jit_apply/3
+       test/nx_iree/backend_test.exs:30: (test)
+
+
+Finished in 0.3 seconds (0.00s async, 0.3s sync)
+
+Result: 0/1 passed, 22 excluded
+Failed: 1 test

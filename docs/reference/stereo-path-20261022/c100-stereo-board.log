@@ -1,0 +1,28 @@
+BOOT_ID=6f672cb9-e70d-433c-8894-7231f93bf6b7
+GOVERNOR=simple_ondemand
+GPU_MAX=921600000
+GPU_MIN=76800000
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+DEVICE=vulkan://GPU-2b01de10000000000000000100000000
+PASS first pixel: 6 exact values
+PASS one disparity: 4 exact values
+PASS no disparity wrap: 12 exact values
+PASS zero penalties: 9 exact values
+PASS large common offset: 9 exact values
+PASS many independent lines: 2720 exact values
+PASS changed input: 2720 exact values
+PASS {32, 24, 32}: 24576 exact values
+PATH_BENCH shape={32, 24, 32} ms=[48.147, 76.471, 73.724] input_bytes=98304 output_bytes=98304 includes=invoke_and_readback
+PASS {160, 120, 64}: 1228800 exact values
+CHILD_EXIT=137
+GPU_ERRORS=0
+**Error** ** (RuntimeError) stereo path benchmark failed
+    /root/nxiree/stereo-board-run.exs:78: (file)
+    nofile:1: (file)
+    (elixir 1.20.4) src/elixir.erl:382: :elixir.eval_external_handler/3
+    (stdlib 8.1.1) erl_eval.erl:1048: :erl_eval.do_apply/7
+    (stdlib 8.1.1) erl_eval.erl:276: :erl_eval.exprs/6
+    (elixir 1.20.4) src/elixir.erl:365: :elixir.erl_eval/3
+    (elixir 1.20.4) src/elixir.erl:329: :elixir.eval_forms/4
+    (elixir 1.20.4) lib/module/parallel_checker.ex:157: Module.ParallelChecker.verify/1

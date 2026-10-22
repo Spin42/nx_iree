@@ -1,0 +1,4 @@
+sftp> mkdir /root/nxiree/fixtures-packed-33
+sftp> put /var/home/marc/.cache/stereo-bench/fixtures-packed-33/* /root/nxiree/fixtures-packed-33/
+sftp> put /tmp/video-optimized-final-fixture.bin /root/nxiree/video-optimized-final-fixture.bin
+sftp> put /tmp/video-optimized-final-320.bin /root/nxiree/video-optimized-final-320.bin

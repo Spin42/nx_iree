@@ -1,0 +1,19 @@
+SigIgn:	0000000000011080
+SigCgt:	0000000108024206
+380076 <... execve resumed>)            = 0
+380076 vfork( <unfinished ...>
+380077 execve("/var/home/marc/.cache/stereo-accel/clvk-host/clspv", ["/var/home/marc/.cache/stereo-acc"..., "/tmp/clvk-vprM4x/source.cl", "-D", "SRC_DEPTH=0", "-D", "SCN=3", "-D", "PIX_PER_WI_Y=1", "-D", "DCN=1", "-D", "BIDX=0", "-D", "STRIPE_SIZE=1", "-cl-single-precision-constant", "-cl-kernel-arg-info", "-rounding-mode-rte=16,32", "-fp64=0", "-rewrite-packed-structs", "-std430-ubo-layout", "-decorate-nonuniform", "-hack-convert-to-float", "-arch=spir", "-cl-arm-integer-dot-product", "--use-native-builtins=ceil,copys"..., "-spv-version=1.6", "-max-pushconstant-size=256", "-max-ubo-size=4294967295", "-global-offset", "-long-vector", "-module-constants-in-storage-buf"..., "-denorm-preserve=16,32", ...], 0x556f4d5dc168 /* 107 vars */ <unfinished ...>
+380076 <... vfork resumed>)             = 380077
+380076 wait4(-1,  <unfinished ...>
+380077 <... execve resumed>)            = 0
+380077 exit_group(0)                    = ?
+380077 +++ exited with 0 +++
+380076 <... wait4 resumed>[{WIFEXITED(s) && WEXITSTATUS(s) == 0}], 0, NULL) = 380077
+380076 --- SIGCHLD {si_signo=SIGCHLD, si_code=CLD_EXITED, si_pid=380077, si_uid=1000, si_status=0, si_utime=3 /* 0.03 s */, si_stime=0} ---
+380076 wait4(-1, 0x7fff43d17b0c, WNOHANG, NULL) = -1 ECHILD (No child processes)
+380076 exit_group(0)                    = ?
+380076 +++ exited with 0 +++
+380032 wait4(380076, 0x7f7242cf7abc, 0, NULL) = -1 ECHILD (No child processes)
+380028 exit(0)                          = ?
+380028 +++ exited with 0 +++
+380075 exit(0)                          = ?

@@ -1,0 +1,11 @@
+CENSUS_DEVICE=vulkan://GPU-00000000030000000000000000000000 shape={17, 73} parameters=%{block: 8, paths: 3, disparities: 64, p1: 8, p2: 64, uniqueness: 1.0526315789473684, selector: "projected", select_lanes: 8, schedule: "tiled", census: "classic", execution: "graph", projection: "shared"}
+CENSUS_ORACLE_PASS frame_0001
+CENSUS_ORACLE_PASS frame_0002
+CENSUS_ORACLE_PASS frame_0003
+CENSUS_ORACLE_PASS frame_0004
+CENSUS_FRAME=frame_0001 total_ms=0.476 phases_ms=%{graph: 0.283, upload: 0.045, readback: 0.143}
+CENSUS_FRAME=frame_0002 total_ms=0.574 phases_ms=%{graph: 0.361, upload: 0.073, readback: 0.135}
+CENSUS_FRAME=frame_0003 total_ms=0.479 phases_ms=%{graph: 0.287, upload: 0.057, readback: 0.129}
+CENSUS_FRAME=frame_0004 total_ms=0.599 phases_ms=%{graph: 0.413, upload: 0.054, readback: 0.127}
+CENSUS_RESULT fps=1879.6992481203006 p50_ms=0.479 p95_ms=0.599 includes=upload_census_paths_selection_median_consistency_readback excludes=decode_disk_io warmup=3
+CENSUS_STEREO_PASS

@@ -1,0 +1,75 @@
+===========
+VULKAN INFO
+===========
+
+Vulkan Instance Version: 1.2.70
+
+
+
+Instance Extensions:
+====================
+Instance Extensions	count = 16
+	VK_KHR_device_group_creation        : extension revision  1
+	VK_KHR_display                      : extension revision 23
+	VK_KHR_external_fence_capabilities  : extension revision  1
+	VK_KHR_external_memory_capabilities : extension revision  1
+	VK_KHR_external_semaphore_capabilities: extension revision  1
+	VK_KHR_get_display_properties2      : extension revision  1
+	VK_KHR_get_physical_device_properties2: extension revision  2
+	VK_KHR_get_surface_capabilities2    : extension revision  1
+	VK_KHR_surface                      : extension revision 25
+	VK_KHR_surface_protected_capabilities: extension revision  1
+	VK_KHR_wayland_surface              : extension revision  6
+	VK_KHR_xcb_surface                  : extension revision  6
+	VK_KHR_xlib_surface                 : extension revision  6
+	VK_EXT_debug_report                 : extension revision  9
+	VK_EXT_debug_utils                  : extension revision  1
+	VK_EXT_display_surface_counter      : extension revision  1
+Layers: count = 6
+=======
+VK_LAYER_LUNARG_standard_validation (LunarG Standard Validation) Vulkan version 1.1.70, layer version 1
+	Layer Extensions	count = 1
+		VK_EXT_debug_report                 : extension revision  6
+	Devices 	count = 1
+		GPU id       : 0 (NVIDIA Tegra X1 (nvgpu))
+		Layer-Device Extensions	count = 2
+			VK_EXT_debug_marker                 : extension revision  4
+			VK_EXT_validation_cache             : extension revision  1
+
+VK_LAYER_LUNARG_core_validation (LunarG Validation Layer) Vulkan version 1.1.70, layer version 1
+	Layer Extensions	count = 1
+		VK_EXT_debug_report                 : extension revision  6
+	Devices 	count = 1
+		GPU id       : 0 (NVIDIA Tegra X1 (nvgpu))
+		Layer-Device Extensions	count = 2
+			VK_EXT_debug_marker                 : extension revision  4
+			VK_EXT_validation_cache             : extension revision  1
+
+VK_LAYER_LUNARG_parameter_validation (LunarG Validation Layer) Vulkan version 1.1.70, layer version 1
+	Layer Extensions	count = 1
+		VK_EXT_debug_report                 : extension revision  6
+	Devices 	count = 1
+		GPU id       : 0 (NVIDIA Tegra X1 (nvgpu))
+		Layer-Device Extensions	count = 1
+			VK_EXT_debug_marker                 : extension revision  4
+
+VK_LAYER_GOOGLE_threading (Google Validation Layer) Vulkan version 1.1.70, layer version 1
+	Layer Extensions	count = 1
+		VK_EXT_debug_report                 : extension revision  6
+	Devices 	count = 1
+		GPU id       : 0 (NVIDIA Tegra X1 (nvgpu))
+		Layer-Device Extensions	count = 0
+
+VK_LAYER_GOOGLE_unique_objects (Google Validation Layer) Vulkan version 1.1.70, layer version 1
+	Layer Extensions	count = 0
+	Devices 	count = 1
+		GPU id       : 0 (NVIDIA Tegra X1 (nvgpu))
+		Layer-Device Extensions	count = 0
+
+VK_LAYER_LUNARG_object_tracker (LunarG Validation Layer) Vulkan version 1.1.70, layer version 1
+	Layer Extensions	count = 1
+
+MEMORY
+MemTotal:        4058964 kB
+MemFree:         1868560 kB
+MemAvailable:    2726216 kB

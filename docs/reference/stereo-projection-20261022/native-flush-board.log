@@ -1,0 +1,25 @@
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+EXEC @main
+[SUCCESS] all function outputs matched their expected values.
+FLUSH_RUN=1 MODE=numpy EXIT=0
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+EXEC @main
+[SUCCESS] all function outputs matched their expected values.
+FLUSH_RUN=1 MODE=literal EXIT=0
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+EXEC @main
+[SUCCESS] all function outputs matched their expected values.
+FLUSH_RUN=2 MODE=numpy EXIT=0
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+EXEC @main
+[SUCCESS] all function outputs matched their expected values.
+FLUSH_RUN=2 MODE=literal EXIT=0
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+EXEC @main
+[SUCCESS] all function outputs matched their expected values.
+FLUSH_RUN=3 MODE=numpy EXIT=0
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+EXEC @main
+[SUCCESS] all function outputs matched their expected values.
+FLUSH_RUN=3 MODE=literal EXIT=0
+:ok

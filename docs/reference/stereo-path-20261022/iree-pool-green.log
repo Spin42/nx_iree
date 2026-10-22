@@ -1,0 +1,41 @@
+[==========] Running 15 tests from 2 test suites.
+[----------] Global test environment set-up.
+[----------] 9 tests from TLSFPoolTest
+[ RUN      ] TLSFPoolTest.ReserveReleaseFresh
+[       OK ] TLSFPoolTest.ReserveReleaseFresh (0 ms)
+[ RUN      ] TLSFPoolTest.ReleaseWithObserverSignalsNotification
+[       OK ] TLSFPoolTest.ReleaseWithObserverSignalsNotification (0 ms)
+[ RUN      ] TLSFPoolTest.ReserveRejectsOversizedAllocation
+[       OK ] TLSFPoolTest.ReserveRejectsOversizedAllocation (0 ms)
+[ RUN      ] TLSFPoolTest.ReserveGrowsForLivePressure
+[       OK ] TLSFPoolTest.ReserveGrowsForLivePressure (0 ms)
+[ RUN      ] TLSFPoolTest.ReserveReusesAllReleasedSlabsWithoutGrowing
+[       OK ] TLSFPoolTest.ReserveReusesAllReleasedSlabsWithoutGrowing (0 ms)
+[ RUN      ] TLSFPoolTest.ReserveReusesDominatedFrontier
+[       OK ] TLSFPoolTest.ReserveReusesDominatedFrontier (0 ms)
+[ RUN      ] TLSFPoolTest.WrapReservationCreatesBuffer
+[       OK ] TLSFPoolTest.WrapReservationCreatesBuffer (0 ms)
+[ RUN      ] TLSFPoolTest.BorrowedMaterializationDoesNotReleaseReservation
+[       OK ] TLSFPoolTest.BorrowedMaterializationDoesNotReleaseReservation (0 ms)
+[ RUN      ] TLSFPoolTest.QueryCapabilitiesAndBudget
+[       OK ] TLSFPoolTest.QueryCapabilitiesAndBudget (0 ms)
+[----------] 9 tests from TLSFPoolTest (0 ms total)
+
+[----------] 6 tests from TLSFPool
+[ RUN      ] TLSFPool.ReleaseNodeReuseAvoidsRepeatedHostAllocation
+[       OK ] TLSFPool.ReleaseNodeReuseAvoidsRepeatedHostAllocation (0 ms)
+[ RUN      ] TLSFPool.ReserveSkipsStaleHeadAndReturnsFreshLaterBlock
+[       OK ] TLSFPool.ReserveSkipsStaleHeadAndReturnsFreshLaterBlock (0 ms)
+[ RUN      ] TLSFPool.ReserveGrowsInsteadOfWaitingForStaleBlock
+[       OK ] TLSFPool.ReserveGrowsInsteadOfWaitingForStaleBlock (0 ms)
+[ RUN      ] TLSFPool.ReserveCanReportGrowthRequiredWithoutGrowing
+[       OK ] TLSFPool.ReserveCanReportGrowthRequiredWithoutGrowing (0 ms)
+[ RUN      ] TLSFPool.ReserveRejectedTaintRemainsRejected
+[       OK ] TLSFPool.ReserveRejectedTaintRemainsRejected (0 ms)
+[ RUN      ] TLSFPool.WrapReservationUsesProviderHook
+[       OK ] TLSFPool.WrapReservationUsesProviderHook (0 ms)
+[----------] 6 tests from TLSFPool (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 15 tests from 2 test suites ran. (0 ms total)
+[  PASSED  ] 15 tests.

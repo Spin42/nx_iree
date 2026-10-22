@@ -1,0 +1,23 @@
+{
+  "census-rolling-board": {
+    "fps": 19.11102396484183,
+    "full_visible": {
+      "evaluated_pixels": 1886631.0,
+      "coverage_percent": 97.30933075943308,
+      "mae_accepted_px": 0.5082760110840681,
+      "bad1_accepted_percent": 3.792157170341223,
+      "bad3_accepted_percent": 1.492917791475204,
+      "bad1_or_invalid_percent": 6.3807920043718145,
+      "bad3_or_invalid_percent": 4.143417552239945
+    },
+    "common_x_ge_64": {
+      "evaluated_pixels": 1547446.0,
+      "coverage_percent": 97.12881741915389,
+      "mae_accepted_px": 0.5595839151784712,
+      "bad1_accepted_percent": 4.383386470935772,
+      "bad3_accepted_percent": 1.7329156841976399,
+      "bad1_or_invalid_percent": 7.128714022977215,
+      "bad3_or_invalid_percent": 4.554343091778324
+    }
+  }
+}

@@ -1,0 +1,16 @@
+BOOT_ID=6f672cb9-e70d-433c-8894-7231f93bf6b7
+%{"nerves_fw_active" => "b", "nerves_fw_validated" => "1"}
+governor=simple_ondemand
+min_freq=76800000
+max_freq=921600000
+cur_freq=76800000
+{"STEREO_SCRIPT", nil}
+{"STEREO_RUNTIME_ROOT", nil}
+{"STEREO_SUCCESS_MARKER", nil}
+{"STEREO_BUNDLE", nil}
+{"VIDEO_DATA", nil}
+{"VIDEO_OUTPUT", nil}
+{"C100_GPU_DIAGNOSTIC", nil}
+{"ERL_CRASH_DUMP", "/root/erl_crash.dump"}
+GPU_ERRORS=23
+:ok

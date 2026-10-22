@@ -1,0 +1,3 @@
+[0/2] Re-checking globbed directories...
+[1/2] Building CXX object modules/default/CMakeFiles/nx_iree_runtime.dir/__/__/src/runtime.cc.o
+[2/2] Linking CXX shared library modules/default/libnx_iree_runtime.so

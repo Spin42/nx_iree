@@ -1,0 +1,4 @@
+patching file runtime/src/iree/hal/buffer_transfer.c
+patching file runtime/src/iree/hal/buffer_transfer_test.cc
+patching file runtime/src/iree/hal/CMakeLists.txt
+patching file runtime/src/iree/hal/BUILD.bazel

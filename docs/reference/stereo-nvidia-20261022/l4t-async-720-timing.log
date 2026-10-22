@@ -1,0 +1,23 @@
+[sudo] password for marc: 2026-10-22T20:31:48+02:00
+Running /home/marc/sgm-vulkan-compare-20261022/legacy-iree-benchmark-module
+Run on (4 X 1479 MHz CPU s)
+CPU Caches:
+  L1 Data 32 KiB (x4)
+  L1 Instruction 48 KiB (x4)
+  L2 Unified 2048 KiB (x1)
+Load Average: 0.35, 0.38, 0.44
+***WARNING*** CPU scaling is enabled, the benchmark real time measurements may be noisy and will incur extra overhead.
+***WARNING*** ASLR is enabled, the results may have unreproducible noise in them.
+------------------------------------------------------------------------------------------------
+Benchmark                                      Time             CPU   Iterations UserCounters...
+------------------------------------------------------------------------------------------------
+BM_main/process_time/real_time               203 ms          200 ms            4 items_per_second=4.91435/s
+BM_main/process_time/real_time               178 ms          176 ms            4 items_per_second=5.61869/s
+BM_main/process_time/real_time               183 ms          178 ms            4 items_per_second=5.46333/s
+BM_main/process_time/real_time_mean          188 ms          185 ms            3 items_per_second=5.33212/s
+BM_main/process_time/real_time_median        183 ms          178 ms            3 items_per_second=5.46333/s
+BM_main/process_time/real_time_stddev       13.5 ms         13.0 ms            3 items_per_second=0.370047/s
+BM_main/process_time/real_time_cv           7.18 %          7.07 %             3 items_per_second=6.94%
+CHILD_EXIT=0
+NEW_GPU_ERRORS=0
+L4T_VULKAN_PROBE_PASS

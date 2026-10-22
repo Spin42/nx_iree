@@ -1,0 +1,22 @@
+BOOT_ID=6f672cb9-e70d-433c-8894-7231f93bf6b7
+GOVERNOR=simple_ondemand
+GPU_MAX=921600000
+GPU_MIN=76800000
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+VIDEO_DEVICE=vulkan://GPU-2b01de10000000000000000100000000 shape={13, 37} disparities=33 frames=3
+VIDEO_INTERMEDIATES_PASS frame_0001
+VIDEO_INTERMEDIATES_PASS frame_0002
+VIDEO_INTERMEDIATES_PASS frame_0003
+VIDEO_ORACLE_PASS frame_0001
+VIDEO_FRAME=frame_0001 total_ms=20.229 phases_ms=%{left: %{select: 0.568, cost: 1.408, paths: 9.203}, right: %{select: 0.562, cost: 0.553, paths: 4.728}, upload: 1.929, readback: 0.688, consistency: 0.512}
+VIDEO_ORACLE_PASS frame_0002
+VIDEO_FRAME=frame_0002 total_ms=18.143 phases_ms=%{left: %{select: 0.457, cost: 0.934, paths: 8.705}, right: %{select: 0.734, cost: 0.407, paths: 4.037}, upload: 1.473, readback: 0.827, consistency: 0.499}
+VIDEO_ORACLE_PASS frame_0003
+VIDEO_FRAME=frame_0003 total_ms=16.643 phases_ms=%{left: %{select: 0.676, cost: 0.838, paths: 5.619}, right: %{select: 0.705, cost: 0.65, paths: 5.549}, upload: 1.508, readback: 0.613, consistency: 0.419}
+VIDEO_RESULT fps=54.530582568390436 p50_ms=18.143 p95_ms=20.229 p99_ms=20.229 includes=upload_cost_16paths_select_consistency_readback excludes=decode_disk_io_validation warmup=3
+STEREO_PATH_PASS
+CHILD_EXIT=0
+GPU_ERRORS=0
+BOARD_STEREO_PASS
+:ok

@@ -1,0 +1,4 @@
+STREAM_DEVICE=vulkan://GPU-00000000030000000000000000000000
+STREAM_RESULT words=1048576 bytes_read_written=8388608 median_ms=0.127 GBps=66.052031496063 ms=[0.13, 0.133, 0.134, 0.125, 0.125, 0.127, 0.135, 0.133, 0.13, 0.126, 0.127, 0.128, 0.123, 0.127, 0.131, 0.127, 0.128, 0.124, 0.127, 0.127] includes=runtime_allocation_completed_dispatch excludes=upload_readback_release
+STREAM_RESULT words=4194304 bytes_read_written=33554432 median_ms=0.157 GBps=213.72249681528663 ms=[0.171, 0.153, 0.169, 0.153, 0.171, 0.172, 0.16, 0.17, 0.17, 0.157, 0.853, 0.155, 0.149, 0.149, 0.146, 0.14, 0.148, 0.178, 0.147, 0.19] includes=runtime_allocation_completed_dispatch excludes=upload_readback_release
+VULKAN_STREAM_PASS

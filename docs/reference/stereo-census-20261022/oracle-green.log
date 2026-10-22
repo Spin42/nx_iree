@@ -1,0 +1,11 @@
+CENSUS_DEVICE=vulkan://GPU-00000000030000000000000000000000 shape={17, 73} parameters=%{paths: 8, disparities: 64, p1: 10, p2: 120, uniqueness: 1.1}
+CENSUS_ORACLE_PASS frame_0001
+CENSUS_ORACLE_PASS frame_0002
+CENSUS_ORACLE_PASS frame_0003
+CENSUS_ORACLE_PASS frame_0004
+CENSUS_FRAME=frame_0001 total_ms=1.103 phases_ms=%{:upload => 0.241, :readback => 0.144, "census" => 0.149, "filter" => 0.119, "paths" => 0.226, "select" => 0.105, "sum" => 0.107}
+CENSUS_FRAME=frame_0002 total_ms=1.413 phases_ms=%{:upload => 0.539, :readback => 0.13, "census" => 0.152, "filter" => 0.105, "paths" => 0.248, "select" => 0.114, "sum" => 0.114}
+CENSUS_FRAME=frame_0003 total_ms=1.008 phases_ms=%{:upload => 0.179, :readback => 0.096, "census" => 0.139, "filter" => 0.112, "paths" => 0.223, "select" => 0.137, "sum" => 0.114}
+CENSUS_FRAME=frame_0004 total_ms=0.998 phases_ms=%{:upload => 0.146, :readback => 0.099, "census" => 0.144, "filter" => 0.115, "paths" => 0.239, "select" => 0.124, "sum" => 0.121}
+CENSUS_RESULT fps=884.564352056612 p50_ms=1.008 p95_ms=1.413 includes=upload_census_paths_selection_median_consistency_readback excludes=decode_disk_io warmup=3
+CENSUS_STEREO_PASS

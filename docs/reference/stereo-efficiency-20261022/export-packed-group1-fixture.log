@@ -1,0 +1,13 @@
+EXPORTED cost_left 10737 bytes
+EXPORTED cost_right 10737 bytes
+EXPORTED select 14880 bytes
+EXPORTED consistent 8754 bytes
+EXPORTED path0 19037 bytes
+EXPORTED path1 19569 bytes
+EXPORTED path2 19537 bytes
+EXPORTED path3 19569 bytes
+EXPORTED path4 19521 bytes
+EXPORTED path5 19553 bytes
+EXPORTED path6 19553 bytes
+EXPORTED path7 19569 bytes
+WROTE /tmp/video-packed-group1-fixture.bin

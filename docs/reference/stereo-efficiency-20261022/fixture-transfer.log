@@ -1,0 +1,9 @@
+sftp> mkdir /root/nxiree/fixtures-packed-128
+sftp> mkdir /root/nxiree/fixtures-packed-65
+sftp> mkdir /root/nxiree/fixtures-packed-3
+sftp> put /var/home/marc/.cache/stereo-bench/fixtures-packed-128/* /root/nxiree/fixtures-packed-128/
+sftp> put /var/home/marc/.cache/stereo-bench/fixtures-packed-65/* /root/nxiree/fixtures-packed-65/
+sftp> put /var/home/marc/.cache/stereo-bench/fixtures-packed-3/* /root/nxiree/fixtures-packed-3/
+sftp> put /tmp/video-fused-d128.bin /root/nxiree/video-fused-d128.bin
+sftp> put /tmp/video-fused-d65.bin /root/nxiree/video-fused-d65.bin
+sftp> put /tmp/video-fused-d3.bin /root/nxiree/video-fused-d3.bin

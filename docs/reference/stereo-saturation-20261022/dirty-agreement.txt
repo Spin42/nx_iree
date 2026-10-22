@@ -1,0 +1,2 @@
+DIRTY_NIF_BYTE_IDENTICAL dirty-two-alley frames=50
+DIRTY_NIF_BYTE_IDENTICAL dirty-two-temple frames=50

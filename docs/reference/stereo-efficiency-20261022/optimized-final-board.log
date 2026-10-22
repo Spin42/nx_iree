@@ -1,0 +1,89 @@
+FINAL_SOURCE_TRIAL=optimized-final-fixture
+BOOT_ID=6f672cb9-e70d-433c-8894-7231f93bf6b7
+GOVERNOR=simple_ondemand
+GPU_MAX=921600000
+GPU_MIN=76800000
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+VIDEO_DEVICE=vulkan://GPU-2b01de10000000000000000100000000 shape={13, 37} disparities=33 frames=4
+VIDEO_INTERMEDIATES_PASS frame_0001
+VIDEO_INTERMEDIATES_PASS frame_0002
+VIDEO_INTERMEDIATES_PASS frame_0003
+VIDEO_INTERMEDIATES_PASS frame_0004
+VIDEO_ORACLE_PASS frame_0001
+VIDEO_FRAME=frame_0001 total_ms=13.979 phases_ms=%{left: %{select: 0.522, cost: 1.216, paths: 6.126}, right: %{select: 0.466, cost: 0.401, paths: 3.001}, upload: 1.283, readback: 0.532, consistency: 0.378}
+VIDEO_ORACLE_PASS frame_0002
+VIDEO_FRAME=frame_0002 total_ms=10.708 phases_ms=%{left: %{select: 0.402, cost: 0.426, paths: 4.06}, right: %{select: 0.477, cost: 0.43, paths: 2.644}, upload: 1.356, readback: 0.525, consistency: 0.334}
+VIDEO_ORACLE_PASS frame_0003
+VIDEO_FRAME=frame_0003 total_ms=10.009 phases_ms=%{left: %{select: 0.464, cost: 0.589, paths: 3.042}, right: %{select: 0.448, cost: 0.383, paths: 2.887}, upload: 1.249, readback: 0.528, consistency: 0.363}
+VIDEO_ORACLE_PASS frame_0004
+VIDEO_FRAME=frame_0004 total_ms=11.334 phases_ms=%{left: %{select: 0.456, cost: 0.577, paths: 3.021}, right: %{select: 0.786, cost: 0.482, paths: 3.83}, upload: 1.24, readback: 0.532, consistency: 0.352}
+VIDEO_RESULT fps=86.89984792526613 p50_ms=10.708 p95_ms=13.979 p99_ms=13.979 includes=upload_cost_16paths_select_consistency_readback excludes=decode_disk_io_validation warmup=3
+STEREO_PATH_PASS
+CHILD_EXIT=0
+GPU_ERRORS=0
+BOARD_STEREO_PASS
+FINAL_SOURCE_TRIAL=optimized-final-320
+BOOT_ID=6f672cb9-e70d-433c-8894-7231f93bf6b7
+GOVERNOR=simple_ondemand
+GPU_MAX=921600000
+GPU_MIN=76800000
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+VIDEO_DEVICE=vulkan://GPU-2b01de10000000000000000100000000 shape={136, 320} disparities=64 frames=50
+VIDEO_FRAME=frame_0001 total_ms=107.205 phases_ms=%{left: %{select: 12.677, cost: 7.995, paths: 33.242}, right: %{select: 9.098, cost: 7.94, paths: 28.834}, upload: 3.746, readback: 1.681, consistency: 1.823}
+VIDEO_FRAME=frame_0002 total_ms=108.273 phases_ms=%{left: %{select: 11.717, cost: 8.444, paths: 32.159}, right: %{select: 9.301, cost: 8.618, paths: 31.952}, upload: 2.923, readback: 1.74, consistency: 1.254}
+VIDEO_FRAME=frame_0003 total_ms=94.511 phases_ms=%{left: %{select: 9.157, cost: 7.331, paths: 26.689}, right: %{select: 9.473, cost: 6.836, paths: 27.954}, upload: 3.853, readback: 1.769, consistency: 1.252}
+VIDEO_FRAME=frame_0004 total_ms=94.911 phases_ms=%{left: %{select: 8.977, cost: 7.397, paths: 27.825}, right: %{select: 9.252, cost: 7.066, paths: 27.128}, upload: 3.958, readback: 1.974, consistency: 1.165}
+VIDEO_FRAME=frame_0005 total_ms=94.211 phases_ms=%{left: %{select: 8.982, cost: 7.231, paths: 26.927}, right: %{select: 9.296, cost: 7.061, paths: 27.476}, upload: 3.81, readback: 2.104, consistency: 1.157}
+VIDEO_FRAME=frame_0006 total_ms=94.321 phases_ms=%{left: %{select: 9.029, cost: 7.281, paths: 27.588}, right: %{select: 9.138, cost: 6.974, paths: 26.905}, upload: 4.018, readback: 1.821, consistency: 1.397}
+VIDEO_FRAME=frame_0007 total_ms=94.734 phases_ms=%{left: %{select: 9.219, cost: 7.174, paths: 27.543}, right: %{select: 9.193, cost: 6.837, paths: 27.695}, upload: 3.804, readback: 1.711, consistency: 1.386}
+VIDEO_FRAME=frame_0008 total_ms=93.951 phases_ms=%{left: %{select: 9.226, cost: 7.195, paths: 26.999}, right: %{select: 9.176, cost: 7.023, paths: 27.11}, upload: 3.84, readback: 1.889, consistency: 1.322}
+VIDEO_FRAME=frame_0009 total_ms=93.514 phases_ms=%{left: %{select: 9.344, cost: 7.114, paths: 26.147}, right: %{select: 9.255, cost: 6.861, paths: 27.501}, upload: 4.034, readback: 1.783, consistency: 1.307}
+VIDEO_FRAME=frame_0010 total_ms=96.089 phases_ms=%{left: %{select: 9.055, cost: 7.295, paths: 27.649}, right: %{select: 9.205, cost: 7.042, paths: 27.913}, upload: 4.009, readback: 1.823, consistency: 1.934}
+VIDEO_FRAME=frame_0011 total_ms=97.829 phases_ms=%{left: %{select: 9.271, cost: 7.289, paths: 26.599}, right: %{select: 9.091, cost: 6.865, paths: 27.473}, upload: 3.992, readback: 1.787, consistency: 5.299}
+VIDEO_FRAME=frame_0012 total_ms=96.17 phases_ms=%{left: %{select: 9.516, cost: 7.313, paths: 26.805}, right: %{select: 10.976, cost: 7.11, paths: 26.569}, upload: 4.0, readback: 2.069, consistency: 1.647}
+VIDEO_FRAME=frame_0013 total_ms=101.315 phases_ms=%{left: %{select: 9.352, cost: 7.657, paths: 27.915}, right: %{select: 14.561, cost: 6.864, paths: 27.672}, upload: 3.705, readback: 2.17, consistency: 1.252}
+VIDEO_FRAME=frame_0014 total_ms=101.245 phases_ms=%{left: %{select: 9.329, cost: 7.436, paths: 28.405}, right: %{select: 9.516, cost: 7.047, paths: 32.068}, upload: 3.955, readback: 1.895, consistency: 1.426}
+VIDEO_FRAME=frame_0015 total_ms=101.344 phases_ms=%{left: %{select: 9.216, cost: 7.294, paths: 28.293}, right: %{select: 9.173, cost: 7.171, paths: 32.771}, upload: 4.06, readback: 1.766, consistency: 1.431}
+VIDEO_FRAME=frame_0016 total_ms=99.468 phases_ms=%{left: %{select: 9.197, cost: 7.475, paths: 28.119}, right: %{select: 9.207, cost: 7.106, paths: 30.94}, upload: 3.818, readback: 2.149, consistency: 1.291}
+VIDEO_FRAME=frame_0017 total_ms=97.485 phases_ms=%{left: %{select: 9.197, cost: 7.108, paths: 26.616}, right: %{select: 9.252, cost: 7.28, paths: 30.862}, upload: 3.794, readback: 2.066, consistency: 1.146}
+VIDEO_FRAME=frame_0018 total_ms=93.38 phases_ms=%{left: %{select: 9.168, cost: 7.165, paths: 26.786}, right: %{select: 9.232, cost: 7.078, paths: 27.111}, upload: 3.823, readback: 1.708, consistency: 1.147}
+VIDEO_FRAME=frame_0019 total_ms=92.628 phases_ms=%{left: %{select: 9.311, cost: 7.099, paths: 26.484}, right: %{select: 9.27, cost: 6.905, paths: 27.158}, upload: 3.384, readback: 1.546, consistency: 1.307}
+VIDEO_FRAME=frame_0020 total_ms=93.859 phases_ms=%{left: %{select: 9.26, cost: 7.098, paths: 27.548}, right: %{select: 9.219, cost: 6.849, paths: 27.29}, upload: 3.052, readback: 1.696, consistency: 1.682}
+VIDEO_FRAME=frame_0021 total_ms=96.545 phases_ms=%{left: %{select: 9.112, cost: 7.174, paths: 26.055}, right: %{select: 9.134, cost: 7.04, paths: 32.035}, upload: 2.89, readback: 1.479, consistency: 1.468}
+VIDEO_FRAME=frame_0022 total_ms=94.877 phases_ms=%{left: %{select: 9.473, cost: 7.711, paths: 26.655}, right: %{select: 8.978, cost: 8.878, paths: 26.959}, upload: 3.223, readback: 1.5, consistency: 1.34}
+VIDEO_FRAME=frame_0023 total_ms=94.82 phases_ms=%{left: %{select: 9.424, cost: 7.561, paths: 26.069}, right: %{select: 9.08, cost: 9.188, paths: 27.527}, upload: 3.159, readback: 1.331, consistency: 1.319}
+VIDEO_FRAME=frame_0024 total_ms=94.035 phases_ms=%{left: %{select: 9.25, cost: 7.128, paths: 26.103}, right: %{select: 9.081, cost: 9.231, paths: 27.47}, upload: 3.155, readback: 1.309, consistency: 1.147}
+VIDEO_FRAME=frame_0025 total_ms=94.406 phases_ms=%{left: %{select: 9.439, cost: 7.343, paths: 26.616}, right: %{select: 9.078, cost: 8.592, paths: 27.67}, upload: 3.056, readback: 1.306, consistency: 1.143}
+VIDEO_FRAME=frame_0026 total_ms=94.837 phases_ms=%{left: %{select: 9.112, cost: 7.153, paths: 26.707}, right: %{select: 9.165, cost: 8.877, paths: 27.735}, upload: 3.045, readback: 1.571, consistency: 1.308}
+VIDEO_FRAME=frame_0027 total_ms=93.215 phases_ms=%{left: %{select: 9.119, cost: 7.192, paths: 27.251}, right: %{select: 8.872, cost: 7.15, paths: 27.812}, upload: 2.984, readback: 1.271, consistency: 1.401}
+VIDEO_FRAME=frame_0028 total_ms=94.254 phases_ms=%{left: %{select: 9.322, cost: 6.992, paths: 26.96}, right: %{select: 9.11, cost: 8.47, paths: 27.261}, upload: 3.06, readback: 1.598, consistency: 1.317}
+VIDEO_FRAME=frame_0029 total_ms=95.122 phases_ms=%{left: %{select: 9.14, cost: 7.122, paths: 27.719}, right: %{select: 9.135, cost: 7.46, paths: 27.991}, upload: 3.172, readback: 1.613, consistency: 1.612}
+VIDEO_FRAME=frame_0030 total_ms=92.367 phases_ms=%{left: %{select: 9.148, cost: 7.072, paths: 26.839}, right: %{select: 9.105, cost: 6.971, paths: 27.465}, upload: 2.972, readback: 1.305, consistency: 1.327}
+VIDEO_FRAME=frame_0031 total_ms=94.375 phases_ms=%{left: %{select: 9.245, cost: 7.247, paths: 27.662}, right: %{select: 9.136, cost: 7.128, paths: 28.01}, upload: 3.171, readback: 1.366, consistency: 1.251}
+VIDEO_FRAME=frame_0032 total_ms=96.324 phases_ms=%{left: %{select: 9.457, cost: 7.459, paths: 27.47}, right: %{select: 9.261, cost: 7.825, paths: 28.249}, upload: 3.009, readback: 1.613, consistency: 1.816}
+VIDEO_FRAME=frame_0033 total_ms=100.883 phases_ms=%{left: %{select: 13.747, cost: 7.361, paths: 28.732}, right: %{select: 9.266, cost: 7.147, paths: 28.524}, upload: 2.966, readback: 1.493, consistency: 1.437}
+VIDEO_FRAME=frame_0034 total_ms=95.757 phases_ms=%{left: %{select: 9.14, cost: 7.305, paths: 28.099}, right: %{select: 9.495, cost: 7.143, paths: 28.427}, upload: 2.95, readback: 1.546, consistency: 1.484}
+VIDEO_FRAME=frame_0035 total_ms=94.26 phases_ms=%{left: %{select: 9.396, cost: 7.531, paths: 27.989}, right: %{select: 9.1, cost: 7.07, paths: 27.079}, upload: 3.175, readback: 1.433, consistency: 1.32}
+VIDEO_FRAME=frame_0036 total_ms=94.042 phases_ms=%{left: %{select: 9.143, cost: 7.141, paths: 27.364}, right: %{select: 9.108, cost: 7.112, paths: 28.187}, upload: 2.989, readback: 1.521, consistency: 1.318}
+VIDEO_FRAME=frame_0037 total_ms=99.475 phases_ms=%{left: %{select: 9.064, cost: 7.248, paths: 32.327}, right: %{select: 9.056, cost: 7.168, paths: 28.077}, upload: 3.111, readback: 1.479, consistency: 1.782}
+VIDEO_FRAME=frame_0038 total_ms=96.834 phases_ms=%{left: %{select: 9.132, cost: 7.092, paths: 31.001}, right: %{select: 9.099, cost: 7.171, paths: 27.294}, upload: 2.953, readback: 1.615, consistency: 1.314}
+VIDEO_FRAME=frame_0039 total_ms=97.931 phases_ms=%{left: %{select: 9.122, cost: 7.118, paths: 31.74}, right: %{select: 9.096, cost: 7.168, paths: 27.658}, upload: 3.041, readback: 1.503, consistency: 1.323}
+VIDEO_FRAME=frame_0040 total_ms=93.179 phases_ms=%{left: %{select: 9.204, cost: 7.132, paths: 27.061}, right: %{select: 9.347, cost: 7.085, paths: 27.383}, upload: 3.038, readback: 1.422, consistency: 1.342}
+VIDEO_FRAME=frame_0041 total_ms=92.22 phases_ms=%{left: %{select: 9.031, cost: 7.205, paths: 26.395}, right: %{select: 9.079, cost: 7.13, paths: 26.894}, upload: 3.163, readback: 1.481, consistency: 1.682}
+VIDEO_FRAME=frame_0042 total_ms=97.793 phases_ms=%{left: %{select: 9.136, cost: 7.073, paths: 31.286}, right: %{select: 9.129, cost: 7.098, paths: 28.083}, upload: 3.04, readback: 1.48, consistency: 1.308}
+VIDEO_FRAME=frame_0043 total_ms=93.881 phases_ms=%{left: %{select: 9.136, cost: 7.142, paths: 27.2}, right: %{select: 9.111, cost: 7.161, paths: 27.976}, upload: 3.138, readback: 1.539, consistency: 1.317}
+VIDEO_FRAME=frame_0044 total_ms=97.906 phases_ms=%{left: %{select: 9.061, cost: 7.132, paths: 31.356}, right: %{select: 9.115, cost: 7.16, paths: 27.844}, upload: 3.162, readback: 1.596, consistency: 1.318}
+VIDEO_FRAME=frame_0045 total_ms=98.606 phases_ms=%{left: %{select: 9.073, cost: 7.117, paths: 31.979}, right: %{select: 9.158, cost: 7.162, paths: 27.84}, upload: 3.158, readback: 1.487, consistency: 1.47}
+VIDEO_FRAME=frame_0046 total_ms=93.722 phases_ms=%{left: %{select: 9.081, cost: 7.08, paths: 27.11}, right: %{select: 9.111, cost: 7.167, paths: 28.079}, upload: 3.167, readback: 1.38, consistency: 1.385}
+VIDEO_FRAME=frame_0047 total_ms=97.212 phases_ms=%{left: %{select: 9.125, cost: 7.131, paths: 30.989}, right: %{select: 9.114, cost: 7.219, paths: 27.821}, upload: 3.067, readback: 1.345, consistency: 1.242}
+VIDEO_FRAME=frame_0048 total_ms=99.099 phases_ms=%{left: %{select: 9.13, cost: 7.215, paths: 32.301}, right: %{select: 9.048, cost: 7.102, paths: 28.007}, upload: 3.165, readback: 1.657, consistency: 1.313}
+VIDEO_FRAME=frame_0049 total_ms=93.655 phases_ms=%{left: %{select: 9.147, cost: 7.111, paths: 27.473}, right: %{select: 9.105, cost: 7.113, paths: 27.748}, upload: 3.132, readback: 1.412, consistency: 1.255}
+VIDEO_FRAME=frame_0050 total_ms=93.969 phases_ms=%{left: %{select: 9.386, cost: 7.239, paths: 27.016}, right: %{select: 9.09, cost: 7.258, paths: 27.827}, upload: 3.151, readback: 1.304, consistency: 1.535}
+VIDEO_RESULT fps=10.390594932215915 p50_ms=94.837 p95_ms=101.344 p99_ms=108.273 includes=upload_cost_16paths_select_consistency_readback excludes=decode_disk_io_validation warmup=3
+STEREO_PATH_PASS
+CHILD_EXIT=0
+GPU_ERRORS=0
+BOARD_STEREO_PASS
+:ok

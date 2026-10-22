@@ -1,0 +1,22 @@
+DEVICE=vulkan://GPU-00000000030000000000000000000000
+PASS first pixel: 6 exact values
+INPUTS_UNCHANGED first pixel
+PASS one disparity: 4 exact values
+INPUTS_UNCHANGED one disparity
+PASS no disparity wrap: 12 exact values
+INPUTS_UNCHANGED no disparity wrap
+PASS zero penalties: 9 exact values
+INPUTS_UNCHANGED zero penalties
+PASS large common offset: 9 exact values
+INPUTS_UNCHANGED large common offset
+PASS many independent lines: 2720 exact values
+INPUTS_UNCHANGED many independent lines
+PASS changed input: 2720 exact values
+INPUTS_UNCHANGED changed input
+PASS {32, 24, 32}: 24576 exact values
+PATH_BENCH shape={32, 24, 32} ms=[5.425, 5.848, 5.8, 6.673, 5.841, 5.716, 7.321, 6.088, 5.997, 6.196] input_bytes=98304 output_bytes=98304 includes=invoke_and_readback
+INPUTS_UNCHANGED {32, 24, 32}
+PASS {160, 120, 64}: 1228800 exact values
+PATH_BENCH shape={160, 120, 64} ms=[28.802, 28.157, 29.42, 28.205, 27.953, 29.083, 28.871, 28.997, 29.154, 29.01] input_bytes=4915200 output_bytes=4915200 includes=invoke_and_readback
+INPUTS_UNCHANGED {160, 120, 64}
+STEREO_PATH_PASS

@@ -1,0 +1,8 @@
+[0mWaiting for lock on the build directory (held by process 402396)
+EXPORTED census 12930 bytes
+EXPORTED paths 27093 bytes
+EXPORTED select 15372 bytes
+EXPORTED consistency_projected 12499 bytes
+EXPORTED filter 13435 bytes
+EXPORTED pipeline 60555 bytes
+WROTE /tmp/sgm-next-20261022/shared-fixture.bin

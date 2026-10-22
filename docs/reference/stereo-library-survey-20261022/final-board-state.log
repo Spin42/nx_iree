@@ -1,0 +1,24 @@
+/proc/sys/kernel/random/boot_id
+{:ok, "6f672cb9-e70d-433c-8894-7231f93bf6b7\n"}
+/sys/class/devfreq/57000000.gpu/governor
+{:ok, "simple_ondemand\n"}
+/sys/class/devfreq/57000000.gpu/min_freq
+{:ok, "76800000\n"}
+/sys/class/devfreq/57000000.gpu/max_freq
+{:ok, "921600000\n"}
+/sys/class/devfreq/57000000.gpu/cur_freq
+{:ok, "76800000\n"}
+/sys/kernel/debug/clk/emc/clk_rate
+{:ok, "1600000000\n"}
+%{"nerves_fw_active" => "b", "nerves_fw_validated" => "1"}
+%{
+  "ERL_CRASH_DUMP" => "/root/erl_crash.dump",
+  "EVISION_RUNTIME_ROOT" => nil,
+  "OPENCV_THREADS" => nil,
+  "STEREO_SCRIPT" => nil,
+  "STEREO_SUCCESS_MARKER" => nil,
+  "VIDEO_DATA" => nil,
+  "VIDEO_OUTPUT" => nil
+}
+GPU_ERRORS: []
+:ok

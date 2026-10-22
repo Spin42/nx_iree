@@ -1,0 +1,6 @@
+/tmp/stereo-compiler-dir-validation/iree-compile
+IREE (https://iree.dev):
+  IREE compiler version 3.13.0rc20261016 @ 89ece87b89852100c0a4ac3d515e14842d090967
+  LLVM version 24.0.0git
+  Optimized build
+/var/home/marc/Projects/nx_iree/cache/iree/compiler/_mlir_libs/iree-compile

@@ -1,0 +1,32 @@
+DEVICE=vulkan://GPU-00000000030000000000000000000000
+MODEL shape={1, 2, 3} written_inputs=[]
+MODEL shape={3, 1, 2} written_inputs=[]
+MODEL shape={3, 1, 3} written_inputs=[]
+MODEL shape={3, 1, 4} written_inputs=[]
+MODEL shape={4, 1, 1} written_inputs=[]
+MODEL shape={5, 3, 2} written_inputs=[]
+MODEL shape={5, 3, 31} written_inputs=[]
+MODEL shape={5, 3, 33} written_inputs=[]
+MODEL shape={5, 3, 63} written_inputs=[]
+MODEL shape={5, 3, 65} written_inputs=[]
+MODEL shape={5, 3, 97} written_inputs=[]
+MODEL shape={5, 3, 128} written_inputs=[]
+MODEL shape={17, 5, 32} written_inputs=[]
+MODEL shape={32, 24, 32} written_inputs=[]
+MODEL shape={160, 120, 64} written_inputs=[]
+PASS first pixel: 6 exact values
+INPUTS_UNCHANGED first pixel
+PASS one disparity: 4 exact values
+INPUTS_UNCHANGED one disparity
+PASS no disparity wrap: 12 exact values
+INPUTS_UNCHANGED no disparity wrap
+PASS zero penalties: 9 exact values
+INPUTS_UNCHANGED zero penalties
+PASS large common offset: 9 exact values
+INPUTS_UNCHANGED large common offset
+** (RuntimeError) large penalty overflow: GPU path costs differ from scalar reference
+    stereo/run.exs:71: StereoPathBench.check/4
+    stereo/run.exs:44: anonymous fn/4 in StereoPathBench.run/1
+    (elixir 1.20.4) lib/enum.ex:2622: Enum."-reduce/3-lists^foldl/2-0-"/3
+    stereo/run.exs:44: StereoPathBench.run/1
+    stereo/run.exs:127: (file)

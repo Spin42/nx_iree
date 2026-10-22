@@ -1,0 +1,13 @@
+TOGGLE_RUN=1 BINARY=iree-run-module EXIT=1
+[FAILED] result[0]: element at index 168 (-1) does not match the expected (7); expected that the view is equal to contents of a view of 17x73xf32
+TOGGLE_RUN=1 BINARY=iree-run-module-flush EXIT=0
+[SUCCESS] all function outputs matched their expected values.
+TOGGLE_RUN=2 BINARY=iree-run-module EXIT=1
+[FAILED] result[0]: element at index 64 (0) does not match the expected (-1); expected that the view is equal to contents of a view of 17x73xf32
+TOGGLE_RUN=2 BINARY=iree-run-module-flush EXIT=0
+[SUCCESS] all function outputs matched their expected values.
+TOGGLE_RUN=3 BINARY=iree-run-module EXIT=1
+[FAILED] result[0]: element at index 16 (0) does not match the expected (-1); expected that the view is equal to contents of a view of 17x73xf32
+TOGGLE_RUN=3 BINARY=iree-run-module-flush EXIT=0
+[SUCCESS] all function outputs matched their expected values.
+:ok

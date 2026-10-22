@@ -1,0 +1,7 @@
+EXPORTED census 12930 bytes
+EXPORTED paths 27093 bytes
+EXPORTED select 15372 bytes
+EXPORTED consistency_projected 11439 bytes
+EXPORTED filter 13435 bytes
+EXPORTED pipeline 59483 bytes
+WROTE /tmp/sgm-next-20261022/gather-fixture.bin

@@ -1,0 +1,7 @@
+SERVING_DEVICE=vulkan://GPU-00000000030000000000000000000000 frames=100 target_fps=100
+SERVING_RESULT fps=100.10501015565328 wall_ms=998.951 cpu_ticks=91 cpu_cores=0.9109555924164449 completed_within_period=92
+SERVING_arrival_lateness p50_ms=0.967 p95_ms=0.978 max_ms=1.966
+SERVING_latency p50_ms=7.966 p95_ms=13.334 max_ms=16.083
+SERVING_scheduled_latency p50_ms=8.941 p95_ms=13.774 max_ms=17.057
+SERVING_OUTPUTS_PASS total=100 unique=50 reference=true
+STEREO_SERVING_PASS

@@ -1,0 +1,23 @@
+FINAL_SEQUENCE_AGREEMENT_PASS frames=50 bit_identical=true
+governor=simple_ondemand
+min_freq=76800000
+max_freq=921600000
+cur_freq=76800000
+EMC=1600000000
+BOOT_ID=6f672cb9-e70d-433c-8894-7231f93bf6b7
+/sys/class/thermal/thermal_zone0/temp=38500
+/sys/class/thermal/thermal_zone1/temp=38000
+/sys/class/thermal/thermal_zone2/temp=38500
+/sys/class/thermal/thermal_zone3/temp=40500
+MemAvailable:    3638244 kB
+GPU_ERRORS: []
+{"STEREO_RUNTIME_ROOT", nil}
+{"STEREO_BUNDLE", nil}
+{"STEREO_SCRIPT", nil}
+{"STEREO_COMPARE_SCRIPT", nil}
+{"STEREO_COMPARE_BUNDLES", nil}
+{"VIDEO_DATA", nil}
+{"VIDEO_OUTPUT", nil}
+{"STEREO_SUCCESS_MARKER", nil}
+{"VULKAN_BUNDLE", nil}
+:ok

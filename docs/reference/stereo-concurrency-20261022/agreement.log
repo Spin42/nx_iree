@@ -1,0 +1,8 @@
+AGREEMENT kind=gpu workers=0 sequence=alley 50/50 byte-identical to prior validated outputs
+AGREEMENT kind=gpu workers=0 sequence=temple 50/50 byte-identical to prior validated outputs
+AGREEMENT kind=gpu workers=2 sequence=alley 50/50 byte-identical to prior validated outputs
+AGREEMENT kind=gpu workers=2 sequence=temple 50/50 byte-identical to prior validated outputs
+AGREEMENT kind=cpu workers=0 sequence=alley 50/50 byte-identical to prior validated outputs
+AGREEMENT kind=cpu workers=0 sequence=temple 50/50 byte-identical to prior validated outputs
+AGREEMENT kind=cpu workers=2 sequence=alley 50/50 byte-identical to prior validated outputs
+AGREEMENT kind=cpu workers=2 sequence=temple 50/50 byte-identical to prior validated outputs

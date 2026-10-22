@@ -1,0 +1,7 @@
+CPU_LOAD_BEGIN workers=2 workload=otp_crypto_sha256 block_bytes=65536
+CPU_LOAD_RESULT workers=2 blocks=13685 wall_ms=200.201 cpu_ticks=41 source=caller_beam_all_threads includes=guard_startup_measurement_output_validation_and_existing_application_activity
+CPU_LOAD_STOPPED
+CPU_LOAD_BEGIN workers=2 workload=otp_crypto_sha256 block_bytes=65536
+CPU_LOAD_RESULT workers=2 blocks=6870 wall_ms=100.467 cpu_ticks=20 source=caller_beam_all_threads includes=guard_startup_measurement_output_validation_and_existing_application_activity
+CPU_LOAD_STOPPED
+EXPECTED_FAILURE_AND_CLEANUP_PASS

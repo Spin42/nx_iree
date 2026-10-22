@@ -1,0 +1,65 @@
+REMOVED_OUTPUT sgm-vga30-ballot entries=51
+REMOVED_OUTPUT sgm-vga30-banks entries=51
+REMOVED_OUTPUT sgm-vga30-baseline-200 entries=51
+REMOVED_OUTPUT sgm-vga30-baseline-two entries=51
+REMOVED_OUTPUT sgm-vga30-block16 entries=51
+REMOVED_OUTPUT sgm-vga30-block16-check entries=51
+REMOVED_OUTPUT sgm-vga30-block4 entries=51
+REMOVED_OUTPUT sgm-vga30-censusbits entries=51
+REMOVED_OUTPUT sgm-vga30-cost entries=51
+REMOVED_OUTPUT sgm-vga30-cost4 entries=51
+REMOVED_OUTPUT sgm-vga30-cpu-idle entries=53
+REMOVED_OUTPUT sgm-vga30-cpu-loaded entries=53
+REMOVED_OUTPUT sgm-vga30-direct entries=51
+REMOVED_OUTPUT sgm-vga30-driver entries=199
+REMOVED_OUTPUT sgm-vga30-driver-baseline-fixture entries=6
+REMOVED_OUTPUT sgm-vga30-driver-baseline-fixture-launch entries=6
+REMOVED_OUTPUT sgm-vga30-driver-intbanks entries=51
+REMOVED_OUTPUT sgm-vga30-driver-intbanks-fixture entries=6
+REMOVED_OUTPUT sgm-vga30-driver-rebuilt entries=51
+REMOVED_OUTPUT sgm-vga30-driver-rebuilt-fixture entries=6
+REMOVED_OUTPUT sgm-vga30-duplicated entries=51
+REMOVED_OUTPUT sgm-vga30-duplicated-200 entries=51
+REMOVED_OUTPUT sgm-vga30-hsum entries=51
+REMOVED_OUTPUT sgm-vga30-hunroll2 entries=51
+REMOVED_OUTPUT sgm-vga30-integer entries=51
+REMOVED_OUTPUT sgm-vga30-lazy entries=51
+REMOVED_OUTPUT sgm-vga30-mintree entries=51
+REMOVED_OUTPUT sgm-vga30-normalized entries=51
+REMOVED_OUTPUT sgm-vga30-optimized entries=51
+REMOVED_OUTPUT sgm-vga30-profile entries=51
+REMOVED_OUTPUT sgm-vga30-refine-idle-profile entries=51
+REMOVED_OUTPUT sgm-vga30-relative entries=51
+REMOVED_OUTPUT sgm-vga30-selectops entries=51
+REMOVED_OUTPUT sgm-vga30-selectops-200 entries=51
+REMOVED_OUTPUT sgm-vga30-selectopsrefine entries=51
+REMOVED_OUTPUT sgm-vga30-selectopsrefine-200 entries=51
+REMOVED_OUTPUT sgm-vga30-sharedselect entries=51
+REMOVED_OUTPUT sgm-vga30-split entries=51
+REMOVED_OUTPUT sgm-vga30-states1-aligned entries=51
+REMOVED_OUTPUT sgm-vga30-states2-aligned entries=51
+REMOVED_OUTPUT sgm-vga30-symmetric entries=51
+REMOVED_OUTPUT sgm-vga30-unfused entries=51
+REMOVED_OUTPUT sgm-vga30-v256 entries=51
+REMOVED_OUTPUT sgm-vga30-v512 entries=51
+REMOVED_OUTPUT sgm-vga30-wg32 entries=51
+REMOVED_OUTPUT sgm-vga30-wg64 entries=51
+REMOVED_OUTPUT sgm-network-output-vga30-600-2-alley-600-30 entries=52
+REMOVED_OUTPUT sgm-network-output-vga30-idle-0-alley-50-30 entries=52
+REMOVED_OUTPUT sgm-network-output-vga30-idle-600-0-alley-600-30 entries=52
+REMOVED_OUTPUT sgm-network-output-vga30-idle-four-0-alley-50-30 entries=52
+REMOVED_OUTPUT sgm-network-output-vga30-idle-four-1200-0-alley-1200-30 entries=52
+REMOVED_OUTPUT sgm-network-output-vga30-idle-three-0-alley-50-30 entries=52
+REMOVED_OUTPUT sgm-network-output-vga30-idle-three-1200-0-alley-1200-30 entries=52
+REMOVED_OUTPUT sgm-network-output-vga30-idle-three-600-0-alley-600-30 entries=52
+REMOVED_OUTPUT sgm-network-output-vga30-loaded-four-600-2-alley-600-30 entries=52
+REMOVED_OUTPUT sgm-network-output-vga30-one-regression-0-alley-50-10 entries=52
+REMOVED_OUTPUT sgm-network-output-vga30-smoke-2-alley-50-30 entries=52
+REMOVED_OUTPUT sgm-network-output-vga30-transport-regression-0-alley-50-60 entries=2
+REMOVED_DEBUG shader-selectopsrefine.log
+REMOVED_DEBUG shader-duplicated.log
+REMOVED_DEBUG shader-nak.log
+REMOVED_DEBUG shader-command.bin
+REMOVED_DEBUG crash.dump
+OUTPUT_CLEANUP_PASS
+:ok

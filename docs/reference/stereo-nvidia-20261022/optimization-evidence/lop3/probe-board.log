@@ -1,0 +1,13 @@
+BOOT_ID=a1415b28-a332-4bfe-9652-7069b9fc2819
+GOVERNOR=simple_ondemand
+GPU_MAX=921600000
+GPU_MIN=76800000
+CHILD_PID=1255
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+LOP3_TRUTH_TABLE_PASS functions=256 words=16640 device=vulkan://GPU-2b01de10000000000000000100000000
+CHILD_EXIT=0
+GPU_ERRORS=0
+NEW_GPU_ERRORS=0
+BOARD_STEREO_PASS
+:ok

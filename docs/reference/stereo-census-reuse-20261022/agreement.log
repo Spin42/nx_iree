@@ -1,0 +1,4 @@
+AGREEMENT frames=50 identical_validity_masks=true max_absolute_difference=3.814697265625e-6 byte_identical=false left=/var/home/marc/.cache/stereo-bench/census-register-alley-host right=/var/home/marc/.cache/stereo-bench/census-register-alley-board
+AGREEMENT frames=50 identical_validity_masks=true max_absolute_difference=3.814697265625e-6 byte_identical=false left=/var/home/marc/.cache/stereo-bench/census-register-temple-host right=/var/home/marc/.cache/stereo-bench/census-register-temple-board
+AGREEMENT frames=50 identical_validity_masks=true max_absolute_difference=0.0 byte_identical=true left=/var/home/marc/.cache/stereo-bench/census-fused-alley-board right=/var/home/marc/.cache/stereo-bench/census-register-alley-board
+AGREEMENT frames=50 identical_validity_masks=true max_absolute_difference=0.0 byte_identical=true left=/var/home/marc/.cache/stereo-bench/census-fused-temple-board right=/var/home/marc/.cache/stereo-bench/census-register-temple-board

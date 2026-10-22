@@ -1,0 +1,22 @@
+Note: Google Test filter = TLSFPoolTest.ReserveReusesAllReleasedSlabsWithoutGrowing
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from TLSFPoolTest
+[ RUN      ] TLSFPoolTest.ReserveReusesAllReleasedSlabsWithoutGrowing
+iree-v3.13.0/runtime/src/iree/hal/memory/tlsf_pool_test.cc:331: Failure
+Expected equality of these values:
+  result
+    Which is: 3
+  IREE_HAL_POOL_ACQUIRE_OK_FRESH
+    Which is: 1
+
+[  FAILED  ] TLSFPoolTest.ReserveReusesAllReleasedSlabsWithoutGrowing (0 ms)
+[----------] 1 test from TLSFPoolTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 0 tests.
+[  FAILED  ] 1 test, listed below:
+[  FAILED  ] TLSFPoolTest.ReserveReusesAllReleasedSlabsWithoutGrowing
+
+ 1 FAILED TEST

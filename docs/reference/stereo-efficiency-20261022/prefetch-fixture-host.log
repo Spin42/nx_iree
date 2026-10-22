@@ -1,0 +1,19 @@
+     warning: the variable "words_per_pixel" is accessed inside size(...) of a bitstring but it was defined outside of the match. You must precede it with the pin operator
+     │
+ 244 │       for <<pixel::binary-size(words_per_pixel * 4) <- binary>>, into: <<>> do
+     │                                ~
+     │
+     └─ stereo/video/run.exs:244:32: StereoVideoBench.oracle_binary/3
+
+VIDEO_DEVICE=vulkan://GPU-00000000030000000000000000000000 shape={13, 37} disparities=33 frames=3
+VIDEO_INTERMEDIATES_PASS frame_0001
+VIDEO_INTERMEDIATES_PASS frame_0002
+VIDEO_INTERMEDIATES_PASS frame_0003
+VIDEO_ORACLE_PASS frame_0001
+VIDEO_FRAME=frame_0001 total_ms=2.541 phases_ms=%{left: %{select: 0.141, paths: 0.835, cost: 0.096}, right: %{select: 0.14, paths: 0.821, cost: 0.097}, upload: 0.203, readback: 0.117, consistency: 0.085}
+VIDEO_ORACLE_PASS frame_0002
+VIDEO_FRAME=frame_0002 total_ms=2.887 phases_ms=%{left: %{select: 0.137, paths: 0.816, cost: 0.121}, right: %{select: 0.141, paths: 0.798, cost: 0.091}, upload: 0.56, readback: 0.127, consistency: 0.087}
+VIDEO_ORACLE_PASS frame_0003
+VIDEO_FRAME=frame_0003 total_ms=2.574 phases_ms=%{left: %{select: 0.139, paths: 0.844, cost: 0.106}, right: %{select: 0.139, paths: 0.815, cost: 0.1}, upload: 0.21, readback: 0.129, consistency: 0.085}
+VIDEO_RESULT fps=374.90627343164215 p50_ms=2.574 p95_ms=2.887 p99_ms=2.887 includes=upload_cost_16paths_select_consistency_readback excludes=decode_disk_io_validation warmup=3
+STEREO_PATH_PASS

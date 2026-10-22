@@ -1,0 +1,7 @@
+Cloned IREE into /var/home/marc/.cache/nx_iree/iree-v3.13.0
+Running ExUnit with seed: 482946, max_cases: 32
+
+.........
+Finished in 1.0 seconds (0.1s async, 0.8s sync)
+
+Result: 9 passed

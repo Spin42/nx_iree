@@ -1,0 +1,22 @@
+REMOVED=/root/nxiree/sgm-serving-output-0-alley-2-100
+REMOVED=/root/nxiree/sgm-serving-output-2-alley-2-100
+REMOVED=/root/nxiree/sgm-serving-output-2-alley-20-100
+REMOVED=/root/nxiree/sgm-serving-output-2-temple-20-100
+{:cpu_load_module, false}
+IDLE_PRODUCTION_CPU_TICKS_500MS=0
+BOOT_ID=6f672cb9-e70d-433c-8894-7231f93bf6b7
+%{"nerves_fw_active" => "b", "nerves_fw_validated" => "1"}
+/sys/devices/system/cpu/cpufreq/policy0/scaling_governor=schedutil
+/sys/devices/system/cpu/cpufreq/policy0/scaling_max_freq=1479000
+/sys/class/devfreq/57000000.gpu/governor=simple_ondemand
+/sys/class/devfreq/57000000.gpu/min_freq=76800000
+/sys/class/devfreq/57000000.gpu/max_freq=921600000
+/sys/kernel/debug/clk/emc/clk_rate=1600000000
+GPU_ERRORS=23
+SHA256=9e6cb6df88d3fabce9660231d19affbfdda689f4263fa2c43ffb6b5d03c77319 /root/nxiree/sgm-serving-runtime/lib/nx_iree/priv/libnx_iree.so
+SHA256=2ec341392ec64a2ef14f5b8cb4720ebe4e9eef711fcaaf25fa16a5605aa8408f /root/nxiree/sgm-serving-runtime/lib/nx_iree/priv/iree-runtime/libnx_iree_runtime.so
+SHA256=7544284c7a19011229cc6ae1d7e6550f0c811d76d4b4e3cf5c33f6216c4e41a5 /root/nxiree/sgm-final-mappable-runtime/lib/nx_iree/priv/iree-runtime/libnx_iree_runtime.so
+SHA256=89172b81922995a7fa954eb9bddafbe3ea90f3fc8aea88a35785770d5bf91f2c /root/nxiree/sgm-final-mappable.bin
+{:video_devices, []}
+ACTIVE_PROCESS=/proc/107/comm
+:ok

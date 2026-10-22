@@ -1,0 +1,11 @@
+BOOT_ID=6f672cb9-e70d-433c-8894-7231f93bf6b7
+%{"nerves_fw_active" => "b", "nerves_fw_validated" => "1"}
+/sys/devices/system/cpu/cpufreq/policy0/scaling_governor=schedutil
+/sys/devices/system/cpu/cpufreq/policy0/scaling_max_freq=1479000
+/sys/class/devfreq/57000000.gpu/governor=simple_ondemand
+/sys/class/devfreq/57000000.gpu/min_freq=76800000
+/sys/class/devfreq/57000000.gpu/max_freq=921600000
+/sys/kernel/debug/clk/emc/clk_rate=1600000000
+GPU_ERRORS=23
+ACTIVE_PROCESS=/proc/107/comm
+:ok

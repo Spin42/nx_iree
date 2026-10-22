@@ -1,0 +1,25 @@
+{
+  "census-projected-3-alley_1-host": {
+    "fps": 721.0325185665873,
+    "full_visible": {
+      "evaluated_pixels": 1886631.0,
+      "coverage_percent": 99.33367998299614,
+      "mae_accepted_px": 0.4978794959470668,
+      "bad1_accepted_percent": 3.3956756987503067,
+      "bad3_accepted_percent": 1.4297301046924857,
+      "bad1_or_invalid_percent": 4.039369648860853,
+      "bad3_or_invalid_percent": 2.0865235438196446
+    },
+    "common_x_ge_64": {
+      "evaluated_pixels": 1547446.0,
+      "coverage_percent": 99.36631068224675,
+      "mae_accepted_px": 0.54083659808846,
+      "bad1_accepted_percent": 3.871647459743503,
+      "bad3_accepted_percent": 1.6279493249395176,
+      "bad1_or_invalid_percent": 4.480802561123296,
+      "bad3_or_invalid_percent": 2.2513225017221927
+    },
+    "visible_gt_outside_search_percent": 0.0,
+    "max_visible_gt_disparity_px": 42.63671875
+  }
+}

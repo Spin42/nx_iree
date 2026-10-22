@@ -1,0 +1,43 @@
+{
+  "sgm-vga30-duplicated-200": {
+    "fps": null,
+    "full_visible": {
+      "evaluated_pixels": 13308519.0,
+      "coverage_percent": 97.67364047043853,
+      "mae_accepted_px": 1.6487792546007884,
+      "bad1_accepted_percent": 7.452298903408477,
+      "bad3_accepted_percent": 5.425029704402252,
+      "bad1_or_invalid_percent": 9.605291167259107,
+      "bad3_or_invalid_percent": 7.625183538453828
+    },
+    "common_x_ge_64": {
+      "evaluated_pixels": 12377167.0,
+      "coverage_percent": 97.56039487873113,
+      "mae_accepted_px": 1.7600123399425074,
+      "bad1_accepted_percent": 7.899098757098529,
+      "bad3_accepted_percent": 5.825495583390537,
+      "bad1_or_invalid_percent": 10.145997060555134,
+      "bad3_or_invalid_percent": 8.122981616067715
+    },
+    "visible_in_range": {
+      "evaluated_pixels": 12294682.0,
+      "coverage_percent": 99.30294252425561,
+      "mae_accepted_px": 0.5325661409806803,
+      "bad1_accepted_percent": 2.80727769172546,
+      "bad3_accepted_percent": 1.3203477014175058,
+      "bad1_or_invalid_percent": 3.484766828454774,
+      "bad3_or_invalid_percent": 2.0082015948033467
+    },
+    "common_x_ge_64_in_range": {
+      "evaluated_pixels": 11363330.0,
+      "coverage_percent": 99.3131326820571,
+      "mae_accepted_px": 0.5602229594493521,
+      "bad1_accepted_percent": 2.9051563545748404,
+      "bad3_accepted_percent": 1.412876013078631,
+      "bad1_or_invalid_percent": 3.5720691029830163,
+      "bad3_or_invalid_percent": 2.090038747444631
+    },
+    "visible_gt_outside_search_percent": 7.617955085761233,
+    "max_visible_gt_disparity_px": 85.4296875
+  }
+}

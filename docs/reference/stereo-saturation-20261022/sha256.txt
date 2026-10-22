@@ -1,0 +1,13 @@
+0ad39b0720328cf4e3f18e4678377748e87e44a7501c0650ae4b3934f18bb334  c_src/nx_iree.cc
+159d426b5f7fa02b512535af513c99a234135616f577561dd0fa76791b207ab5  cmake/src/runtime.cc
+d81fff938f89ff92f662274b9861d4a7e9d9a1492683006da9cfc5d51aa56780  bench/stereo/census/throughput.exs
+ded91b8f92c0b95e6bfb2630ac5e41b0fc4f7574f38e80944d849e5b7697a90e  /var/home/marc/Projects/c100_gpu/scripts/stereo_board_run.exs
+18ccba5aaab4603006a7ce907ad15f98a8d259b0e1c96983ff77af25836b0825  /var/home/marc/.cache/stereo-bench/saturation-20261022/board-original-nif.so
+0eab49fcf1d86f68d61d71e968cf3d04f9191387310e2277886e7987942a1210  /var/home/marc/.cache/stereo-bench/saturation-20261022/dirty-arm64-nif.so
+fa33dfe8bfdabbca779c01425ec7980d26f72f04c7de18e6b69dea47ed47521b  /var/home/marc/.cache/stereo-bench/saturation-20261022/dirty-host-nif.so
+ca68ffef86c0be8e474b677de948bc32a73dfa2fda92516eea40e0208dba03c2  /var/home/marc/.cache/stereo-bench/saturation-20261022/mapped-host-runtime.so
+18ccba5aaab4603006a7ce907ad15f98a8d259b0e1c96983ff77af25836b0825  /var/home/marc/.cache/stereo-bench/saturation-20261022/original-arm64-nif.so
+04dd611bc9459cbc69a39892c1cc8915f9a4977324d1613f6842a6d92b620f59  /var/home/marc/.cache/stereo-bench/saturation-20261022/original-host-nif.so
+0899c762605af45df700005b7ac112e9f215e9380fa653bf26db350fb052a2f4  /var/home/marc/.cache/stereo-bench/saturation-20261022/pipeline.vmfb
+bf19e89b242c55b4f297420f16311ce586961907a4c09cbbd76aef9c7bd8714c  docs/reference/stereo-saturation-20261022/pipeline-warm.ireeprof
+61bb0ced85665d9c43f93c0a8365fbb3094788dc16b7743485cab6ff2b29f45c  docs/reference/stereo-saturation-20261022/pipeline.ireeprof

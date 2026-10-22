@@ -1,0 +1,12 @@
+governor=simple_ondemand
+min_freq=76800000
+max_freq=921600000
+cur_freq=76800000
+BOOT_ID=6f672cb9-e70d-433c-8894-7231f93bf6b7
+{"STEREO_RUNTIME_ROOT", nil}
+{"STEREO_BUNDLE", nil}
+{"STEREO_SCRIPT", nil}
+{"STEREO_PAUSE_MS", nil}
+{"STEREO_COMPARE_BUNDLES", nil}
+GPU_ERRORS: []
+:ok

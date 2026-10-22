@@ -1,0 +1,162 @@
+BASELINE_CASE=old-loads-correctness
+BOOT_ID=a1415b28-a332-4bfe-9652-7069b9fc2819
+GOVERNOR=simple_ondemand
+GPU_MAX=921600000
+GPU_MIN=76800000
+CHILD_PID=1301
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+EXEC @main
+[SUCCESS] all function outputs matched their expected values.
+CHILD_EXIT=0
+GPU_ERRORS=0
+NEW_GPU_ERRORS=0
+BOARD_STEREO_PASS
+BASELINE_CASE=new-loads-correctness
+BOOT_ID=a1415b28-a332-4bfe-9652-7069b9fc2819
+GOVERNOR=simple_ondemand
+GPU_MAX=921600000
+GPU_MIN=76800000
+CHILD_PID=1307
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+EXEC @main
+[SUCCESS] all function outputs matched their expected values.
+CHILD_EXIT=0
+GPU_ERRORS=0
+NEW_GPU_ERRORS=0
+BOARD_STEREO_PASS
+BASELINE_CASE=new-packed-correctness
+BOOT_ID=a1415b28-a332-4bfe-9652-7069b9fc2819
+GOVERNOR=simple_ondemand
+GPU_MAX=921600000
+GPU_MIN=76800000
+CHILD_PID=1312
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+EXEC @main
+[SUCCESS] all function outputs matched their expected values.
+CHILD_EXIT=0
+GPU_ERRORS=0
+NEW_GPU_ERRORS=0
+BOARD_STEREO_PASS
+BASELINE_CASE=old-packed-correctness
+BOOT_ID=a1415b28-a332-4bfe-9652-7069b9fc2819
+GOVERNOR=simple_ondemand
+GPU_MAX=921600000
+GPU_MIN=76800000
+CHILD_PID=1318
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+EXEC @main
+[SUCCESS] all function outputs matched their expected values.
+CHILD_EXIT=0
+GPU_ERRORS=0
+NEW_GPU_ERRORS=0
+BOARD_STEREO_PASS
+BASELINE_CASE=old-loads-timing
+BOOT_ID=a1415b28-a332-4bfe-9652-7069b9fc2819
+GOVERNOR=simple_ondemand
+GPU_MAX=921600000
+GPU_MIN=76800000
+CHILD_PID=1323
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+2026-10-22T20:08:36+00:00
+Running /root/nxiree/l4t-baseline-20261022/bin/coherent-iree-benchmark-module
+Run on (4 X 1555.5 MHz CPU s)
+Load Average: 0.18, 0.05, 0.01
+***WARNING*** CPU scaling is enabled, the benchmark real time measurements may be noisy and will incur extra overhead.
+***WARNING*** ASLR is enabled, the results may have unreproducible noise in them.
+------------------------------------------------------------------------------------------------
+Benchmark                                      Time             CPU   Iterations UserCounters...
+------------------------------------------------------------------------------------------------
+BM_main/process_time/real_time              31.1 ms        0.544 ms           23 items_per_second=32.185/s
+BM_main/process_time/real_time              31.4 ms        0.843 ms           23 items_per_second=31.8563/s
+BM_main/process_time/real_time              31.6 ms        0.878 ms           23 items_per_second=31.6165/s
+BM_main/process_time/real_time_mean         31.4 ms        0.755 ms            3 items_per_second=31.8859/s
+BM_main/process_time/real_time_median       31.4 ms        0.843 ms            3 items_per_second=31.8563/s
+BM_main/process_time/real_time_stddev      0.280 ms        0.184 ms            3 items_per_second=0.285414/s
+BM_main/process_time/real_time_cv           0.89 %         24.36 %             3 items_per_second=0.90%
+CHILD_EXIT=0
+GPU_ERRORS=0
+NEW_GPU_ERRORS=0
+BOARD_STEREO_PASS
+BASELINE_CASE=new-loads-timing
+BOOT_ID=a1415b28-a332-4bfe-9652-7069b9fc2819
+GOVERNOR=simple_ondemand
+GPU_MAX=921600000
+GPU_MIN=76800000
+CHILD_PID=1337
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+2026-10-22T20:08:39+00:00
+Running /root/nxiree/l4t-baseline-20261022/bin/coherent-iree-benchmark-module
+Run on (4 X 1555.5 MHz CPU s)
+Load Average: 0.18, 0.05, 0.01
+***WARNING*** CPU scaling is enabled, the benchmark real time measurements may be noisy and will incur extra overhead.
+***WARNING*** ASLR is enabled, the results may have unreproducible noise in them.
+------------------------------------------------------------------------------------------------
+Benchmark                                      Time             CPU   Iterations UserCounters...
+------------------------------------------------------------------------------------------------
+BM_main/process_time/real_time              31.8 ms        0.809 ms           23 items_per_second=31.4791/s
+BM_main/process_time/real_time              31.5 ms        0.901 ms           23 items_per_second=31.7103/s
+BM_main/process_time/real_time              31.7 ms        0.916 ms           23 items_per_second=31.5114/s
+BM_main/process_time/real_time_mean         31.7 ms        0.875 ms            3 items_per_second=31.5669/s
+BM_main/process_time/real_time_median       31.7 ms        0.901 ms            3 items_per_second=31.5114/s
+BM_main/process_time/real_time_stddev      0.125 ms        0.058 ms            3 items_per_second=0.125216/s
+BM_main/process_time/real_time_cv           0.40 %          6.64 %             3 items_per_second=0.40%
+CHILD_EXIT=0
+GPU_ERRORS=0
+NEW_GPU_ERRORS=0
+BOARD_STEREO_PASS
+BASELINE_CASE=new-packed-timing
+BOOT_ID=a1415b28-a332-4bfe-9652-7069b9fc2819
+GOVERNOR=simple_ondemand
+GPU_MAX=921600000
+GPU_MIN=76800000
+CHILD_PID=1351
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+2026-10-22T20:08:42+00:00
+Running /root/nxiree/l4t-baseline-20261022/bin/coherent-iree-benchmark-module
+Run on (4 X 1555.5 MHz CPU s)
+Load Average: 0.17, 0.04, 0.01
+***WARNING*** CPU scaling is enabled, the benchmark real time measurements may be noisy and will incur extra overhead.
+***WARNING*** ASLR is enabled, the results may have unreproducible noise in them.
+------------------------------------------------------------------------------------------------
+Benchmark                                      Time             CPU   Iterations UserCounters...
+------------------------------------------------------------------------------------------------
+BM_main/process_time/real_time              31.3 ms        0.394 ms           22 items_per_second=31.9115/s
+BM_main/process_time/real_time              31.9 ms        0.896 ms           22 items_per_second=31.3317/s
+BM_main/process_time/real_time              31.6 ms        0.782 ms           22 items_per_second=31.6685/s
+BM_main/process_time/real_time_mean         31.6 ms        0.691 ms            3 items_per_second=31.6373/s
+BM_main/process_time/real_time_median       31.6 ms        0.782 ms            3 items_per_second=31.6685/s
+BM_main/process_time/real_time_stddev      0.291 ms        0.263 ms            3 items_per_second=0.291161/s
+BM_main/process_time/real_time_cv           0.92 %         38.07 %             3 items_per_second=0.92%
+CHILD_EXIT=0
+GPU_ERRORS=0
+NEW_GPU_ERRORS=0
+BOARD_STEREO_PASS
+BASELINE_CASE=old-packed-timing
+BOOT_ID=a1415b28-a332-4bfe-9652-7069b9fc2819
+GOVERNOR=simple_ondemand
+GPU_MAX=921600000
+GPU_MIN=76800000
+CHILD_PID=1368
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+2026-10-22T20:08:45+00:00
+Running /root/nxiree/l4t-baseline-20261022/bin/coherent-iree-benchmark-module
+Run on (4 X 1555.5 MHz CPU s)
+Load Average: 0.17, 0.04, 0.01
+***WARNING*** CPU scaling is enabled, the benchmark real time measurements may be noisy and will incur extra overhead.
+***WARNING*** ASLR is enabled, the results may have unreproducible noise in them.
+------------------------------------------------------------------------------------------------
+Benchmark                                      Time             CPU   Iterations UserCounters...
+------------------------------------------------------------------------------------------------
+BM_main/process_time/real_time              32.3 ms        0.878 ms           22 items_per_second=31.0036/s
+BM_main/process_time/real_time              32.1 ms        0.881 ms           22 items_per_second=31.1378/s
+BM_main/process_time/real_time              32.2 ms        0.931 ms           22 items_per_second=31.1013/s
+BM_main/process_time/real_time_mean         32.2 ms        0.896 ms            3 items_per_second=31.0809/s
+BM_main/process_time/real_time_median       32.2 ms        0.881 ms            3 items_per_second=31.1013/s
+BM_main/process_time/real_time_stddev      0.072 ms        0.030 ms            3 items_per_second=0.0693876/s
+BM_main/process_time/real_time_cv           0.22 %          3.34 %             3 items_per_second=0.22%
+CHILD_EXIT=0
+GPU_ERRORS=0
+NEW_GPU_ERRORS=0
+BOARD_STEREO_PASS
+FROZEN_BASELINE_COMPARISON_PASS
+:ok

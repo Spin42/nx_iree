@@ -1,0 +1,17 @@
+Running ExUnit with seed: 353828, max_cases: 32
+Excluding tags: [hardware: true]
+
+.
+
+  1) test rejects channel ring timeouts even when the process returns success (C100GPU.BoardLogTest)
+     test/board_gpu_log_test.exs:6
+     Assertion with == failed
+     code:  assert C100GPU.BoardLog.errors(message) == [message]
+     left:  []
+     right: ["[21016.628276] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110"]
+     stacktrace:
+       test/board_gpu_log_test.exs:10: (test)
+
+
+Finished in 0.03 seconds (0.03s on load, 0.00s async, 0.00s sync)
+2 tests, 1 failure

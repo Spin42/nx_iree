@@ -1,0 +1,14 @@
+EXPORTED cost_left 10737 bytes
+EXPORTED cost_right 10737 bytes
+EXPORTED select 14896 bytes
+EXPORTED consistent 8754 bytes
+EXPORTED path0 24105 bytes
+EXPORTED path1 24841 bytes
+EXPORTED path2 24809 bytes
+EXPORTED path3 24841 bytes
+EXPORTED path4 24793 bytes
+EXPORTED path5 24825 bytes
+EXPORTED path6 24825 bytes
+EXPORTED path7 35338 bytes
+EXPORTED path7_sum 24841 bytes
+WROTE /tmp/video-prefetch-d128.bin

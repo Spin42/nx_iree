@@ -1,0 +1,2 @@
+select-alley-host PASS 50 frames; max disparity difference 0.0 ; rejection masks exact
+select-alley-board PASS 50 frames; max disparity difference 3.814697265625e-06 ; rejection masks exact

@@ -1,0 +1,14 @@
+EXPORTED cost_left 10737 bytes
+EXPORTED cost_right 10737 bytes
+EXPORTED select 14880 bytes
+EXPORTED consistent 8754 bytes
+EXPORTED path0 21225 bytes
+EXPORTED path1 21757 bytes
+EXPORTED path2 21725 bytes
+EXPORTED path3 21757 bytes
+EXPORTED path4 21709 bytes
+EXPORTED path5 21741 bytes
+EXPORTED path6 21741 bytes
+EXPORTED path7 32270 bytes
+EXPORTED path7_sum 21757 bytes
+WROTE /tmp/video-fused-d65.bin

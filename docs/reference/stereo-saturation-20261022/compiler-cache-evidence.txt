@@ -1,0 +1,21 @@
+                div 64      %48 = iadd %47, %43
+                con 1       %49 = load_const (true)
+                div 32      %50 = @load_global_nv (%48, %49 (true)) (base=0, access=readonly|reorderable, align_mul=4, align_offset=0)
+                con 32      %51 = load_const (0xfffffffc = -4 = 4294967292)
+                div 32      %52 = iadd %40, %51 (0xfffffffc)
+                div 64      %53 = u2u64 %52
+      r10 c0  = iadd2 r6 c[0x1][0x10]                      // delay=6
+      r11     = iadd2.x rZ c[0x1][0x14] c0                 // delay=5
+      r8      = ld.global.a64.constant.b32 [r8..10], pT    // delay=1 wr:0
+      r6      = ld.global.a64.constant.b32 [r10..12], pT   // delay=2 wr:1
+                sync L5                                    // delay=13 wt=000011
+                nop                                        // delay=2
+Instruction count: 1452
+Static cycle count: 54240
+Max warps/SM: 40
+Spills to mem: 0
+Spills to reg: 0
+Fills from mem: 0
+Fills from reg: 0
+Num GPRs: 48
+SLM size: 0

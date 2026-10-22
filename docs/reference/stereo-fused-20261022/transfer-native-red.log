@@ -1,0 +1,224 @@
+[==========] Running 6 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 6 tests from BufferTransferTest
+[ RUN      ] BufferTransferTest.NoncoherentSourceIsInvalidatedBeforeReadback
+iree-v3.13.0/runtime/src/iree/hal/buffer_transfer_test.cc:120: Failure
+Expected equality of these values:
+  0
+  memcmp(source.device + 13, target, sizeof(target))
+    Which is: 97
+
+iree-v3.13.0/runtime/src/iree/hal/buffer_transfer_test.cc:121: Failure
+Expected equality of these values:
+  1
+  source.invalidate_count
+    Which is: 0
+
+iree-v3.13.0/runtime/src/iree/hal/buffer_transfer_test.cc:122: Failure
+Expected equality of these values:
+  13
+  source.invalidate_offset
+    Which is: 0
+
+iree-v3.13.0/runtime/src/iree/hal/buffer_transfer_test.cc:123: Failure
+Expected equality of these values:
+  sizeof(target)
+    Which is: 8
+  source.invalidate_length
+    Which is: 0
+
+[  FAILED  ] BufferTransferTest.NoncoherentSourceIsInvalidatedBeforeReadback (0 ms)
+[ RUN      ] BufferTransferTest.WholeBufferReadbackInvalidatesMappedSourceTail
+iree-v3.13.0/runtime/src/iree/hal/buffer_transfer_test.cc:136: Failure
+Expected equality of these values:
+  0
+  memcmp(source.device + 17, target, sizeof(target))
+    Which is: 83
+
+iree-v3.13.0/runtime/src/iree/hal/buffer_transfer_test.cc:137: Failure
+Expected equality of these values:
+  17
+  source.invalidate_offset
+    Which is: 0
+
+iree-v3.13.0/runtime/src/iree/hal/buffer_transfer_test.cc:138: Failure
+Expected equality of these values:
+  sizeof(source.host) - 17
+    Which is: 47
+  source.invalidate_length
+    Which is: 0
+
+[  FAILED  ] BufferTransferTest.WholeBufferReadbackInvalidatesMappedSourceTail (0 ms)
+[ RUN      ] BufferTransferTest.CoherentSourceDoesNotRequireInvalidation
+[       OK ] BufferTransferTest.CoherentSourceDoesNotRequireInvalidation (0 ms)
+[ RUN      ] BufferTransferTest.InvalidateFailureUnmapsAndLeavesTargetUntouched
+iree-v3.13.0/runtime/src/iree/hal/buffer_transfer_test.cc:163: Failure
+Value of: ::iree::internal::ConsumeForTest(iree_hal_device_transfer_d2d( device_, &source.base, 5, &target.base, 11, 8, IREE_HAL_TRANSFER_BUFFER_FLAG_DEFAULT, iree_infinite_timeout()))
+Expected: error code ABORTED
+  Actual: 8-byte object <0E-00 00-00 00-00 00-00>, whose error code is UNAVAILABLE: UNAVAILABLE
+
+iree-v3.13.0/runtime/src/iree/hal/buffer_transfer_test.cc:168: Failure
+Expected equality of these values:
+  1
+  source.invalidate_count
+    Which is: 0
+
+iree-v3.13.0/runtime/src/iree/hal/buffer_transfer_test.cc:170: Failure
+Expected equality of these values:
+  0
+  target.map_count
+    Which is: 1
+
+iree-v3.13.0/runtime/src/iree/hal/buffer_transfer_test.cc:171: Failure
+Expected equality of these values:
+  0
+  target.unmap_count
+    Which is: 1
+
+iree-v3.13.0/runtime/src/iree/hal/buffer_transfer_test.cc:172: Failure
+Expected equality of these values:
+  0
+  target.flush_count
+    Which is: 1
+
+iree-v3.13.0/runtime/src/iree/hal/buffer_transfer_test.cc:173: Failure
+Expected equality of these values:
+  0x41
+    Which is: 65
+  value
+    Which is: '\0'
+
+iree-v3.13.0/runtime/src/iree/hal/buffer_transfer_test.cc:173: Failure
+Expected equality of these values:
+  0x41
+    Which is: 65
+  value
+    Which is: '\0'
+
+iree-v3.13.0/runtime/src/iree/hal/buffer_transfer_test.cc:173: Failure
+Expected equality of these values:
+  0x41
+    Which is: 65
+  value
+    Which is: '\0'
+
+iree-v3.13.0/runtime/src/iree/hal/buffer_transfer_test.cc:173: Failure
+Expected equality of these values:
+  0x41
+    Which is: 65
+  value
+    Which is: '\0'
+
+iree-v3.13.0/runtime/src/iree/hal/buffer_transfer_test.cc:173: Failure
+Expected equality of these values:
+  0x41
+    Which is: 65
+  value
+    Which is: '\0'
+
+iree-v3.13.0/runtime/src/iree/hal/buffer_transfer_test.cc:173: Failure
+Expected equality of these values:
+  0x41
+    Which is: 65
+  value
+    Which is: '\0'
+
+iree-v3.13.0/runtime/src/iree/hal/buffer_transfer_test.cc:173: Failure
+Expected equality of these values:
+  0x41
+    Which is: 65
+  value
+    Which is: '\0'
+
+iree-v3.13.0/runtime/src/iree/hal/buffer_transfer_test.cc:173: Failure
+Expected equality of these values:
+  0x41
+    Which is: 65
+  value
+    Which is: '\0'
+
+iree-v3.13.0/runtime/src/iree/hal/buffer_transfer_test.cc:174: Failure
+Expected equality of these values:
+  0x41
+    Which is: 65
+  value
+    Which is: '\0'
+
+iree-v3.13.0/runtime/src/iree/hal/buffer_transfer_test.cc:174: Failure
+Expected equality of these values:
+  0x41
+    Which is: 65
+  value
+    Which is: '\0'
+
+iree-v3.13.0/runtime/src/iree/hal/buffer_transfer_test.cc:174: Failure
+Expected equality of these values:
+  0x41
+    Which is: 65
+  value
+    Which is: '\0'
+
+iree-v3.13.0/runtime/src/iree/hal/buffer_transfer_test.cc:174: Failure
+Expected equality of these values:
+  0x41
+    Which is: 65
+  value
+    Which is: '\0'
+
+iree-v3.13.0/runtime/src/iree/hal/buffer_transfer_test.cc:174: Failure
+Expected equality of these values:
+  0x41
+    Which is: 65
+  value
+    Which is: '\0'
+
+iree-v3.13.0/runtime/src/iree/hal/buffer_transfer_test.cc:174: Failure
+Expected equality of these values:
+  0x41
+    Which is: 65
+  value
+    Which is: '\0'
+
+iree-v3.13.0/runtime/src/iree/hal/buffer_transfer_test.cc:174: Failure
+Expected equality of these values:
+  0x41
+    Which is: 65
+  value
+    Which is: '\0'
+
+iree-v3.13.0/runtime/src/iree/hal/buffer_transfer_test.cc:174: Failure
+Expected equality of these values:
+  0x41
+    Which is: 65
+  value
+    Which is: '\0'
+
+[  FAILED  ] BufferTransferTest.InvalidateFailureUnmapsAndLeavesTargetUntouched (0 ms)
+[ RUN      ] BufferTransferTest.DeviceCopyInvalidatesSourceAndFlushesTarget
+iree-v3.13.0/runtime/src/iree/hal/buffer_transfer_test.cc:184: Failure
+Expected equality of these values:
+  0
+  memcmp(source.device + 7, target.device + 19, 8)
+    Which is: 99
+
+iree-v3.13.0/runtime/src/iree/hal/buffer_transfer_test.cc:185: Failure
+Expected equality of these values:
+  1
+  source.invalidate_count
+    Which is: 0
+
+[  FAILED  ] BufferTransferTest.DeviceCopyInvalidatesSourceAndFlushesTarget (0 ms)
+[ RUN      ] BufferTransferTest.HostUploadStillFlushesWithoutInvalidation
+[       OK ] BufferTransferTest.HostUploadStillFlushesWithoutInvalidation (0 ms)
+[----------] 6 tests from BufferTransferTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 6 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 2 tests.
+[  FAILED  ] 4 tests, listed below:
+[  FAILED  ] BufferTransferTest.NoncoherentSourceIsInvalidatedBeforeReadback
+[  FAILED  ] BufferTransferTest.WholeBufferReadbackInvalidatesMappedSourceTail
+[  FAILED  ] BufferTransferTest.InvalidateFailureUnmapsAndLeavesTargetUntouched
+[  FAILED  ] BufferTransferTest.DeviceCopyInvalidatesSourceAndFlushesTarget
+
+ 4 FAILED TESTS

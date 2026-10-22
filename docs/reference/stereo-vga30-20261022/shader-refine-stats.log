@@ -1,0 +1,42 @@
+Instruction count: 64
+Static cycle count: 1979
+Max warps/SM: 64
+Spills to mem: 0
+Num GPRs: 24
+SLM size: 0
+Instruction count: 27
+Static cycle count: 922
+Max warps/SM: 64
+Spills to mem: 0
+Num GPRs: 24
+SLM size: 0
+Instruction count: 934
+Static cycle count: 39589
+Max warps/SM: 64
+Spills to mem: 0
+Num GPRs: 24
+SLM size: 0
+Instruction count: 921
+Static cycle count: 19798
+Max warps/SM: 40
+Spills to mem: 0
+Num GPRs: 48
+SLM size: 0
+Instruction count: 522
+Static cycle count: 35287
+Max warps/SM: 40
+Spills to mem: 0
+Num GPRs: 48
+SLM size: 0
+Instruction count: 239
+Static cycle count: 12825
+Max warps/SM: 64
+Spills to mem: 0
+Num GPRs: 24
+SLM size: 0
+Instruction count: 179
+Static cycle count: 804
+Max warps/SM: 64
+Spills to mem: 0
+Num GPRs: 24
+SLM size: 0

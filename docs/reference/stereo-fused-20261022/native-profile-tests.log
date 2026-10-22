@@ -1,0 +1,54 @@
+[==========] Running 23 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 23 tests from LocalProfileRecorderTest
+[ RUN      ] LocalProfileRecorderTest.NoneCreatesNoRecorder
+[       OK ] LocalProfileRecorderTest.NoneCreatesNoRecorder (0 ms)
+[ RUN      ] LocalProfileRecorderTest.BeginWritesMetadata
+[       OK ] LocalProfileRecorderTest.BeginWritesMetadata (0 ms)
+[ RUN      ] LocalProfileRecorderTest.RejectsUnsupportedDataFamily
+[       OK ] LocalProfileRecorderTest.RejectsUnsupportedDataFamily (0 ms)
+[ RUN      ] LocalProfileRecorderTest.ProducerFamilyAppendsDispatchEvents
+[       OK ] LocalProfileRecorderTest.ProducerFamilyAppendsDispatchEvents (0 ms)
+[ RUN      ] LocalProfileRecorderTest.FullDispatchRingAutoFlushes
+[       OK ] LocalProfileRecorderTest.FullDispatchRingAutoFlushes (0 ms)
+[ RUN      ] LocalProfileRecorderTest.DispatchAutoFlushFailurePreservesRecords
+[       OK ] LocalProfileRecorderTest.DispatchAutoFlushFailurePreservesRecords (0 ms)
+[ RUN      ] LocalProfileRecorderTest.ProducerFamilyAppendsQueueDeviceEvents
+[       OK ] LocalProfileRecorderTest.ProducerFamilyAppendsQueueDeviceEvents (0 ms)
+[ RUN      ] LocalProfileRecorderTest.FullQueueDeviceRingAutoFlushes
+[       OK ] LocalProfileRecorderTest.FullQueueDeviceRingAutoFlushes (0 ms)
+[ RUN      ] LocalProfileRecorderTest.RejectsCaptureFilter
+[       OK ] LocalProfileRecorderTest.RejectsCaptureFilter (0 ms)
+[ RUN      ] LocalProfileRecorderTest.AcceptsCaptureFilterForProducerDispatchEvents
+[       OK ] LocalProfileRecorderTest.AcceptsCaptureFilterForProducerDispatchEvents (0 ms)
+[ RUN      ] LocalProfileRecorderTest.RejectsCaptureFilterWhenLocalQueueEventsAreRequested
+[       OK ] LocalProfileRecorderTest.RejectsCaptureFilterWhenLocalQueueEventsAreRequested (0 ms)
+[ RUN      ] LocalProfileRecorderTest.RecordsExecutableMetadataOnce
+[       OK ] LocalProfileRecorderTest.RecordsExecutableMetadataOnce (0 ms)
+[ RUN      ] LocalProfileRecorderTest.RecordsExecutableMetadataWithExplicitId
+[       OK ] LocalProfileRecorderTest.RecordsExecutableMetadataWithExplicitId (0 ms)
+[ RUN      ] LocalProfileRecorderTest.ConcurrentMetadataWritesSerializeSinkCallbacks
+[       OK ] LocalProfileRecorderTest.ConcurrentMetadataWritesSerializeSinkCallbacks (20 ms)
+[ RUN      ] LocalProfileRecorderTest.HostExecutionEnablesExecutableMetadata
+[       OK ] LocalProfileRecorderTest.HostExecutionEnablesExecutableMetadata (0 ms)
+[ RUN      ] LocalProfileRecorderTest.SinkBeginFailurePropagates
+[       OK ] LocalProfileRecorderTest.SinkBeginFailurePropagates (0 ms)
+[ RUN      ] LocalProfileRecorderTest.MetadataWriteFailureEndsSession
+[       OK ] LocalProfileRecorderTest.MetadataWriteFailureEndsSession (0 ms)
+[ RUN      ] LocalProfileRecorderTest.AppendsAndFlushesQueueAndHostEvents
+[       OK ] LocalProfileRecorderTest.AppendsAndFlushesQueueAndHostEvents (0 ms)
+[ RUN      ] LocalProfileRecorderTest.AppendsAndFlushesMemoryEvents
+[       OK ] LocalProfileRecorderTest.AppendsAndFlushesMemoryEvents (0 ms)
+[ RUN      ] LocalProfileRecorderTest.FullQueueRingReportsTruncatedChunk
+[       OK ] LocalProfileRecorderTest.FullQueueRingReportsTruncatedChunk (0 ms)
+[ RUN      ] LocalProfileRecorderTest.FlushesWrappedQueueRing
+[       OK ] LocalProfileRecorderTest.FlushesWrappedQueueRing (0 ms)
+[ RUN      ] LocalProfileRecorderTest.FlushFailurePreservesPendingRecords
+[       OK ] LocalProfileRecorderTest.FlushFailurePreservesPendingRecords (0 ms)
+[ RUN      ] LocalProfileRecorderTest.EndFailurePropagates
+[       OK ] LocalProfileRecorderTest.EndFailurePropagates (0 ms)
+[----------] 23 tests from LocalProfileRecorderTest (20 ms total)
+
+[----------] Global test environment tear-down
+[==========] 23 tests from 1 test suite ran. (20 ms total)
+[  PASSED  ] 23 tests.

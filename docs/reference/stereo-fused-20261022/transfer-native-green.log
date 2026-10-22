@@ -1,0 +1,20 @@
+[==========] Running 6 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 6 tests from BufferTransferTest
+[ RUN      ] BufferTransferTest.NoncoherentSourceIsInvalidatedBeforeReadback
+[       OK ] BufferTransferTest.NoncoherentSourceIsInvalidatedBeforeReadback (0 ms)
+[ RUN      ] BufferTransferTest.WholeBufferReadbackInvalidatesMappedSourceTail
+[       OK ] BufferTransferTest.WholeBufferReadbackInvalidatesMappedSourceTail (0 ms)
+[ RUN      ] BufferTransferTest.CoherentSourceDoesNotRequireInvalidation
+[       OK ] BufferTransferTest.CoherentSourceDoesNotRequireInvalidation (0 ms)
+[ RUN      ] BufferTransferTest.InvalidateFailureUnmapsAndLeavesTargetUntouched
+[       OK ] BufferTransferTest.InvalidateFailureUnmapsAndLeavesTargetUntouched (0 ms)
+[ RUN      ] BufferTransferTest.DeviceCopyInvalidatesSourceAndFlushesTarget
+[       OK ] BufferTransferTest.DeviceCopyInvalidatesSourceAndFlushesTarget (0 ms)
+[ RUN      ] BufferTransferTest.HostUploadStillFlushesWithoutInvalidation
+[       OK ] BufferTransferTest.HostUploadStillFlushesWithoutInvalidation (0 ms)
+[----------] 6 tests from BufferTransferTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 6 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 6 tests.

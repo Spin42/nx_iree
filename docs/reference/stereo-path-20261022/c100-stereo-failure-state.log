@@ -1,0 +1,79 @@
+[    8.078309] nouveau 57000000.gpu: NVIDIA GM20B (12b000a1)
+[    8.081574] nouveau 57000000.gpu: imem: using IOMMU
+[    8.149980] nouveau 57000000.gpu: drm: VRAM: 0 MiB
+[    8.152642] nouveau 57000000.gpu: drm: GART: 1048576 MiB
+[    8.160353] nouveau 57000000.gpu: drm: MM: using COPY for buffer copies
+[    8.165804] [drm] Initialized nouveau 1.4.0 for 57000000.gpu on minor 0
+[    8.997391] c100-limits: first channel open
+[    9.016377] c100-limits: gpu 76800000 Hz, emc 1600000000 Hz
+[  504.289794] erts_dios_7 invoked oom-killer: gfp_mask=0x100dc2(GFP_HIGHUSER|__GFP_ZERO), order=0, oom_score_adj=0
+[  504.297797]  oom_kill_process+0x290/0x310
+[  504.297881]  nouveau_ttm_tt_populate+0x28/0x60 [nouveau]
+[  504.298307]  nouveau_bo_init+0x8c/0x110 [nouveau]
+[  504.298602]  nouveau_gem_new+0xc0/0x240 [nouveau]
+[  504.298895]  nouveau_gem_ioctl_new+0x78/0x180 [nouveau]
+[  504.299208]  nouveau_drm_ioctl+0x68/0xd0 [nouveau]
+[  504.683654] [  pid  ]   uid  tgid total_vm      rss rss_anon rss_file rss_shmem pgtables_bytes swapents oom_score_adj name
+[  504.851960] oom-kill:constraint=CONSTRAINT_NONE,nodemask=(null),cpuset=/,mems_allowed=0,global_oom,task_memcg=/,task=beam.smp,pid=249,uid=0
+[  504.864524] Out of memory: Killed process 249 (beam.smp) total-vm:2808272kB, anon-rss:117556kB, file-rss:1124kB, shmem-rss:22712kB, UID:0 pgtables:520kB oom_score_adj:0
+[  504.903397]  nouveau_ttm_tt_populate+0x28/0x60 [nouveau]
+[  504.903729]  nouveau_bo_init+0x8c/0x110 [nouveau]
+[  504.903949]  nouveau_gem_new+0xc0/0x240 [nouveau]
+[  504.904167]  nouveau_gem_ioctl_new+0x78/0x180 [nouveau]
+[  504.904400]  nouveau_drm_ioctl+0x68/0xd0 [nouveau]
+MemTotal:        3991708 kB
+MemFree:         3789608 kB
+MemAvailable:    3723748 kB
+Buffers:               0 kB
+Cached:            29584 kB
+SwapCached:            0 kB
+Active:             1768 kB
+Inactive:         130464 kB
+Active(anon):         44 kB
+Inactive(anon):   121312 kB
+Active(file):       1724 kB
+Inactive(file):     9152 kB
+Unevictable:        8100 kB
+Mlocked:               0 kB
+SwapTotal:             0 kB
+SwapFree:              0 kB
+Dirty:               732 kB
+Writeback:             0 kB
+AnonPages:        110748 kB
+Mapped:            17476 kB
+Shmem:             18708 kB
+KReclaimable:       8176 kB
+Slab:              32680 kB
+SReclaimable:       8176 kB
+SUnreclaim:        24504 kB
+KernelStack:        2320 kB
+PageTables:         1056 kB
+SecPageTables:        36 kB
+NFS_Unstable:          0 kB
+Bounce:                0 kB
+WritebackTmp:          0 kB
+CommitLimit:     1995852 kB
+Committed_AS:     183400 kB
+VmallocTotal:   135288315904 kB
+VmallocUsed:        9612 kB
+VmallocChunk:          0 kB
+Percpu:              464 kB
+HardwareCorrupted:     0 kB
+AnonHugePages:     94208 kB
+ShmemHugePages:        0 kB
+ShmemPmdMapped:        0 kB
+FileHugePages:         0 kB
+FilePmdMapped:         0 kB
+CmaTotal:          32768 kB
+CmaFree:           30556 kB
+Balloon:               0 kB
+HugePages_Total:       0
+HugePages_Free:        0
+HugePages_Rsvd:        0
+HugePages_Surp:        0
+Hugepagesize:       2048 kB
+Hugetlb:               0 kB
+
+76800000
+
+:ok

@@ -1,0 +1,15 @@
+1b821c6926e9417bc61ad65dda6b26ba3dacbae76413802d94bf5512f2a19046  bench/stereo/census/consistency_projected.comp
+d3cc1ebce0e236085a401b40455b1007249b8dfd1628991c5b5c4afdd763bc08  bench/stereo/census/export.exs
+5f5b8f701dbb6de6ec5afed964addfa4c5b7ef3fd33fa5642c39ee35d7b08441  bench/stereo/census/run.exs
+159d426b5f7fa02b512535af513c99a234135616f577561dd0fa76791b207ab5  cmake/src/runtime.cc
+5d047fc01cf6b48a6a364ffc7edba5f41afe464b05d2652480b21d07b9d1a940  patches/iree/0003-flush-generated-buffer-mappings.patch
+03880eb1353c60e013462bede302d9511b3a626065ad9e00bacf88c0232566fd  /var/home/marc/.cache/stereo-bench/shared-projection-20261022/baseline-stages.bin
+392d673462a36e34cf4e534882914be968c4cd857cda9e4ac1663581f6a5844c  /var/home/marc/.cache/stereo-bench/shared-projection-20261022/gather-320.bin
+b8bce5ce9dfa4cb86d642088cf3d28cff2802f5b8e3a7bd58a470aa320848a3c  /var/home/marc/.cache/stereo-bench/shared-projection-20261022/gather-fixture.bin
+6079cfd6c3cc17b2cf90d38d7fa5fb8b45728046a9ee9409d0003b0f44621c19  /var/home/marc/.cache/stereo-bench/shared-projection-20261022/shared-320.bin
+6b5a0a853fef85b3a83694f49f28bd8fbc2928c795d6a94bce6ef9ae4fbfe05d  /var/home/marc/.cache/stereo-bench/shared-projection-20261022/shared-d128-fixture.bin
+f66ca40acb7f6e60c98637a7325b61ad46e5956592524b5fcd05e2483561aad2  /var/home/marc/.cache/stereo-bench/shared-projection-20261022/shared-fixture.bin
+8b25d424ff642b17a35ff6b0ccda763dce94f0220d740f4df69419cf813bf8ed  /var/home/marc/.cache/stereo-bench/shared-projection-20261022/mapped-arm64-runtime.so
+ca68ffef86c0be8e474b677de948bc32a73dfa2fda92516eea40e0208dba03c2  /var/home/marc/.cache/stereo-bench/shared-projection-20261022/mapped-host-runtime.so
+f2b333b4ed40c5c90c6a152843aeef261ae30a402a1ec822bced9f61f5b94955  /var/home/marc/.cache/stereo-bench/shared-projection-20261022/original-arm64-runtime.so
+4dc759a9cef25aa2bd20831bf4689f9a9b32858f462ea0d2809c5c49485dfa79  /var/home/marc/.cache/stereo-bench/shared-projection-20261022/original-host-runtime.so

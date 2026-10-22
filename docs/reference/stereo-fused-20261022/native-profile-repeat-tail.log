@@ -1,0 +1,13 @@
+
+Repeating all tests (iteration 100) . . .
+
+Note: Google Test filter = LocalProfileRecorderTest.ConcurrentMetadataWritesSerializeSinkCallbacks
+[==========] Running 1 test from 1 test suite.
+[----------] 1 test from LocalProfileRecorderTest
+[ RUN      ] LocalProfileRecorderTest.ConcurrentMetadataWritesSerializeSinkCallbacks
+[       OK ] LocalProfileRecorderTest.ConcurrentMetadataWritesSerializeSinkCallbacks (19 ms)
+[----------] 1 test from LocalProfileRecorderTest (19 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (19 ms total)
+[  PASSED  ] 1 test.

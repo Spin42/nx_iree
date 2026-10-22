@@ -1,0 +1,83 @@
+SOC family:tegra210  Machine:NVIDIA Jetson Nano Developer Kit
+Online CPUs: 0-3
+cpu0: Online=1 Governor=schedutil MinFreq=102000 MaxFreq=1479000 CurrentFreq=1479000 IdleStates: WFI=1 c7=1 
+cpu1: Online=1 Governor=schedutil MinFreq=102000 MaxFreq=1479000 CurrentFreq=1479000 IdleStates: WFI=1 c7=1 
+cpu2: Online=1 Governor=schedutil MinFreq=102000 MaxFreq=1479000 CurrentFreq=1479000 IdleStates: WFI=1 c7=1 
+cpu3: Online=1 Governor=schedutil MinFreq=102000 MaxFreq=1479000 CurrentFreq=1479000 IdleStates: WFI=1 c7=1 
+GPU MinFreq=76800000 MaxFreq=921600000 CurrentFreq=76800000
+EMC MinFreq=1600000000 MaxFreq=1600000000 CurrentFreq=204000000 FreqOverride=0
+Fan: PWM=0
+NV Power Mode: MAXN
+echo ============
+echo [C100] Checking if microSD is available...
+echo ============
+if mmc dev 1
+then
+    if test ! -e mmc 1:1 /etc/systemd/system/nv_boot_control.service
+    then
+        echo ============
+        echo [C100] Installing nv_boot_control.conf...
+        echo ============
+        load mmc 0:1 ${scriptaddr} /etc/nv_boot_control.conf
+        save mmc 1:1 ${scriptaddr} /usr/local/share/nv_boot_control.conf ${filesize}
+        echo ============
+        echo [C100] Installing nv_boot_control.service...
+        echo ============
+        load mmc 0:1 ${scriptaddr} /etc/systemd/system/nv_boot_control.service
+        save mmc 1:1 ${scriptaddr} /etc/systemd/system/nv_boot_control.service ${filesize}
+        ln mmc 1:1 ../nv_boot_control.service /etc/systemd/system/nv-oem-config.target.wants/nv_boot_control.service
+    fi
+    if test ! -e mmc 1:1 /boot/tegra210-p3448-common-sdmmc3.dtbo
+    then
+        echo ============
+        echo [C100] Installing tegra210-p3448-common-sdmmc3.dtbo...
+        echo ============
+        load mmc 0:1 ${scriptaddr} /boot/tegra210-p3448-common-sdmmc3.dtbo
+        save mmc 1:1 ${scriptaddr} /boot/tegra210-p3448-common-sdmmc3.dtbo ${filesize}
+    fi
+    if test ! -e mmc 1:1 /boot/tegra210-porg-p3448-emc-a00.dtbo
+    then
+        echo ============
+        echo [C100] Installing tegra210-porg-p3448-emc-a00.dtbo...
+        echo ============
+        load mmc 0:1 ${scriptaddr} /boot/tegra210-porg-p3448-emc-a00.dtbo
+        save mmc 1:1 ${scriptaddr} /boot/tegra210-porg-p3448-emc-a00.dtbo ${filesize}
+    fi
+clkchange_delay
+dram_info
+dram_temp
+dram_therm
+efficiency
+emc_iso_share
+emc_usage_table
+over_temp_state
+stats
+tables_info
+training_timer_period
+204000000
+1600000000
+rate kHz   time      
+1600000    0         
+transitions:    0
+time-stamp:     1718174634
+[    0.000000] Kernel command line: tegraid=21.1.2.0.0 ddr_die=4096M@2048M section=512M memtype=0 vpr_resize usb_port_owner_info=0 lane_owner_info=0 emc_max_dvfs=0 touch_id=0@63 video=tegrafb no_console_suspend=1 console=ttyS0,115200n8 debug_uartport=lsport,4 earlyprintk=uart8250-32bit,0x70006000 maxcpus=4 usbcore.old_scheme_first=1 lp0_vec=0x1000@0xff780000 core_edp_mv=1125 core_edp_ma=4000 gpt  earlycon=uart8250,mmio32,0x70006000  root=/dev/mmcblk0p1 rw rootwait rootfstype=ext4 console=ttyS0,115200n8 console=tty0 fbcon=map:0 net.ifnames=0 sdhci_tegra.en_boot_part_access=1 root=/dev/mmcblk1p1 rw rootwait rootfstype=ext4 console=ttyS0,115200n8 console=tty0 fbcon=map:0 net.ifnames=0 sdhci_tegra.en_boot_part_access=1 
+[    0.643806] tegra210-emc 7001b000.external-memory-controller: validated EMC DFS table
+[    0.647367] tegra210_dvfs: no clock found for sdmmc2_ddr
+[    0.647403] tegra210_dvfs: no clock found for sdmmc4_ddr
+[    0.647468] tegra210_dvfs: no clock found for sdmmc1_ddr
+[    0.647493] tegra210_dvfs: no clock found for sdmmc3_ddr
+[    0.651151] tegra_dvfs: Unable to get vdd-cpu rail for step info, defering probe
+[    0.715117] OF: /thermal-zones/PLL-therm/cooling-maps/map-tegra-dram: could not find phandle
+[    0.715625] pre_t19x_iso_plat_init(): iso emc max clk=1600000KHz
+[    4.770274] parse_throttle_dt_data: clk=emc type=3
+[    4.784107] sdhci-tegra sdhci-tegra.2: Client registration for eMC Successful
+[    4.787233] sdhci-tegra sdhci-tegra.3: Client registration for eMC Successful
+[    4.938513] tegra_dvfs: GPU-cap: registered
+[    4.938649] tegra dvfs: vdd-cpu: nominal 1168mV, offset 708000uV, step 19200uV, scaling enabled
+[    4.938651] tegra dvfs: vdd-core: nominal 1125mV, offset 600000uV, step 12500uV, scaling enabled
+[    4.938654] tegra dvfs: vdd-gpu: nominal 1068mV, offset 708000uV, step 10000uV, scaling enabled
+[    4.940768] tegra_dvfs: vdd-gpu-vts: registered
+[    4.942075] tegra_core_action core_dvfs_cdev_floor: Tegra CORE DVFS 'floor cooling device' registered
+[    4.943136] tegra_core_action core_dvfs_cdev_cap: Tegra CORE DVFS 'cap cooling device' registered
+[    4.989212] bwmgr: missing cdev-type property
+[    4.989367] DRAM derating cdev registered.

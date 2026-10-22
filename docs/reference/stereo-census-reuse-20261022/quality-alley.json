@@ -1,0 +1,25 @@
+{
+  "census-register-alley-board": {
+    "fps": 28.03460591754462,
+    "full_visible": {
+      "evaluated_pixels": 1886631.0,
+      "coverage_percent": 99.09897589936772,
+      "mae_accepted_px": 0.4324803542229335,
+      "bad1_accepted_percent": 2.96095702255845,
+      "bad3_accepted_percent": 1.1566982165474275,
+      "bad1_or_invalid_percent": 3.835302186808125,
+      "bad3_or_invalid_percent": 2.0473001874770422
+    },
+    "common_x_ge_64": {
+      "evaluated_pixels": 1547446.0,
+      "coverage_percent": 99.07505657709542,
+      "mae_accepted_px": 0.4793201913380665,
+      "bad1_accepted_percent": 3.4672790945077825,
+      "bad3_accepted_percent": 1.3613952605546942,
+      "bad1_or_invalid_percent": 4.360152147473967,
+      "bad3_or_invalid_percent": 2.2737465475370384
+    },
+    "visible_gt_outside_search_percent": 0.0,
+    "max_visible_gt_disparity_px": 42.63671875
+  }
+}

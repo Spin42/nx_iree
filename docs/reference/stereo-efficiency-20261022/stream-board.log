@@ -1,0 +1,27 @@
+CONTROLLED_GPU_MIN=921600000
+CONTROLLED_COMPILER=vulkan-stream.bin
+BOOT_ID=6f672cb9-e70d-433c-8894-7231f93bf6b7
+GOVERNOR=simple_ondemand
+GPU_MAX=921600000
+GPU_MIN=921600000
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+STREAM_DEVICE=vulkan://GPU-2b01de10000000000000000100000000
+Error! Failed to eval: {ok,_}=application:ensure_all_started(elixir), 'Elixir.Code':eval_file(<<"/root/nxiree/vulkan-stream-run.exs">>), halt().
+
+Runtime terminating during boot ({badarg,[{erlang,binary_to_term,[<<131,116,0,0, 0,8,119,6,111,117,116,112,117,116,116,0,0,0,7,119,4,100,97,116,97,116,0,0,0,1,119,10,95,95,115,116,114,117,99,116,95,95,119,25,69,108,105,120,105,114,46,78,120,46,84,101,109,112,108,97,116,101,66,97,99,107,101,110,100,119,4,116,121,112,101,104,2,119,1,117,97,32,119,5,110,97,109,101,115,108,0,0,0,1,119,3,110,105,108,106,119,10,95,95,115,116,114,117,99,116,95,95,119,16,69,108,105,120,105,114,46,78,120,46,84,101,110,115,111,114,119,5,115,104,97,112,101,104,1,98,0,16,0,0,119,10,100,111,110,97,116,97,98,108,101,63,119,5,102,97,108,115,101,119,15,118,101,99,116,111,114,105,122,101,100,95,97,120,101,115,106,119,6,102,111,114,109,97,116,97,2,119,8,98,121,116,101,99,111,100,101,109,0,0,25,164,80,75,3,4,45,0,0,0,0,0,0,0,33,0,53,249,48,77,255,255,255,255,255,255,255,255,9,0,25,0,109,111,100,117,108,101,46,102,98,202,254,1,0,0,1,0,16,0,124,18,0,0,0,0,0,0,124,18,0,0,0,0,0,0,124,18,0,0,12,0,0,0,73,82,69,69,0,0,0,0,208,237,255,255,52,0,0,0,12,0
+
+Crash dump is being written to: /root/erl_crash.dump...done
+CHILD_EXIT=1
+GPU_ERRORS=0
+RESTORED_GPU_MIN=76800000
+RESTORED_GOVERNOR=simple_ondemand
+**Error** ** (RuntimeError) stereo path benchmark failed
+    /root/nxiree/stereo-board-run.exs:87: (file)
+    /root/nxiree/compare-stereo-at-max.exs:39: (file)
+    /root/nxiree/compare-stereo-at-max.exs:36: (file)
+    nofile:1: (file)
+    (elixir 1.20.4) src/elixir.erl:382: :elixir.eval_external_handler/3
+    (stdlib 8.1.1) erl_eval.erl:1048: :erl_eval.do_apply/7
+    (stdlib 8.1.1) erl_eval.erl:276: :erl_eval.exprs/6
+    (elixir 1.20.4) src/elixir.erl:365: :elixir.erl_eval/3

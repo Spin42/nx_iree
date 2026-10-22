@@ -1,0 +1,16 @@
+export shared {1, 2, 3}: 11443 bytes
+export shared {4, 1, 1}: 11427 bytes
+export shared {3, 1, 4}: 11443 bytes
+export shared {3, 1, 3}: 11443 bytes
+export shared {3, 1, 2}: 11427 bytes
+export shared {17, 5, 32}: 11475 bytes
+export shared {5, 3, 2}: 11443 bytes
+export shared {5, 3, 31}: 11491 bytes
+export shared {5, 3, 33}: 11491 bytes
+export shared {5, 3, 63}: 11491 bytes
+export shared {5, 3, 65}: 11491 bytes
+export shared {5, 3, 97}: 11491 bytes
+export shared {5, 3, 128}: 11475 bytes
+export shared {32, 24, 32}: 11459 bytes
+export shared {160, 120, 64}: 11475 bytes
+wrote /tmp/stereo-opt-final-shared.bin

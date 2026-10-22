@@ -1,0 +1,898 @@
+STREAM_CASE runtime=original scene=alley inflight=1
+[21016.628276] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21017.753376] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21018.881976] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21020.007876] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21021.138120] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21022.259695] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21023.380489] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21024.510004] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21025.635349] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21026.761239] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21027.885956] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21029.011305] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21030.366101] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21031.492870] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21032.622463] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21033.743676] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21034.868078] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21035.992632] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21037.117120] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21038.246960] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21039.372319] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21040.500981] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21041.625542] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+DIAGNOSTIC_BASELINE_GPU_ERRORS=23
+BOOT_ID=6f672cb9-e70d-433c-8894-7231f93bf6b7
+GOVERNOR=simple_ondemand
+GPU_MAX=921600000
+GPU_MIN=76800000
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+PIPELINE_DEVICE=vulkan://GPU-2b01de10000000000000000100000000 inflight=1 frames=50
+PIPELINE_HEARTBEAT count=350 p95_us=3223 max_us=8240
+PIPELINE_FRAME=frame_0001 latency_ms=11.821
+PIPELINE_FRAME=frame_0002 latency_ms=11.214
+PIPELINE_FRAME=frame_0003 latency_ms=11.186
+PIPELINE_FRAME=frame_0004 latency_ms=11.632
+PIPELINE_FRAME=frame_0005 latency_ms=11.148
+PIPELINE_FRAME=frame_0006 latency_ms=10.528
+PIPELINE_FRAME=frame_0007 latency_ms=11.075
+PIPELINE_FRAME=frame_0008 latency_ms=11.377
+PIPELINE_FRAME=frame_0009 latency_ms=11.084
+PIPELINE_FRAME=frame_0010 latency_ms=11.203
+PIPELINE_FRAME=frame_0011 latency_ms=11.273
+PIPELINE_FRAME=frame_0012 latency_ms=11.746
+PIPELINE_FRAME=frame_0013 latency_ms=12.132
+PIPELINE_FRAME=frame_0014 latency_ms=12.36
+PIPELINE_FRAME=frame_0015 latency_ms=12.209
+PIPELINE_FRAME=frame_0016 latency_ms=12.206
+PIPELINE_FRAME=frame_0017 latency_ms=12.582
+PIPELINE_FRAME=frame_0018 latency_ms=12.234
+PIPELINE_FRAME=frame_0019 latency_ms=14.793
+PIPELINE_FRAME=frame_0020 latency_ms=12.902
+PIPELINE_FRAME=frame_0021 latency_ms=12.533
+PIPELINE_FRAME=frame_0022 latency_ms=12.586
+PIPELINE_FRAME=frame_0023 latency_ms=12.909
+PIPELINE_FRAME=frame_0024 latency_ms=12.995
+PIPELINE_FRAME=frame_0025 latency_ms=10.863
+PIPELINE_FRAME=frame_0026 latency_ms=12.321
+PIPELINE_FRAME=frame_0027 latency_ms=12.131
+PIPELINE_FRAME=frame_0028 latency_ms=12.205
+PIPELINE_FRAME=frame_0029 latency_ms=12.242
+PIPELINE_FRAME=frame_0030 latency_ms=12.696
+PIPELINE_FRAME=frame_0031 latency_ms=12.184
+PIPELINE_FRAME=frame_0032 latency_ms=12.564
+PIPELINE_FRAME=frame_0033 latency_ms=12.153
+PIPELINE_FRAME=frame_0034 latency_ms=12.543
+PIPELINE_FRAME=frame_0035 latency_ms=12.392
+PIPELINE_FRAME=frame_0036 latency_ms=12.387
+PIPELINE_FRAME=frame_0037 latency_ms=12.271
+PIPELINE_FRAME=frame_0038 latency_ms=11.946
+PIPELINE_FRAME=frame_0039 latency_ms=12.627
+PIPELINE_FRAME=frame_0040 latency_ms=12.222
+PIPELINE_FRAME=frame_0041 latency_ms=11.77
+PIPELINE_FRAME=frame_0042 latency_ms=11.634
+PIPELINE_FRAME=frame_0043 latency_ms=13.636
+PIPELINE_FRAME=frame_0044 latency_ms=14.313
+PIPELINE_FRAME=frame_0045 latency_ms=12.095
+PIPELINE_FRAME=frame_0046 latency_ms=16.487
+PIPELINE_FRAME=frame_0047 latency_ms=11.668
+PIPELINE_FRAME=frame_0048 latency_ms=12.696
+PIPELINE_FRAME=frame_0049 latency_ms=12.696
+PIPELINE_FRAME=frame_0050 latency_ms=12.329
+PIPELINE_RESULT inflight=1 fps=65.86773495350397 wall_ms=759.097 latency_p50_ms=12.209 latency_p95_ms=14.313 includes=upload_graph_readback_synchronization_pool_scheduling_guards excludes=disk_io_input_preparation warmup_per_context=3
+PIPELINE_THROUGHPUT_PASS
+CHILD_EXIT=0
+[21016.628276] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21017.753376] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21018.881976] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21020.007876] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21021.138120] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21022.259695] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21023.380489] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21024.510004] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21025.635349] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21026.761239] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21027.885956] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21029.011305] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21030.366101] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21031.492870] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21032.622463] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21033.743676] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21034.868078] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21035.992632] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21037.117120] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21038.246960] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21039.372319] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21040.500981] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21041.625542] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+GPU_ERRORS=23
+NEW_GPU_ERRORS=0
+BOARD_DIAGNOSTIC_PASS
+STREAM_CASE runtime=dirty scene=alley inflight=1
+[21016.628276] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21017.753376] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21018.881976] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21020.007876] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21021.138120] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21022.259695] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21023.380489] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21024.510004] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21025.635349] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21026.761239] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21027.885956] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21029.011305] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21030.366101] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21031.492870] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21032.622463] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21033.743676] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21034.868078] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21035.992632] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21037.117120] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21038.246960] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21039.372319] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21040.500981] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21041.625542] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+DIAGNOSTIC_BASELINE_GPU_ERRORS=23
+BOOT_ID=6f672cb9-e70d-433c-8894-7231f93bf6b7
+GOVERNOR=simple_ondemand
+GPU_MAX=921600000
+GPU_MIN=76800000
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+PIPELINE_DEVICE=vulkan://GPU-2b01de10000000000000000100000000 inflight=1 frames=50
+PIPELINE_HEARTBEAT count=416 p95_us=2366 max_us=9659
+PIPELINE_FRAME=frame_0001 latency_ms=11.345
+PIPELINE_FRAME=frame_0002 latency_ms=12.124
+PIPELINE_FRAME=frame_0003 latency_ms=12.303
+PIPELINE_FRAME=frame_0004 latency_ms=12.088
+PIPELINE_FRAME=frame_0005 latency_ms=12.778
+PIPELINE_FRAME=frame_0006 latency_ms=12.314
+PIPELINE_FRAME=frame_0007 latency_ms=12.237
+PIPELINE_FRAME=frame_0008 latency_ms=12.517
+PIPELINE_FRAME=frame_0009 latency_ms=12.217
+PIPELINE_FRAME=frame_0010 latency_ms=12.269
+PIPELINE_FRAME=frame_0011 latency_ms=11.956
+PIPELINE_FRAME=frame_0012 latency_ms=15.505
+PIPELINE_FRAME=frame_0013 latency_ms=14.493
+PIPELINE_FRAME=frame_0014 latency_ms=14.184
+PIPELINE_FRAME=frame_0015 latency_ms=14.464
+PIPELINE_FRAME=frame_0016 latency_ms=14.356
+PIPELINE_FRAME=frame_0017 latency_ms=15.949
+PIPELINE_FRAME=frame_0018 latency_ms=14.113
+PIPELINE_FRAME=frame_0019 latency_ms=11.416
+PIPELINE_FRAME=frame_0020 latency_ms=12.515
+PIPELINE_FRAME=frame_0021 latency_ms=12.362
+PIPELINE_FRAME=frame_0022 latency_ms=12.927
+PIPELINE_FRAME=frame_0023 latency_ms=13.139
+PIPELINE_FRAME=frame_0024 latency_ms=13.019
+PIPELINE_FRAME=frame_0025 latency_ms=14.092
+PIPELINE_FRAME=frame_0026 latency_ms=14.065
+PIPELINE_FRAME=frame_0027 latency_ms=14.662
+PIPELINE_FRAME=frame_0028 latency_ms=14.736
+PIPELINE_FRAME=frame_0029 latency_ms=16.036
+PIPELINE_FRAME=frame_0030 latency_ms=14.754
+PIPELINE_FRAME=frame_0031 latency_ms=14.624
+PIPELINE_FRAME=frame_0032 latency_ms=14.55
+PIPELINE_FRAME=frame_0033 latency_ms=14.939
+PIPELINE_FRAME=frame_0034 latency_ms=15.23
+PIPELINE_FRAME=frame_0035 latency_ms=11.307
+PIPELINE_FRAME=frame_0036 latency_ms=12.616
+PIPELINE_FRAME=frame_0037 latency_ms=14.267
+PIPELINE_FRAME=frame_0038 latency_ms=12.345
+PIPELINE_FRAME=frame_0039 latency_ms=12.277
+PIPELINE_FRAME=frame_0040 latency_ms=12.576
+PIPELINE_FRAME=frame_0041 latency_ms=14.016
+PIPELINE_FRAME=frame_0042 latency_ms=13.358
+PIPELINE_FRAME=frame_0043 latency_ms=13.694
+PIPELINE_FRAME=frame_0044 latency_ms=16.297
+PIPELINE_FRAME=frame_0045 latency_ms=13.788
+PIPELINE_FRAME=frame_0046 latency_ms=14.988
+PIPELINE_FRAME=frame_0047 latency_ms=14.953
+PIPELINE_FRAME=frame_0048 latency_ms=14.982
+PIPELINE_FRAME=frame_0049 latency_ms=14.721
+PIPELINE_FRAME=frame_0050 latency_ms=14.889
+PIPELINE_RESULT inflight=1 fps=59.332532739691565 wall_ms=842.708 latency_p50_ms=13.788 latency_p95_ms=15.949 includes=upload_graph_readback_synchronization_pool_scheduling_guards excludes=disk_io_input_preparation warmup_per_context=3
+PIPELINE_THROUGHPUT_PASS
+CHILD_EXIT=0
+[21016.628276] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21017.753376] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21018.881976] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21020.007876] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21021.138120] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21022.259695] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21023.380489] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21024.510004] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21025.635349] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21026.761239] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21027.885956] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21029.011305] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21030.366101] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21031.492870] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21032.622463] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21033.743676] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21034.868078] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21035.992632] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21037.117120] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21038.246960] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21039.372319] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21040.500981] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21041.625542] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+GPU_ERRORS=23
+NEW_GPU_ERRORS=0
+BOARD_DIAGNOSTIC_PASS
+STREAM_CASE runtime=original scene=alley inflight=2
+[21016.628276] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21017.753376] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21018.881976] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21020.007876] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21021.138120] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21022.259695] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21023.380489] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21024.510004] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21025.635349] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21026.761239] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21027.885956] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21029.011305] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21030.366101] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21031.492870] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21032.622463] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21033.743676] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21034.868078] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21035.992632] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21037.117120] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21038.246960] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21039.372319] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21040.500981] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21041.625542] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+DIAGNOSTIC_BASELINE_GPU_ERRORS=23
+BOOT_ID=6f672cb9-e70d-433c-8894-7231f93bf6b7
+GOVERNOR=simple_ondemand
+GPU_MAX=921600000
+GPU_MIN=76800000
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+PIPELINE_DEVICE=vulkan://GPU-2b01de10000000000000000100000000 inflight=2 frames=50
+PIPELINE_HEARTBEAT count=207 p95_us=12497 max_us=16780
+PIPELINE_FRAME=frame_0001 latency_ms=17.863
+PIPELINE_FRAME=frame_0002 latency_ms=23.166
+PIPELINE_FRAME=frame_0003 latency_ms=24.484
+PIPELINE_FRAME=frame_0004 latency_ms=21.513
+PIPELINE_FRAME=frame_0005 latency_ms=19.213
+PIPELINE_FRAME=frame_0006 latency_ms=20.018
+PIPELINE_FRAME=frame_0007 latency_ms=20.128
+PIPELINE_FRAME=frame_0008 latency_ms=20.579
+PIPELINE_FRAME=frame_0009 latency_ms=20.685
+PIPELINE_FRAME=frame_0010 latency_ms=24.964
+PIPELINE_FRAME=frame_0011 latency_ms=22.989
+PIPELINE_FRAME=frame_0012 latency_ms=22.864
+PIPELINE_FRAME=frame_0013 latency_ms=23.094
+PIPELINE_FRAME=frame_0014 latency_ms=23.675
+PIPELINE_FRAME=frame_0015 latency_ms=24.422
+PIPELINE_FRAME=frame_0016 latency_ms=23.044
+PIPELINE_FRAME=frame_0017 latency_ms=23.03
+PIPELINE_FRAME=frame_0018 latency_ms=22.77
+PIPELINE_FRAME=frame_0019 latency_ms=22.874
+PIPELINE_FRAME=frame_0020 latency_ms=22.696
+PIPELINE_FRAME=frame_0021 latency_ms=23.083
+PIPELINE_FRAME=frame_0022 latency_ms=22.7
+PIPELINE_FRAME=frame_0023 latency_ms=21.892
+PIPELINE_FRAME=frame_0024 latency_ms=21.182
+PIPELINE_FRAME=frame_0025 latency_ms=20.712
+PIPELINE_FRAME=frame_0026 latency_ms=17.66
+PIPELINE_FRAME=frame_0027 latency_ms=23.525
+PIPELINE_FRAME=frame_0028 latency_ms=24.655
+PIPELINE_FRAME=frame_0029 latency_ms=22.262
+PIPELINE_FRAME=frame_0030 latency_ms=19.667
+PIPELINE_FRAME=frame_0031 latency_ms=19.612
+PIPELINE_FRAME=frame_0032 latency_ms=20.478
+PIPELINE_FRAME=frame_0033 latency_ms=19.878
+PIPELINE_FRAME=frame_0034 latency_ms=21.352
+PIPELINE_FRAME=frame_0035 latency_ms=26.418
+PIPELINE_FRAME=frame_0036 latency_ms=22.869
+PIPELINE_FRAME=frame_0037 latency_ms=22.948
+PIPELINE_FRAME=frame_0038 latency_ms=28.145
+PIPELINE_FRAME=frame_0039 latency_ms=23.702
+PIPELINE_FRAME=frame_0040 latency_ms=24.516
+PIPELINE_FRAME=frame_0041 latency_ms=24.214
+PIPELINE_FRAME=frame_0042 latency_ms=22.993
+PIPELINE_FRAME=frame_0043 latency_ms=22.751
+PIPELINE_FRAME=frame_0044 latency_ms=22.774
+PIPELINE_FRAME=frame_0045 latency_ms=22.883
+PIPELINE_FRAME=frame_0046 latency_ms=22.988
+PIPELINE_FRAME=frame_0047 latency_ms=23.701
+PIPELINE_FRAME=frame_0048 latency_ms=20.678
+PIPELINE_FRAME=frame_0049 latency_ms=22.188
+PIPELINE_FRAME=frame_0050 latency_ms=20.909
+PIPELINE_RESULT inflight=2 fps=69.29440281390711 wall_ms=721.559 latency_p50_ms=22.774 latency_p95_ms=24.964 includes=upload_graph_readback_synchronization_pool_scheduling_guards excludes=disk_io_input_preparation warmup_per_context=3
+PIPELINE_THROUGHPUT_PASS
+CHILD_EXIT=0
+[21016.628276] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21017.753376] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21018.881976] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21020.007876] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21021.138120] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21022.259695] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21023.380489] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21024.510004] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21025.635349] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21026.761239] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21027.885956] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21029.011305] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21030.366101] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21031.492870] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21032.622463] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21033.743676] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21034.868078] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21035.992632] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21037.117120] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21038.246960] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21039.372319] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21040.500981] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21041.625542] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+GPU_ERRORS=23
+NEW_GPU_ERRORS=0
+BOARD_DIAGNOSTIC_PASS
+STREAM_CASE runtime=dirty scene=alley inflight=2
+[21016.628276] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21017.753376] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21018.881976] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21020.007876] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21021.138120] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21022.259695] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21023.380489] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21024.510004] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21025.635349] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21026.761239] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21027.885956] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21029.011305] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21030.366101] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21031.492870] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21032.622463] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21033.743676] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21034.868078] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21035.992632] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21037.117120] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21038.246960] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21039.372319] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21040.500981] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21041.625542] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+DIAGNOSTIC_BASELINE_GPU_ERRORS=23
+BOOT_ID=6f672cb9-e70d-433c-8894-7231f93bf6b7
+GOVERNOR=simple_ondemand
+GPU_MAX=921600000
+GPU_MIN=76800000
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+PIPELINE_DEVICE=vulkan://GPU-2b01de10000000000000000100000000 inflight=2 frames=50
+PIPELINE_HEARTBEAT count=371 p95_us=2354 max_us=16966
+PIPELINE_FRAME=frame_0001 latency_ms=66.609
+PIPELINE_FRAME=frame_0002 latency_ms=25.21
+PIPELINE_FRAME=frame_0003 latency_ms=22.96
+PIPELINE_FRAME=frame_0004 latency_ms=24.751
+PIPELINE_FRAME=frame_0005 latency_ms=23.472
+PIPELINE_FRAME=frame_0006 latency_ms=23.634
+PIPELINE_FRAME=frame_0007 latency_ms=23.01
+PIPELINE_FRAME=frame_0008 latency_ms=22.647
+PIPELINE_FRAME=frame_0009 latency_ms=19.788
+PIPELINE_FRAME=frame_0010 latency_ms=20.067
+PIPELINE_FRAME=frame_0011 latency_ms=20.387
+PIPELINE_FRAME=frame_0012 latency_ms=22.504
+PIPELINE_FRAME=frame_0013 latency_ms=24.123
+PIPELINE_FRAME=frame_0014 latency_ms=23.019
+PIPELINE_FRAME=frame_0015 latency_ms=25.124
+PIPELINE_FRAME=frame_0016 latency_ms=23.434
+PIPELINE_FRAME=frame_0017 latency_ms=23.414
+PIPELINE_FRAME=frame_0018 latency_ms=24.838
+PIPELINE_FRAME=frame_0019 latency_ms=21.093
+PIPELINE_FRAME=frame_0020 latency_ms=23.085
+PIPELINE_FRAME=frame_0021 latency_ms=25.679
+PIPELINE_FRAME=frame_0022 latency_ms=29.851
+PIPELINE_FRAME=frame_0023 latency_ms=23.79
+PIPELINE_FRAME=frame_0024 latency_ms=24.656
+PIPELINE_FRAME=frame_0025 latency_ms=24.261
+PIPELINE_FRAME=frame_0026 latency_ms=67.081
+PIPELINE_FRAME=frame_0027 latency_ms=24.381
+PIPELINE_FRAME=frame_0028 latency_ms=22.926
+PIPELINE_FRAME=frame_0029 latency_ms=24.298
+PIPELINE_FRAME=frame_0030 latency_ms=25.769
+PIPELINE_FRAME=frame_0031 latency_ms=23.768
+PIPELINE_FRAME=frame_0032 latency_ms=22.449
+PIPELINE_FRAME=frame_0033 latency_ms=21.722
+PIPELINE_FRAME=frame_0034 latency_ms=20.587
+PIPELINE_FRAME=frame_0035 latency_ms=24.898
+PIPELINE_FRAME=frame_0036 latency_ms=15.795
+PIPELINE_FRAME=frame_0037 latency_ms=22.264
+PIPELINE_FRAME=frame_0038 latency_ms=24.286
+PIPELINE_FRAME=frame_0039 latency_ms=23.726
+PIPELINE_FRAME=frame_0040 latency_ms=23.717
+PIPELINE_FRAME=frame_0041 latency_ms=23.233
+PIPELINE_FRAME=frame_0042 latency_ms=23.556
+PIPELINE_FRAME=frame_0043 latency_ms=20.695
+PIPELINE_FRAME=frame_0044 latency_ms=21.43
+PIPELINE_FRAME=frame_0045 latency_ms=22.566
+PIPELINE_FRAME=frame_0046 latency_ms=26.23
+PIPELINE_FRAME=frame_0047 latency_ms=29.212
+PIPELINE_FRAME=frame_0048 latency_ms=24.146
+PIPELINE_FRAME=frame_0049 latency_ms=24.076
+PIPELINE_FRAME=frame_0050 latency_ms=24.694
+PIPELINE_RESULT inflight=2 fps=64.54652836497189 wall_ms=774.635 latency_p50_ms=23.634 latency_p95_ms=29.851 includes=upload_graph_readback_synchronization_pool_scheduling_guards excludes=disk_io_input_preparation warmup_per_context=3
+PIPELINE_THROUGHPUT_PASS
+CHILD_EXIT=0
+[21016.628276] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21017.753376] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21018.881976] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21020.007876] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21021.138120] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21022.259695] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21023.380489] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21024.510004] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21025.635349] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21026.761239] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21027.885956] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21029.011305] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21030.366101] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21031.492870] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21032.622463] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21033.743676] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21034.868078] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21035.992632] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21037.117120] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21038.246960] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21039.372319] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21040.500981] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21041.625542] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+GPU_ERRORS=23
+NEW_GPU_ERRORS=0
+BOARD_DIAGNOSTIC_PASS
+STREAM_CASE runtime=original scene=temple inflight=1
+[21016.628276] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21017.753376] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21018.881976] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21020.007876] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21021.138120] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21022.259695] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21023.380489] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21024.510004] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21025.635349] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21026.761239] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21027.885956] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21029.011305] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21030.366101] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21031.492870] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21032.622463] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21033.743676] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21034.868078] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21035.992632] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21037.117120] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21038.246960] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21039.372319] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21040.500981] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21041.625542] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+DIAGNOSTIC_BASELINE_GPU_ERRORS=23
+BOOT_ID=6f672cb9-e70d-433c-8894-7231f93bf6b7
+GOVERNOR=simple_ondemand
+GPU_MAX=921600000
+GPU_MIN=76800000
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+PIPELINE_DEVICE=vulkan://GPU-2b01de10000000000000000100000000 inflight=1 frames=50
+PIPELINE_HEARTBEAT count=354 p95_us=3205 max_us=8457
+PIPELINE_FRAME=frame_0001 latency_ms=11.309
+PIPELINE_FRAME=frame_0002 latency_ms=11.077
+PIPELINE_FRAME=frame_0003 latency_ms=10.993
+PIPELINE_FRAME=frame_0004 latency_ms=11.31
+PIPELINE_FRAME=frame_0005 latency_ms=10.329
+PIPELINE_FRAME=frame_0006 latency_ms=10.404
+PIPELINE_FRAME=frame_0007 latency_ms=10.504
+PIPELINE_FRAME=frame_0008 latency_ms=11.421
+PIPELINE_FRAME=frame_0009 latency_ms=11.004
+PIPELINE_FRAME=frame_0010 latency_ms=11.278
+PIPELINE_FRAME=frame_0011 latency_ms=11.334
+PIPELINE_FRAME=frame_0012 latency_ms=12.406
+PIPELINE_FRAME=frame_0013 latency_ms=12.279
+PIPELINE_FRAME=frame_0014 latency_ms=12.134
+PIPELINE_FRAME=frame_0015 latency_ms=12.419
+PIPELINE_FRAME=frame_0016 latency_ms=12.271
+PIPELINE_FRAME=frame_0017 latency_ms=12.599
+PIPELINE_FRAME=frame_0018 latency_ms=12.386
+PIPELINE_FRAME=frame_0019 latency_ms=11.536
+PIPELINE_FRAME=frame_0020 latency_ms=11.906
+PIPELINE_FRAME=frame_0021 latency_ms=11.789
+PIPELINE_FRAME=frame_0022 latency_ms=12.018
+PIPELINE_FRAME=frame_0023 latency_ms=12.401
+PIPELINE_FRAME=frame_0024 latency_ms=12.178
+PIPELINE_FRAME=frame_0025 latency_ms=12.307
+PIPELINE_FRAME=frame_0026 latency_ms=12.245
+PIPELINE_FRAME=frame_0027 latency_ms=12.322
+PIPELINE_FRAME=frame_0028 latency_ms=12.117
+PIPELINE_FRAME=frame_0029 latency_ms=12.181
+PIPELINE_FRAME=frame_0030 latency_ms=12.311
+PIPELINE_FRAME=frame_0031 latency_ms=12.182
+PIPELINE_FRAME=frame_0032 latency_ms=13.243
+PIPELINE_FRAME=frame_0033 latency_ms=12.204
+PIPELINE_FRAME=frame_0034 latency_ms=15.381
+PIPELINE_FRAME=frame_0035 latency_ms=12.057
+PIPELINE_FRAME=frame_0036 latency_ms=12.433
+PIPELINE_FRAME=frame_0037 latency_ms=11.554
+PIPELINE_FRAME=frame_0038 latency_ms=14.745
+PIPELINE_FRAME=frame_0039 latency_ms=12.256
+PIPELINE_FRAME=frame_0040 latency_ms=12.25
+PIPELINE_FRAME=frame_0041 latency_ms=16.377
+PIPELINE_FRAME=frame_0042 latency_ms=11.631
+PIPELINE_FRAME=frame_0043 latency_ms=11.946
+PIPELINE_FRAME=frame_0044 latency_ms=12.722
+PIPELINE_FRAME=frame_0045 latency_ms=11.777
+PIPELINE_FRAME=frame_0046 latency_ms=12.348
+PIPELINE_FRAME=frame_0047 latency_ms=12.703
+PIPELINE_FRAME=frame_0048 latency_ms=13.375
+PIPELINE_FRAME=frame_0049 latency_ms=14.19
+PIPELINE_FRAME=frame_0050 latency_ms=14.495
+PIPELINE_RESULT inflight=1 fps=66.85430441438972 wall_ms=747.895 latency_p50_ms=12.182 latency_p95_ms=14.745 includes=upload_graph_readback_synchronization_pool_scheduling_guards excludes=disk_io_input_preparation warmup_per_context=3
+PIPELINE_THROUGHPUT_PASS
+CHILD_EXIT=0
+[21016.628276] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21017.753376] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21018.881976] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21020.007876] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21021.138120] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21022.259695] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21023.380489] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21024.510004] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21025.635349] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21026.761239] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21027.885956] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21029.011305] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21030.366101] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21031.492870] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21032.622463] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21033.743676] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21034.868078] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21035.992632] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21037.117120] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21038.246960] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21039.372319] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21040.500981] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21041.625542] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+GPU_ERRORS=23
+NEW_GPU_ERRORS=0
+BOARD_DIAGNOSTIC_PASS
+STREAM_CASE runtime=dirty scene=temple inflight=1
+[21016.628276] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21017.753376] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21018.881976] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21020.007876] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21021.138120] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21022.259695] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21023.380489] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21024.510004] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21025.635349] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21026.761239] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21027.885956] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21029.011305] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21030.366101] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21031.492870] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21032.622463] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21033.743676] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21034.868078] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21035.992632] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21037.117120] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21038.246960] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21039.372319] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21040.500981] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21041.625542] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+DIAGNOSTIC_BASELINE_GPU_ERRORS=23
+BOOT_ID=6f672cb9-e70d-433c-8894-7231f93bf6b7
+GOVERNOR=simple_ondemand
+GPU_MAX=921600000
+GPU_MIN=76800000
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+PIPELINE_DEVICE=vulkan://GPU-2b01de10000000000000000100000000 inflight=1 frames=50
+PIPELINE_HEARTBEAT count=418 p95_us=2349 max_us=9398
+PIPELINE_FRAME=frame_0001 latency_ms=12.398
+PIPELINE_FRAME=frame_0002 latency_ms=12.933
+PIPELINE_FRAME=frame_0003 latency_ms=15.132
+PIPELINE_FRAME=frame_0004 latency_ms=11.634
+PIPELINE_FRAME=frame_0005 latency_ms=11.841
+PIPELINE_FRAME=frame_0006 latency_ms=13.494
+PIPELINE_FRAME=frame_0007 latency_ms=11.829
+PIPELINE_FRAME=frame_0008 latency_ms=11.636
+PIPELINE_FRAME=frame_0009 latency_ms=12.075
+PIPELINE_FRAME=frame_0010 latency_ms=12.023
+PIPELINE_FRAME=frame_0011 latency_ms=12.323
+PIPELINE_FRAME=frame_0012 latency_ms=12.385
+PIPELINE_FRAME=frame_0013 latency_ms=13.409
+PIPELINE_FRAME=frame_0014 latency_ms=14.062
+PIPELINE_FRAME=frame_0015 latency_ms=14.033
+PIPELINE_FRAME=frame_0016 latency_ms=14.182
+PIPELINE_FRAME=frame_0017 latency_ms=20.631
+PIPELINE_FRAME=frame_0018 latency_ms=14.746
+PIPELINE_FRAME=frame_0019 latency_ms=15.474
+PIPELINE_FRAME=frame_0020 latency_ms=15.149
+PIPELINE_FRAME=frame_0021 latency_ms=15.548
+PIPELINE_FRAME=frame_0022 latency_ms=15.698
+PIPELINE_FRAME=frame_0023 latency_ms=15.734
+PIPELINE_FRAME=frame_0024 latency_ms=15.144
+PIPELINE_FRAME=frame_0025 latency_ms=13.427
+PIPELINE_FRAME=frame_0026 latency_ms=13.513
+PIPELINE_FRAME=frame_0027 latency_ms=13.518
+PIPELINE_FRAME=frame_0028 latency_ms=11.892
+PIPELINE_FRAME=frame_0029 latency_ms=12.908
+PIPELINE_FRAME=frame_0030 latency_ms=12.082
+PIPELINE_FRAME=frame_0031 latency_ms=12.029
+PIPELINE_FRAME=frame_0032 latency_ms=12.204
+PIPELINE_FRAME=frame_0033 latency_ms=14.129
+PIPELINE_FRAME=frame_0034 latency_ms=14.111
+PIPELINE_FRAME=frame_0035 latency_ms=14.07
+PIPELINE_FRAME=frame_0036 latency_ms=14.494
+PIPELINE_FRAME=frame_0037 latency_ms=15.108
+PIPELINE_FRAME=frame_0038 latency_ms=13.963
+PIPELINE_FRAME=frame_0039 latency_ms=13.956
+PIPELINE_FRAME=frame_0040 latency_ms=12.527
+PIPELINE_FRAME=frame_0041 latency_ms=14.713
+PIPELINE_FRAME=frame_0042 latency_ms=14.397
+PIPELINE_FRAME=frame_0043 latency_ms=14.133
+PIPELINE_FRAME=frame_0044 latency_ms=13.776
+PIPELINE_FRAME=frame_0045 latency_ms=14.629
+PIPELINE_FRAME=frame_0046 latency_ms=14.91
+PIPELINE_FRAME=frame_0047 latency_ms=14.426
+PIPELINE_FRAME=frame_0048 latency_ms=15.02
+PIPELINE_FRAME=frame_0049 latency_ms=14.46
+PIPELINE_FRAME=frame_0050 latency_ms=15.001
+PIPELINE_RESULT inflight=1 fps=58.47173593228505 wall_ms=855.114 latency_p50_ms=14.033 latency_p95_ms=15.698 includes=upload_graph_readback_synchronization_pool_scheduling_guards excludes=disk_io_input_preparation warmup_per_context=3
+PIPELINE_THROUGHPUT_PASS
+CHILD_EXIT=0
+[21016.628276] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21017.753376] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21018.881976] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21020.007876] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21021.138120] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21022.259695] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21023.380489] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21024.510004] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21025.635349] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21026.761239] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21027.885956] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21029.011305] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21030.366101] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21031.492870] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21032.622463] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21033.743676] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21034.868078] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21035.992632] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21037.117120] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21038.246960] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21039.372319] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21040.500981] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21041.625542] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+GPU_ERRORS=23
+NEW_GPU_ERRORS=0
+BOARD_DIAGNOSTIC_PASS
+STREAM_CASE runtime=original scene=temple inflight=2
+[21016.628276] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21017.753376] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21018.881976] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21020.007876] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21021.138120] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21022.259695] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21023.380489] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21024.510004] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21025.635349] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21026.761239] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21027.885956] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21029.011305] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21030.366101] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21031.492870] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21032.622463] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21033.743676] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21034.868078] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21035.992632] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21037.117120] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21038.246960] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21039.372319] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21040.500981] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21041.625542] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+DIAGNOSTIC_BASELINE_GPU_ERRORS=23
+BOOT_ID=6f672cb9-e70d-433c-8894-7231f93bf6b7
+GOVERNOR=simple_ondemand
+GPU_MAX=921600000
+GPU_MIN=76800000
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+PIPELINE_DEVICE=vulkan://GPU-2b01de10000000000000000100000000 inflight=2 frames=50
+PIPELINE_HEARTBEAT count=218 p95_us=12397 max_us=15309
+PIPELINE_FRAME=frame_0001 latency_ms=20.465
+PIPELINE_FRAME=frame_0002 latency_ms=30.304
+PIPELINE_FRAME=frame_0003 latency_ms=27.931
+PIPELINE_FRAME=frame_0004 latency_ms=21.901
+PIPELINE_FRAME=frame_0005 latency_ms=21.168
+PIPELINE_FRAME=frame_0006 latency_ms=23.96
+PIPELINE_FRAME=frame_0007 latency_ms=22.418
+PIPELINE_FRAME=frame_0008 latency_ms=22.513
+PIPELINE_FRAME=frame_0009 latency_ms=22.678
+PIPELINE_FRAME=frame_0010 latency_ms=22.123
+PIPELINE_FRAME=frame_0011 latency_ms=19.48
+PIPELINE_FRAME=frame_0012 latency_ms=20.575
+PIPELINE_FRAME=frame_0013 latency_ms=22.505
+PIPELINE_FRAME=frame_0014 latency_ms=22.318
+PIPELINE_FRAME=frame_0015 latency_ms=22.893
+PIPELINE_FRAME=frame_0016 latency_ms=22.556
+PIPELINE_FRAME=frame_0017 latency_ms=22.576
+PIPELINE_FRAME=frame_0018 latency_ms=22.905
+PIPELINE_FRAME=frame_0019 latency_ms=22.745
+PIPELINE_FRAME=frame_0020 latency_ms=21.848
+PIPELINE_FRAME=frame_0021 latency_ms=22.472
+PIPELINE_FRAME=frame_0022 latency_ms=22.964
+PIPELINE_FRAME=frame_0023 latency_ms=22.465
+PIPELINE_FRAME=frame_0024 latency_ms=22.807
+PIPELINE_FRAME=frame_0025 latency_ms=23.093
+PIPELINE_FRAME=frame_0026 latency_ms=23.963
+PIPELINE_FRAME=frame_0027 latency_ms=26.96
+PIPELINE_FRAME=frame_0028 latency_ms=27.748
+PIPELINE_FRAME=frame_0029 latency_ms=23.668
+PIPELINE_FRAME=frame_0030 latency_ms=21.37
+PIPELINE_FRAME=frame_0031 latency_ms=23.544
+PIPELINE_FRAME=frame_0032 latency_ms=22.356
+PIPELINE_FRAME=frame_0033 latency_ms=22.555
+PIPELINE_FRAME=frame_0034 latency_ms=22.693
+PIPELINE_FRAME=frame_0035 latency_ms=21.54
+PIPELINE_FRAME=frame_0036 latency_ms=19.814
+PIPELINE_FRAME=frame_0037 latency_ms=21.236
+PIPELINE_FRAME=frame_0038 latency_ms=22.687
+PIPELINE_FRAME=frame_0039 latency_ms=22.203
+PIPELINE_FRAME=frame_0040 latency_ms=23.308
+PIPELINE_FRAME=frame_0041 latency_ms=23.618
+PIPELINE_FRAME=frame_0042 latency_ms=22.742
+PIPELINE_FRAME=frame_0043 latency_ms=23.0
+PIPELINE_FRAME=frame_0044 latency_ms=22.933
+PIPELINE_FRAME=frame_0045 latency_ms=21.972
+PIPELINE_FRAME=frame_0046 latency_ms=22.325
+PIPELINE_FRAME=frame_0047 latency_ms=24.432
+PIPELINE_FRAME=frame_0048 latency_ms=22.534
+PIPELINE_FRAME=frame_0049 latency_ms=22.888
+PIPELINE_FRAME=frame_0050 latency_ms=23.389
+PIPELINE_RESULT inflight=2 fps=66.54891944519497 wall_ms=751.327 latency_p50_ms=22.576 latency_p95_ms=27.748 includes=upload_graph_readback_synchronization_pool_scheduling_guards excludes=disk_io_input_preparation warmup_per_context=3
+PIPELINE_THROUGHPUT_PASS
+CHILD_EXIT=0
+[21016.628276] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21017.753376] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21018.881976] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21020.007876] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21021.138120] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21022.259695] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21023.380489] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21024.510004] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21025.635349] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21026.761239] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21027.885956] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21029.011305] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21030.366101] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21031.492870] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21032.622463] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21033.743676] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21034.868078] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21035.992632] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21037.117120] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21038.246960] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21039.372319] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21040.500981] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21041.625542] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+GPU_ERRORS=23
+NEW_GPU_ERRORS=0
+BOARD_DIAGNOSTIC_PASS
+STREAM_CASE runtime=dirty scene=temple inflight=2
+[21016.628276] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21017.753376] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21018.881976] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21020.007876] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21021.138120] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21022.259695] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21023.380489] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21024.510004] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21025.635349] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21026.761239] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21027.885956] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21029.011305] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21030.366101] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21031.492870] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21032.622463] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21033.743676] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21034.868078] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21035.992632] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21037.117120] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21038.246960] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21039.372319] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21040.500981] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21041.625542] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+DIAGNOSTIC_BASELINE_GPU_ERRORS=23
+BOOT_ID=6f672cb9-e70d-433c-8894-7231f93bf6b7
+GOVERNOR=simple_ondemand
+GPU_MAX=921600000
+GPU_MIN=76800000
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+PIPELINE_DEVICE=vulkan://GPU-2b01de10000000000000000100000000 inflight=2 frames=50
+PIPELINE_HEARTBEAT count=379 p95_us=2418 max_us=10779
+PIPELINE_FRAME=frame_0001 latency_ms=69.001
+PIPELINE_FRAME=frame_0002 latency_ms=23.837
+PIPELINE_FRAME=frame_0003 latency_ms=23.747
+PIPELINE_FRAME=frame_0004 latency_ms=21.999
+PIPELINE_FRAME=frame_0005 latency_ms=23.827
+PIPELINE_FRAME=frame_0006 latency_ms=24.185
+PIPELINE_FRAME=frame_0007 latency_ms=24.21
+PIPELINE_FRAME=frame_0008 latency_ms=22.762
+PIPELINE_FRAME=frame_0009 latency_ms=25.394
+PIPELINE_FRAME=frame_0010 latency_ms=23.696
+PIPELINE_FRAME=frame_0011 latency_ms=19.908
+PIPELINE_FRAME=frame_0012 latency_ms=22.159
+PIPELINE_FRAME=frame_0013 latency_ms=21.846
+PIPELINE_FRAME=frame_0014 latency_ms=23.504
+PIPELINE_FRAME=frame_0015 latency_ms=23.523
+PIPELINE_FRAME=frame_0016 latency_ms=22.343
+PIPELINE_FRAME=frame_0017 latency_ms=23.951
+PIPELINE_FRAME=frame_0018 latency_ms=23.847
+PIPELINE_FRAME=frame_0019 latency_ms=23.731
+PIPELINE_FRAME=frame_0020 latency_ms=24.251
+PIPELINE_FRAME=frame_0021 latency_ms=24.89
+PIPELINE_FRAME=frame_0022 latency_ms=24.04
+PIPELINE_FRAME=frame_0023 latency_ms=25.253
+PIPELINE_FRAME=frame_0024 latency_ms=24.384
+PIPELINE_FRAME=frame_0025 latency_ms=22.646
+PIPELINE_FRAME=frame_0026 latency_ms=69.168
+PIPELINE_FRAME=frame_0027 latency_ms=23.976
+PIPELINE_FRAME=frame_0028 latency_ms=24.532
+PIPELINE_FRAME=frame_0029 latency_ms=21.749
+PIPELINE_FRAME=frame_0030 latency_ms=23.479
+PIPELINE_FRAME=frame_0031 latency_ms=24.172
+PIPELINE_FRAME=frame_0032 latency_ms=23.611
+PIPELINE_FRAME=frame_0033 latency_ms=23.323
+PIPELINE_FRAME=frame_0034 latency_ms=24.861
+PIPELINE_FRAME=frame_0035 latency_ms=22.309
+PIPELINE_FRAME=frame_0036 latency_ms=21.367
+PIPELINE_FRAME=frame_0037 latency_ms=20.456
+PIPELINE_FRAME=frame_0038 latency_ms=22.149
+PIPELINE_FRAME=frame_0039 latency_ms=24.422
+PIPELINE_FRAME=frame_0040 latency_ms=22.438
+PIPELINE_FRAME=frame_0041 latency_ms=23.409
+PIPELINE_FRAME=frame_0042 latency_ms=23.385
+PIPELINE_FRAME=frame_0043 latency_ms=23.711
+PIPELINE_FRAME=frame_0044 latency_ms=23.562
+PIPELINE_FRAME=frame_0045 latency_ms=24.011
+PIPELINE_FRAME=frame_0046 latency_ms=25.446
+PIPELINE_FRAME=frame_0047 latency_ms=24.229
+PIPELINE_FRAME=frame_0048 latency_ms=24.688
+PIPELINE_FRAME=frame_0049 latency_ms=24.976
+PIPELINE_FRAME=frame_0050 latency_ms=24.411
+PIPELINE_RESULT inflight=2 fps=64.22896340875954 wall_ms=778.465 latency_p50_ms=23.747 latency_p95_ms=25.446 includes=upload_graph_readback_synchronization_pool_scheduling_guards excludes=disk_io_input_preparation warmup_per_context=3
+PIPELINE_THROUGHPUT_PASS
+CHILD_EXIT=0
+[21016.628276] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21017.753376] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21018.881976] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21020.007876] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21021.138120] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21022.259695] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21023.380489] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21024.510004] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21025.635349] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21026.761239] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21027.885956] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21029.011305] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21030.366101] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21031.492870] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21032.622463] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21033.743676] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21034.868078] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21035.992632] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21037.117120] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21038.246960] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21039.372319] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21040.500981] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+[21041.625542] nouveau 57000000.gpu: iree-benchmark-[4904]: nv50cal_space: -110
+GPU_ERRORS=23
+NEW_GPU_ERRORS=0
+BOARD_DIAGNOSTIC_PASS
+PIPELINE_DIAGNOSTIC_FINISHED
+:ok

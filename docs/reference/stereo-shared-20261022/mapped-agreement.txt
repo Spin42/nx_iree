@@ -1,0 +1,2 @@
+BYTE_IDENTICAL mapped-board-alley frames=50
+BYTE_IDENTICAL mapped-board-temple frames=50

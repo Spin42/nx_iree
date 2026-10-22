@@ -1,0 +1,2 @@
+AGREEMENT frames=50 identical_validity_masks=true max_absolute_difference=3.814697265625e-6 byte_identical=false left=/var/home/marc/.cache/stereo-bench/census-three-alley_1-host right=/var/home/marc/.cache/stereo-bench/census-three-alley-board
+AGREEMENT frames=50 identical_validity_masks=true max_absolute_difference=1.9073486328125e-6 byte_identical=false left=/var/home/marc/.cache/stereo-bench/census-three-temple_2-host right=/var/home/marc/.cache/stereo-bench/census-three-temple-board

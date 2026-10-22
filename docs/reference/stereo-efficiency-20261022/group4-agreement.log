@@ -1,0 +1,3 @@
+group4-alley-host PASS 50 frames; max disparity difference 0.0 ; rejection masks exact
+group4-alley-board PASS 50 frames; max disparity difference 3.814697265625e-06 ; rejection masks exact
+group4-normal-alley-board PASS 50 frames; max disparity difference 3.814697265625e-06 ; rejection masks exact

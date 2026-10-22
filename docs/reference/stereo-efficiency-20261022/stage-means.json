@@ -1,0 +1,26 @@
+{
+  "group4-alley-board": {
+    "cost": 19.46726,
+    "paths": 85.71366,
+    "select": 15.0803,
+    "upload": 3.3742,
+    "consistency": 1.4897,
+    "readback": 1.94308
+  },
+  "group4-normal-alley-board": {
+    "cost": 19.37114,
+    "paths": 86.0881,
+    "select": 14.55508,
+    "upload": 3.42788,
+    "consistency": 1.53956,
+    "readback": 1.81136
+  },
+  "group1-final-alley-host": {
+    "cost": 0.35358,
+    "paths": 4.35614,
+    "select": 0.27122,
+    "upload": 0.56846,
+    "consistency": 0.08044,
+    "readback": 0.16046
+  }
+}

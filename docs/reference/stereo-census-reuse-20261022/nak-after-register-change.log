@@ -1,0 +1,18 @@
+Instruction count: 64
+Spills to mem: 0
+Num GPRs: 24
+SLM size: 0
+Instruction count: 27
+Spills to mem: 0
+Num GPRs: 24
+SLM size: 0
+CENSUS_SHADER=paths
+Instruction count: 3565
+Spills to mem: 0
+Num GPRs: 48
+SLM size: 0
+CENSUS_SHADER=select
+Instruction count: 916
+Spills to mem: 0
+Num GPRs: 32
+SLM size: 0

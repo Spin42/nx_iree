@@ -1,0 +1,55 @@
+{
+  "frames": 50,
+  "fps": 5.900425597698362,
+  "p50_ms": 169.374,
+  "p95_ms": 174.941,
+  "p99_ms": 176.371,
+  "vulkan_visible": {
+    "evaluated_pixels": 1886631.0,
+    "coverage_percent": 97.36927888919455,
+    "mae_accepted_px": 0.29469848089933487,
+    "bad1_accepted_percent": 1.4926518740619892,
+    "bad3_accepted_percent": 0.477136895556285,
+    "bad1_or_invalid_percent": 4.084105476905659,
+    "bad3_or_invalid_percent": 3.0953058653228958
+  },
+  "vulkan_visible_in_range": {
+    "evaluated_pixels": 1886631.0,
+    "coverage_percent": 97.36927888919455,
+    "mae_accepted_px": 0.29469848089933487,
+    "bad1_accepted_percent": 1.4926518740619892,
+    "bad3_accepted_percent": 0.477136895556285,
+    "bad1_or_invalid_percent": 4.084105476905659,
+    "bad3_or_invalid_percent": 3.0953058653228958
+  },
+  "opencv_visible": {
+    "evaluated_pixels": 1886631.0,
+    "coverage_percent": 80.95006389696766,
+    "mae_accepted_px": 0.4121201961454782,
+    "bad1_accepted_percent": 2.815163934157877,
+    "bad3_accepted_percent": 1.2200527884161445,
+    "bad1_or_invalid_percent": 21.328813106537527,
+    "bad3_or_invalid_percent": 20.03756961483194
+  },
+  "common_roi_vulkan": {
+    "evaluated_pixels": 1547446.0,
+    "coverage_percent": 97.34097344915429,
+    "mae_accepted_px": 0.30656558292851327,
+    "bad1_accepted_percent": 1.6539876877034374,
+    "bad3_accepted_percent": 0.5261903513180318,
+    "bad1_or_invalid_percent": 4.2690342667853995,
+    "bad3_or_invalid_percent": 3.171225361014213
+  },
+  "common_roi_opencv": {
+    "evaluated_pixels": 1547446.0,
+    "coverage_percent": 98.69352468519095,
+    "mae_accepted_px": 0.4121201961454782,
+    "bad1_accepted_percent": 2.815163934157877,
+    "bad3_accepted_percent": 1.2200527884161445,
+    "bad1_or_invalid_percent": 4.084859827095744,
+    "bad3_or_invalid_percent": 2.510588414716895
+  },
+  "visible_gt_outside_search_percent": 0.0,
+  "max_visible_gt_disparity_px": 42.63671875,
+  "evaluation": "resized clean pass; non-occluded, in-frame GT; pixel-weighted; not official benchmark score"
+}

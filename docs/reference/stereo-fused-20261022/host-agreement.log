@@ -1,0 +1,2 @@
+HOST_RADV_MAPPABLE_AGREEMENT 50/50 byte-identical to prior host unfused/fused graph
+CROSS_DEVICE_MAX_ABS_ERROR_PX=3.814697265625e-6 tolerance_px=0.00001; small subpixel floating-rounding differences prevent byte equality

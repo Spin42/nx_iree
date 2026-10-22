@@ -1,0 +1,13 @@
+EXPORTED cost_left 10737 bytes
+EXPORTED cost_right 10737 bytes
+EXPORTED select 15188 bytes
+EXPORTED consistent 8754 bytes
+EXPORTED path0 21121 bytes
+EXPORTED path1 21653 bytes
+EXPORTED path2 21621 bytes
+EXPORTED path3 21653 bytes
+EXPORTED path4 21605 bytes
+EXPORTED path5 21637 bytes
+EXPORTED path6 21637 bytes
+EXPORTED path7 21653 bytes
+WROTE /tmp/video-packed-pixels4-fixture.bin

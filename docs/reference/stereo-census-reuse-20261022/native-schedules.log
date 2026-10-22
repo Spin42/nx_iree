@@ -1,0 +1,58 @@
+BOOT_ID=6f672cb9-e70d-433c-8894-7231f93bf6b7
+GOVERNOR=simple_ondemand
+GPU_MAX=921600000
+GPU_MIN=76800000
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+CENSUS_DEVICE=vulkan://GPU-2b01de10000000000000000100000000 shape={17, 73} parameters=%{block: 8, paths: 8, disparities: 64, p1: 10, p2: 120, uniqueness: 1.1, selector: "rolling", schedule: "cached"}
+CENSUS_ORACLE_PASS frame_0001
+CENSUS_ORACLE_PASS frame_0002
+CENSUS_ORACLE_PASS frame_0003
+CENSUS_ORACLE_PASS frame_0004
+CENSUS_FRAME=frame_0001 total_ms=5.885 phases_ms=%{:upload => 0.949, :readback => 0.488, "census" => 0.678, "filter" => 0.794, "paths" => 0.953, "select" => 1.09, "sum" => 0.836}
+CENSUS_FRAME=frame_0002 total_ms=6.732 phases_ms=%{:upload => 1.374, :readback => 0.526, "census" => 0.863, "filter" => 0.771, "paths" => 1.159, "select" => 1.108, "sum" => 0.828}
+CENSUS_FRAME=frame_0003 total_ms=5.731 phases_ms=%{:upload => 0.807, :readback => 0.313, "census" => 0.717, "filter" => 0.745, "paths" => 1.137, "select" => 1.003, "sum" => 0.912}
+CENSUS_FRAME=frame_0004 total_ms=5.97 phases_ms=%{:upload => 0.701, :readback => 0.318, "census" => 1.018, "filter" => 0.787, "paths" => 1.174, "select" => 1.015, "sum" => 0.854}
+CENSUS_RESULT fps=164.48721111933548 p50_ms=5.885 p95_ms=6.732 includes=upload_census_paths_selection_median_consistency_readback excludes=decode_disk_io warmup=3
+CENSUS_STEREO_PASS
+CHILD_EXIT=0
+GPU_ERRORS=0
+BOARD_STEREO_PASS
+NATIVE_SCHEDULE=specialized
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+2026-10-22T11:22:35+00:00
+Running /root/nxiree/iree-benchmark-module
+Run on (4 X 1555.5 MHz CPU s)
+Load Average: 0.08, 0.02, 0.01
+***WARNING*** CPU scaling is enabled, the benchmark real time measurements may be noisy and will incur extra overhead.
+***WARNING*** ASLR is enabled, the results may have unreproducible noise in them.
+------------------------------------------------------------------------------------------------
+Benchmark                                      Time             CPU   Iterations UserCounters...
+------------------------------------------------------------------------------------------------
+BM_main/process_time/real_time              29.1 ms        0.778 ms            7 items_per_second=34.3333/s
+BM_main/process_time/real_time              30.0 ms         1.53 ms            7 items_per_second=33.3873/s
+BM_main/process_time/real_time              30.0 ms         1.54 ms            7 items_per_second=33.3886/s
+BM_main/process_time/real_time_mean         29.7 ms         1.28 ms            3 items_per_second=33.7031/s
+BM_main/process_time/real_time_median       30.0 ms         1.53 ms            3 items_per_second=33.3886/s
+BM_main/process_time/real_time_stddev      0.476 ms        0.437 ms            3 items_per_second=0.545812/s
+BM_main/process_time/real_time_cv           1.60 %         34.10 %             3 items_per_second=1.62%
+
+NATIVE_SCHEDULE=cached
+:okWARNING: NVK is not a conformant Vulkan implementation, testing use only.
+2026-10-22T11:22:36+00:00
+Running /root/nxiree/iree-benchmark-module
+Run on (4 X 1555.5 MHz CPU s)
+Load Average: 0.08, 0.02, 0.01
+***WARNING*** CPU scaling is enabled, the benchmark real time measurements may be noisy and will incur extra overhead.
+***WARNING*** ASLR is enabled, the results may have unreproducible noise in them.
+------------------------------------------------------------------------------------------------
+Benchmark                                      Time             CPU   Iterations UserCounters...
+------------------------------------------------------------------------------------------------
+BM_main/process_time/real_time              18.1 ms         1.08 ms           12 items_per_second=55.2256/s
+BM_main/process_time/real_time              18.5 ms         1.51 ms           12 items_per_second=54.0493/s
+BM_main/process_time/real_time              18.2 ms         1.53 ms           12 items_per_second=54.8558/s
+BM_main/process_time/real_time_mean         18.3 ms         1.37 ms            3 items_per_second=54.7102/s
+BM_main/process_time/real_time_median       18.2 ms         1.51 ms            3 items_per_second=54.8558/s
+BM_main/process_time/real_time_stddev      0.202 ms        0.256 ms            3 items_per_second=0.601504/s
+BM_main/process_time/real_time_cv           1.10 %         18.67 %             3 items_per_second=1.10%
+

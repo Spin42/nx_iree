@@ -1,0 +1,42 @@
+Running ExUnit with seed: 719942, max_cases: 32
+
+........     warning: incompatible types given to System.cmd/3:
+
+         System.cmd(nil, ["--target-env", "vulkan1.1", binary_path], stderr_to_stdout: true)
+
+     given types:
+
+         (
+           -nil-,
+           dynamic(
+             non_empty_list(binary() or empty_list() or non_empty_list(term(), term())) and
+               not non_empty_list(binary())
+           ) or non_empty_list(binary()),
+           non_empty_list({:stderr_to_stdout, true})
+         )
+
+     but expected one of:
+
+         (
+           binary(),
+           empty_list() or non_empty_list(term(), term()),
+           empty_list() or non_empty_list(term(), term())
+         )
+
+     where "binary_path" was given the type:
+
+         # type: dynamic(binary() or empty_list() or non_empty_list(term(), term()))
+         # from: test/nx_iree/vulkan_test.exs:222:12
+         File.write!(binary_path, spirv)
+
+     type warning found at:
+     │
+ 225 │         System.cmd(@spirv_val, ["--target-env", "vulkan1.1", binary_path], stderr_to_stdout: true)
+     │                ~
+     │
+     └─ test/nx_iree/vulkan_test.exs:225:16: NxIREE.VulkanTest."test embedded shader fixtures validate and their GLSL sources regenerate"/1
+
+...............................................*.................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................
+Finished in 190.9 seconds (0.8s async, 190.1s sync)
+
+Result: 808 passed (744 doctests, 64 tests), 1 skipped

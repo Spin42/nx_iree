@@ -1,0 +1,22 @@
+[==========] Running 7 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 7 tests from BufferViewUtilTest
+[ RUN      ] BufferViewUtilTest.ComputeElementCount
+[       OK ] BufferViewUtilTest.ComputeElementCount (0 ms)
+[ RUN      ] BufferViewUtilTest.ComputePackedByteCount
+[       OK ] BufferViewUtilTest.ComputePackedByteCount (0 ms)
+[ RUN      ] BufferViewUtilTest.ComputeViewSizeRejectsElementCountOverflow
+[       OK ] BufferViewUtilTest.ComputeViewSizeRejectsElementCountOverflow (0 ms)
+[ RUN      ] BufferViewUtilTest.ComputeViewSizeChecksPackedByteCount
+[       OK ] BufferViewUtilTest.ComputeViewSizeChecksPackedByteCount (0 ms)
+[ RUN      ] BufferViewUtilTest.ComputeViewSizeAllowsZeroDimensions
+[       OK ] BufferViewUtilTest.ComputeViewSizeAllowsZeroDimensions (0 ms)
+[ RUN      ] BufferViewUtilTest.CreateAndReshapeValidateShapes
+[       OK ] BufferViewUtilTest.CreateAndReshapeValidateShapes (0 ms)
+[ RUN      ] BufferViewUtilTest.GenerateBufferUsesLogicalViewSizeForGenerator
+[       OK ] BufferViewUtilTest.GenerateBufferUsesLogicalViewSizeForGenerator (0 ms)
+[----------] 7 tests from BufferViewUtilTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 7 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 7 tests.

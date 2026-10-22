@@ -1,0 +1,12 @@
+VIDEO_DEVICE=vulkan://GPU-00000000030000000000000000000000 shape={13, 37} disparities=33 frames=3
+VIDEO_INTERMEDIATES_PASS frame_0001
+VIDEO_INTERMEDIATES_PASS frame_0002
+VIDEO_INTERMEDIATES_PASS frame_0003
+VIDEO_ORACLE_PASS frame_0001
+VIDEO_FRAME=frame_0001 total_ms=3.128 phases_ms=%{left: %{select: 0.079, paths: 0.753, cost: 0.11}, right: %{select: 0.082, paths: 1.588, cost: 0.072}, upload: 0.224, readback: 0.133, consistency: 0.078}
+VIDEO_ORACLE_PASS frame_0002
+VIDEO_FRAME=frame_0002 total_ms=2.458 phases_ms=%{left: %{select: 0.076, paths: 0.731, cost: 0.104}, right: %{select: 0.083, paths: 0.747, cost: 0.076}, upload: 0.422, readback: 0.125, consistency: 0.085}
+VIDEO_ORACLE_PASS frame_0003
+VIDEO_FRAME=frame_0003 total_ms=2.252 phases_ms=%{left: %{select: 0.082, paths: 0.725, cost: 0.102}, right: %{select: 0.083, paths: 0.755, cost: 0.081}, upload: 0.212, readback: 0.125, consistency: 0.08}
+VIDEO_RESULT fps=382.7507017096198 p50_ms=2.458 p95_ms=3.128 p99_ms=3.128 includes=upload_cost_16paths_select_consistency_readback excludes=decode_disk_io_validation warmup=3
+STEREO_PATH_PASS

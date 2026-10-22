@@ -1,0 +1,5 @@
+group4-normal-alley-board frames=50 mean_ms=%{select: 14.55508, cost: 19.37114, paths: 86.0881, upload: 3.42788, consistency: 1.53956, readback: 1.81136}
+packed-alley-board frames=50 mean_ms=%{select: 16.35754, cost: 14.84358, paths: 66.45002, upload: 3.4455, consistency: 1.48124, readback: 1.83492}
+packed-pixels4-board frames=50 mean_ms=%{select: 14.66276, cost: 14.748, paths: 65.05048, upload: 3.49938, consistency: 1.39584, readback: 1.76102}
+fused-alley-board frames=50 mean_ms=%{select: 18.98854, cost: 14.9725, paths: 57.55624, upload: 3.5945, consistency: 1.6561, readback: 1.77096}
+fused-group1-320-host frames=50 mean_ms=%{select: 0.531, cost: 0.31848, paths: 2.95196, upload: 0.54984, consistency: 0.08792, readback: 0.16184}

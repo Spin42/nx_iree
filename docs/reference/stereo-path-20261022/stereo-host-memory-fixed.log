@@ -1,0 +1,37 @@
+==> nx_iree
+Cloned IREE into /var/home/marc/.cache/nx_iree/iree-v3.13.0
+rm -rf cache/iree-runtime
+mkdir -p cache/
+cp -r /var/home/marc/Projects/nx_iree/iree-runtime/host/install cache/iree-runtime
+g++ -fPIC -I/var/home/marc/.asdf/installs/erlang/29.1.1/erts-17.1/include -Icache/iree-runtime/include -Wall -std=c++17 -w -O3 -o cache/objs/nx_iree.o -c c_src/nx_iree.cc
+g++ -shared -o /var/home/marc/Projects/nx_iree/cache/libnx_iree.so cache/objs/nx_iree.o -Lcache/iree-runtime -lnx_iree_runtime -shared -Wl,-rpath,'$ORIGIN/iree-runtime'
+DEVICE=vulkan://GPU-00000000030000000000000000000000
+MEM copy start vram_bytes=439222272 gtt_bytes=151515136 process={:memory, 22216}
+POOL 0 reserved=76940032 committed=805306368 slabs=12 live=9 acquire=490 release=481 reuse_miss=0
+POOL 1 reserved=0 committed=67108864 slabs=1 live=0 acquire=2 release=2 reuse_miss=0
+CALL copy 1 ms=31.551
+MEM copy call1 vram_bytes=1117024256 gtt_bytes=151515136 process={:memory, 14312}
+POOL 0 reserved=76940032 committed=872415232 slabs=13 live=9 acquire=972 release=963 reuse_miss=0
+POOL 1 reserved=0 committed=67108864 slabs=1 live=0 acquire=3 release=3 reuse_miss=0
+CALL copy 2 ms=27.636
+MEM copy call2 vram_bytes=1184165888 gtt_bytes=151515136 process={:memory, 25224}
+POOL 0 reserved=76940032 committed=872415232 slabs=13 live=9 acquire=1454 release=1445 reuse_miss=0
+POOL 1 reserved=0 committed=67108864 slabs=1 live=0 acquire=4 release=4 reuse_miss=0
+CALL copy 3 ms=26.477
+MEM copy call3 vram_bytes=1184198656 gtt_bytes=151515136 process={:memory, 25224}
+MEM copy afterGC vram_bytes=1184198656 gtt_bytes=151515136 process={:memory, 14312}
+MEM transfer start vram_bytes=1184198656 gtt_bytes=151515136 process={:memory, 14472}
+POOL 0 reserved=76940032 committed=872415232 slabs=13 live=9 acquire=1936 release=1927 reuse_miss=0
+POOL 1 reserved=0 committed=67108864 slabs=1 live=0 acquire=5 release=5 reuse_miss=0
+CALL transfer 1 ms=27.613
+MEM transfer call1 vram_bytes=1184231424 gtt_bytes=151515136 process={:memory, 14312}
+POOL 0 reserved=76940032 committed=872415232 slabs=13 live=9 acquire=2418 release=2409 reuse_miss=0
+POOL 1 reserved=0 committed=67108864 slabs=1 live=0 acquire=6 release=6 reuse_miss=0
+CALL transfer 2 ms=27.648
+MEM transfer call2 vram_bytes=1184264192 gtt_bytes=151515136 process={:memory, 42904}
+POOL 0 reserved=76940032 committed=872415232 slabs=13 live=9 acquire=2900 release=2891 reuse_miss=0
+POOL 1 reserved=0 committed=67108864 slabs=1 live=0 acquire=7 release=7 reuse_miss=0
+CALL transfer 3 ms=26.422
+MEM transfer call3 vram_bytes=1184296960 gtt_bytes=151515136 process={:memory, 35000}
+MEM transfer afterGC vram_bytes=1184296960 gtt_bytes=151515136 process={:memory, 14312}
+STEREO_PATH_PASS

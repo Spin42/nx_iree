@@ -1,0 +1,41 @@
+BOOT_ID=6f672cb9-e70d-433c-8894-7231f93bf6b7
+GOVERNOR=simple_ondemand
+GPU_MAX=921600000
+GPU_MIN=76800000
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+CENSUS_DEVICE=vulkan://GPU-2b01de10000000000000000100000000 shape={17, 137} parameters=%{block: 8, paths: 8, disparities: 128, p1: 10, p2: 120, uniqueness: 1.1, selector: "rolling"}
+CENSUS_ORACLE_PASS frame_0001
+CENSUS_ORACLE_PASS frame_0002
+CENSUS_ORACLE_PASS frame_0003
+CENSUS_ORACLE_PASS frame_0004
+CENSUS_FRAME=frame_0001 total_ms=19.872 phases_ms=%{:upload => 1.366, :readback => 0.533, "census" => 1.114, "filter" => 4.424, "paths" => 6.571, "select" => 4.285, "sum" => 1.496}
+CENSUS_FRAME=frame_0002 total_ms=8.585 phases_ms=%{:upload => 1.36, :readback => 0.455, "census" => 1.123, "filter" => 0.555, "paths" => 2.178, "select" => 1.675, "sum" => 1.141}
+CENSUS_FRAME=frame_0003 total_ms=8.537 phases_ms=%{:upload => 1.102, :readback => 0.323, "census" => 1.119, "filter" => 0.757, "paths" => 2.259, "select" => 1.673, "sum" => 1.205}
+CENSUS_FRAME=frame_0004 total_ms=8.304 phases_ms=%{:upload => 0.878, :readback => 0.321, "census" => 1.139, "filter" => 0.785, "paths" => 2.256, "select" => 1.722, "sum" => 1.107}
+CENSUS_RESULT fps=88.30411938716941 p50_ms=8.537 p95_ms=19.872 includes=upload_census_paths_selection_median_consistency_readback excludes=decode_disk_io warmup=3
+CENSUS_STEREO_PASS
+CHILD_EXIT=0
+GPU_ERRORS=0
+BOARD_STEREO_PASS
+BOOT_ID=6f672cb9-e70d-433c-8894-7231f93bf6b7
+GOVERNOR=simple_ondemand
+GPU_MAX=921600000
+GPU_MIN=76800000
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+CENSUS_DEVICE=vulkan://GPU-2b01de10000000000000000100000000 shape={17, 73} parameters=%{block: 8, paths: 4, disparities: 64, p1: 10, p2: 120, uniqueness: 1.1, selector: "rolling"}
+CENSUS_ORACLE_PASS frame_0001
+CENSUS_ORACLE_PASS frame_0002
+CENSUS_ORACLE_PASS frame_0003
+CENSUS_ORACLE_PASS frame_0004
+CENSUS_FRAME=frame_0001 total_ms=14.1 phases_ms=%{:upload => 1.399, :readback => 0.446, "census" => 1.512, "filter" => 0.749, "paths" => 4.702, "select" => 3.883, "sum" => 1.332}
+CENSUS_FRAME=frame_0002 total_ms=6.05 phases_ms=%{:upload => 1.268, :readback => 0.425, "census" => 0.845, "filter" => 0.724, "paths" => 1.009, "select" => 0.972, "sum" => 0.726}
+CENSUS_FRAME=frame_0003 total_ms=4.873 phases_ms=%{:upload => 0.768, :readback => 0.217, "census" => 0.911, "filter" => 0.476, "paths" => 1.099, "select" => 0.793, "sum" => 0.539}
+CENSUS_FRAME=frame_0004 total_ms=4.79 phases_ms=%{:upload => 0.683, :readback => 0.21, "census" => 0.779, "filter" => 0.65, "paths" => 0.985, "select" => 0.836, "sum" => 0.578}
+CENSUS_RESULT fps=134.16965753194916 p50_ms=4.873 p95_ms=14.1 includes=upload_census_paths_selection_median_consistency_readback excludes=decode_disk_io warmup=3
+CENSUS_STEREO_PASS
+CHILD_EXIT=0
+GPU_ERRORS=0
+BOARD_STEREO_PASS
+:ok

@@ -1,0 +1,4 @@
+[sudo] password for marc: EXEC @main
+CHILD_EXIT=0
+NEW_GPU_ERRORS=0
+L4T_VULKAN_PROBE_PASS

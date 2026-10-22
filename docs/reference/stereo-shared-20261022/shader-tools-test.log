@@ -1,0 +1,8 @@
+Running ExUnit with seed: 448072, max_cases: 32
+Excluding tags: [:test]
+Including tags: [location: {"test/nx_iree/vulkan_test.exs", 214}]
+
+.
+Finished in 0.2 seconds (0.00s async, 0.2s sync)
+
+Result: 1 passed, 9 excluded

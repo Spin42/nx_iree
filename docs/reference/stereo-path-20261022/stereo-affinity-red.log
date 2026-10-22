@@ -1,0 +1,52 @@
+compiler/src/iree/compiler/Dialect/Stream/Transforms/test/elide_async_copies_scf.mlir:15:12: error: CHECK: expected string not found in input
+ // CHECK: stream.async.fill on(#hal.device.promise<@dev_a>) %{{.+}}, %[[ITER]]
+           ^
+<stdin>:7:60: note: scanning from here
+ %1 = scf.for %arg2 = %c0 to %arg1 step %c1 iter_args(%arg3 = %0) -> (!stream.resource<*>) {
+                                                           ^
+<stdin>:7:60: note: with "ITER" equal to "arg3"
+ %1 = scf.for %arg2 = %c0 to %arg1 step %c1 iter_args(%arg3 = %0) -> (!stream.resource<*>) {
+                                                           ^
+<stdin>:9:7: note: possible intended match here
+ %3 = stream.async.fill on(#hal.device.promise<@dev_a>) %c123_i32, %2[%c0 to %arg0 for %arg0] : i32 -> %2 as !stream.resource<*>{%arg0}
+      ^
+
+Input file: <stdin>
+Check file: compiler/src/iree/compiler/Dialect/Stream/Transforms/test/elide_async_copies_scf.mlir
+
+-dump-input=help explains the following input dump.
+
+Input was:
+<<<<<<
+            1: module { 
+            2:  util.func public @scf_for_inferred_same_device_transfer(%arg0: index, %arg1: index) -> !stream.resource<*> { 
+            3:  %c0 = arith.constant 0 : index 
+            4:  %c1 = arith.constant 1 : index 
+            5:  %c123_i32 = arith.constant 123 : i32 
+            6:  %0 = stream.async.splat on(#hal.device.promise<@dev_a>) %c123_i32 : i32 -> !stream.resource<*>{%arg0} 
+            7:  %1 = scf.for %arg2 = %c0 to %arg1 step %c1 iter_args(%arg3 = %0) -> (!stream.resource<*>) { 
+check:15'0                                                               {                                    search range start (exclusive)
+check:15'1                                                                                                    error: no match found in search range
+check:15'2                                                                                                    with "ITER" equal to "arg3"
+            8:  %2 = stream.async.transfer %arg3 : !stream.resource<*>{%arg0} -> to(#hal.device.promise<@dev_a>) !stream.resource<*>{%arg0} 
+            9:  %3 = stream.async.fill on(#hal.device.promise<@dev_a>) %c123_i32, %2[%c0 to %arg0 for %arg0] : i32 -> %2 as !stream.resource<*>{%arg0} 
+check:15'3           ?                                                                                                                                   possible intended match
+           10:  scf.yield %3 : !stream.resource<*> 
+           11:  } 
+           12:  util.return %1 : !stream.resource<*> 
+           13:  } 
+           14: } 
+           15:  
+           16: // ----- 
+           17: module { 
+           18:  util.func public @scf_for_mixed_device_transfer(%arg0: index, %arg1: index) -> !stream.resource<*> { 
+check:15'4                                                     }                                                       search range end (exclusive)
+           19:  %c0 = arith.constant 0 : index 
+           20:  %c1 = arith.constant 1 : index 
+           21:  %c123_i32 = arith.constant 123 : i32 
+           22:  %0 = stream.async.splat on(#hal.device.promise<@dev_b>) %c123_i32 : i32 -> !stream.resource<*>{%arg0} 
+           23:  %1 = scf.for %arg2 = %c0 to %arg1 step %c1 iter_args(%arg3 = %0) -> (!stream.resource<*>) { 
+            .
+            .
+            .
+>>>>>>

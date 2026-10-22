@@ -1,0 +1,14 @@
+SEQUENCE=alley_1 frames=50
+census=2.5371 ms
+filter=1.9563600000000005 ms
+paths=16.294120000000003 ms
+readback=1.64524 ms
+select=9.603679999999999 ms
+upload=3.42512 ms
+SEQUENCE=temple_2 frames=50
+census=2.52406 ms
+filter=1.7304999999999995 ms
+paths=16.1857 ms
+readback=1.4413799999999997 ms
+select=9.191720000000002 ms
+upload=3.2111400000000003 ms

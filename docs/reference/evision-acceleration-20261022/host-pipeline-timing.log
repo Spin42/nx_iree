@@ -1,0 +1,8 @@
+EVISION_UMAT_DEVICE=AMD Radeon RX 7800 XT (RADV NAVI32) cpu_threads=4
+EVISION_UMAT_CHECK stage=gray max_abs=0 changed_pixels=0
+EVISION_UMAT_CHECK stage=resize max_abs=0 changed_pixels=0
+EVISION_UMAT_CHECK stage=median max_abs=0 changed_pixels=0
+EVISION_UMAT_CHECK stage=remap max_abs=0 changed_pixels=0
+EVISION_UMAT_RESULT mode=cpu frames=1000 mean_ms=0.11905799999999986 p50_ms=0.118 p95_ms=0.132 includes=mat_creation_upload_standard_calls_final_readback_binary_copy excludes=map_creation_decode_startup_compile warmup=3
+EVISION_UMAT_RESULT mode=gpu frames=1000 mean_ms=0.46817499999999945 p50_ms=0.395 p95_ms=1.044 includes=mat_creation_upload_standard_calls_final_readback_binary_copy excludes=map_creation_decode_startup_compile warmup=3
+EVISION_UMAT_NUMERICAL_PASS dispatch_evidence=required_separately

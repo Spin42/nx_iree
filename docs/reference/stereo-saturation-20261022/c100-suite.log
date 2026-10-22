@@ -1,0 +1,10 @@
+cp -r /var/home/marc/Projects/nx_iree/iree-runtime/host/install cache/iree-runtime
+g++ -fPIC -I/var/home/marc/.asdf/installs/erlang/29.0.2/erts-17.0.2/include -Icache/iree-runtime/include -Wall -std=c++17 -w -O3 -o cache/objs/nx_iree.o -c c_src/nx_iree.cc
+g++ -shared -o /var/home/marc/Projects/nx_iree/cache/libnx_iree.so cache/objs/nx_iree.o -Lcache/iree-runtime -lnx_iree_runtime -shared -Wl,-rpath,'$ORIGIN/iree-runtime'
+==> c100_gpu
+Running ExUnit with seed: 708313, max_cases: 32
+Excluding tags: [hardware: true]
+
+...
+Finished in 0.3 seconds (0.3s async, 0.00s sync)
+4 tests, 0 failures, 1 excluded

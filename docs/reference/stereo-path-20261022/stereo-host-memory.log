@@ -1,0 +1,23 @@
+==> nx_iree
+Cloned IREE into /var/home/marc/.cache/nx_iree/iree-v3.13.0
+DEVICE=vulkan://GPU-00000000030000000000000000000000
+MEM copy start vram_bytes=439353344 gtt_bytes=151515136 process={:memory, 22216}
+CALL copy 1 ms=33.619
+MEM copy call1 vram_bytes=2123792384 gtt_bytes=151515136 process={:memory, 14312}
+CALL copy 2 ms=28.967
+MEM copy call2 vram_bytes=3868663808 gtt_bytes=151515136 process={:memory, 25224}
+CALL copy 3 ms=33.844
+MEM copy call3 vram_bytes=5009551360 gtt_bytes=151515136 process={:memory, 25224}
+MEM copy afterGC vram_bytes=5009551360 gtt_bytes=151515136 process={:memory, 14312}
+MEM transfer start vram_bytes=5009551360 gtt_bytes=151515136 process={:memory, 14472}
+CALL transfer 1 ms=42.382
+MEM transfer call1 vram_bytes=5613568000 gtt_bytes=151515136 process={:memory, 14312}
+CALL transfer 2 ms=44.925
+MEM transfer call2 vram_bytes=6284689408 gtt_bytes=151515136 process={:memory, 42904}
+** (RuntimeError) memory headroom guard
+    /tmp/stereo-host-memory.exs:13: anonymous fn/1 in :elixir_compiler_5.__FILE__/1
+    /tmp/stereo-host-memory.exs:25: anonymous fn/7 in :elixir_compiler_5.__FILE__/1
+    (elixir 1.20.4) lib/enum.ex:4659: Enum.reduce_range/5
+    /tmp/stereo-host-memory.exs:17: anonymous fn/6 in :elixir_compiler_5.__FILE__/1
+    (elixir 1.20.4) lib/enum.ex:2622: Enum."-reduce/3-lists^foldl/2-0-"/3
+    /tmp/stereo-host-memory.exs:15: (file)

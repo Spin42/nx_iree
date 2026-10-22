@@ -1,0 +1,5 @@
+SCRIPT_SHA256=40215f4427b6915cfff27a7e6701b9f75b1770c5932361989fba8c29e5d775a1
+BOOT_ID=6f672cb9-e70d-433c-8894-7231f93bf6b7
+GOVERNOR=simple_ondemand
+%{"nerves_fw_active" => "b", "nerves_fw_validated" => "1"}
+:ok

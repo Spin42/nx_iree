@@ -1,0 +1,140 @@
+ELIXIR_CASE=control
+BOOT_ID=a1415b28-a332-4bfe-9652-7069b9fc2819
+GOVERNOR=simple_ondemand
+GPU_MAX=921600000
+GPU_MIN=76800000
+CHILD_PID=1000
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+PIPELINE_DEVICE=vulkan://GPU-2b01de10000000000000000100000000 inflight=4 frames=200 repeats=4
+PIPELINE_CPU_TICKS=624 source=linux_proc_self_stat_user_plus_system
+PIPELINE_HEARTBEAT count=3303 p95_us=2242 max_us=18631
+PIPELINE_FRAME=frame_0037 latency_ms=122.558 occurrences=4
+PIPELINE_FRAME=frame_0026 latency_ms=130.765 occurrences=4
+PIPELINE_FRAME=frame_0006 latency_ms=126.985 occurrences=4
+PIPELINE_FRAME=frame_0043 latency_ms=119.981 occurrences=4
+PIPELINE_FRAME=frame_0049 latency_ms=120.172 occurrences=4
+PIPELINE_FRAME=frame_0029 latency_ms=120.946 occurrences=4
+PIPELINE_FRAME=frame_0011 latency_ms=132.039 occurrences=4
+PIPELINE_FRAME=frame_0047 latency_ms=119.851 occurrences=4
+PIPELINE_FRAME=frame_0042 latency_ms=120.426 occurrences=4
+PIPELINE_FRAME=frame_0036 latency_ms=111.857 occurrences=4
+PIPELINE_FRAME=frame_0033 latency_ms=120.925 occurrences=4
+PIPELINE_FRAME=frame_0025 latency_ms=115.111 occurrences=4
+PIPELINE_FRAME=frame_0004 latency_ms=133.187 occurrences=4
+PIPELINE_FRAME=frame_0041 latency_ms=120.574 occurrences=4
+PIPELINE_FRAME=frame_0039 latency_ms=120.76 occurrences=4
+PIPELINE_FRAME=frame_0027 latency_ms=124.172 occurrences=4
+PIPELINE_FRAME=frame_0046 latency_ms=120.328 occurrences=4
+PIPELINE_FRAME=frame_0014 latency_ms=61.017 occurrences=4
+PIPELINE_FRAME=frame_0017 latency_ms=119.674 occurrences=4
+PIPELINE_FRAME=frame_0038 latency_ms=120.609 occurrences=4
+PIPELINE_FRAME=frame_0010 latency_ms=124.179 occurrences=4
+PIPELINE_FRAME=frame_0012 latency_ms=124.005 occurrences=4
+PIPELINE_FRAME=frame_0034 latency_ms=121.598 occurrences=4
+PIPELINE_FRAME=frame_0005 latency_ms=128.38 occurrences=4
+PIPELINE_FRAME=frame_0032 latency_ms=120.891 occurrences=4
+PIPELINE_FRAME=frame_0023 latency_ms=121.327 occurrences=4
+PIPELINE_FRAME=frame_0016 latency_ms=122.703 occurrences=4
+PIPELINE_FRAME=frame_0031 latency_ms=121.498 occurrences=4
+PIPELINE_FRAME=frame_0024 latency_ms=121.619 occurrences=4
+PIPELINE_FRAME=frame_0048 latency_ms=114.907 occurrences=4
+PIPELINE_FRAME=frame_0030 latency_ms=119.871 occurrences=4
+PIPELINE_FRAME=frame_0008 latency_ms=129.231 occurrences=4
+PIPELINE_FRAME=frame_0035 latency_ms=120.878 occurrences=4
+PIPELINE_FRAME=frame_0028 latency_ms=119.733 occurrences=4
+PIPELINE_FRAME=frame_0050 latency_ms=121.297 occurrences=4
+PIPELINE_FRAME=frame_0003 latency_ms=111.977 occurrences=4
+PIPELINE_FRAME=frame_0018 latency_ms=125.707 occurrences=4
+PIPELINE_FRAME=frame_0022 latency_ms=122.766 occurrences=4
+PIPELINE_FRAME=frame_0019 latency_ms=118.243 occurrences=4
+PIPELINE_FRAME=frame_0013 latency_ms=134.864 occurrences=4
+PIPELINE_FRAME=frame_0045 latency_ms=120.777 occurrences=4
+PIPELINE_FRAME=frame_0015 latency_ms=123.032 occurrences=4
+PIPELINE_FRAME=frame_0021 latency_ms=121.899 occurrences=4
+PIPELINE_FRAME=frame_0009 latency_ms=128.115 occurrences=4
+PIPELINE_FRAME=frame_0001 latency_ms=298.684 occurrences=4
+PIPELINE_FRAME=frame_0040 latency_ms=119.233 occurrences=4
+PIPELINE_FRAME=frame_0007 latency_ms=128.799 occurrences=4
+PIPELINE_FRAME=frame_0044 latency_ms=120.763 occurrences=4
+PIPELINE_FRAME=frame_0020 latency_ms=128.538 occurrences=4
+PIPELINE_FRAME=frame_0002 latency_ms=139.044 occurrences=4
+PIPELINE_REPEAT_OUTPUTS_PASS frames=200 unique=50
+PIPELINE_RESULT inflight=4 fps=29.851205175243738 wall_ms=6699.897 latency_p50_ms=120.875 latency_p95_ms=139.044 includes=upload_graph_readback_synchronization_pool_scheduling_guards excludes=disk_io_input_preparation warmup_per_context=3
+PIPELINE_THROUGHPUT_PASS
+CHILD_EXIT=0
+GPU_ERRORS=0
+NEW_GPU_ERRORS=0
+BOARD_STEREO_PASS
+REFERENCE_MAPS_PASS variant=control frames=50 pixels=15360000
+ELIXIR_CASE=loads
+BOOT_ID=a1415b28-a332-4bfe-9652-7069b9fc2819
+GOVERNOR=simple_ondemand
+GPU_MAX=921600000
+GPU_MIN=76800000
+CHILD_PID=1099
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+WARNING: NVK is not a conformant Vulkan implementation, testing use only.
+PIPELINE_DEVICE=vulkan://GPU-2b01de10000000000000000100000000 inflight=4 frames=200 repeats=4
+PIPELINE_CPU_TICKS=749 source=linux_proc_self_stat_user_plus_system
+PIPELINE_HEARTBEAT count=3180 p95_us=2348 max_us=17807
+PIPELINE_FRAME=frame_0037 latency_ms=118.235 occurrences=4
+PIPELINE_FRAME=frame_0026 latency_ms=117.17 occurrences=4
+PIPELINE_FRAME=frame_0006 latency_ms=127.953 occurrences=4
+PIPELINE_FRAME=frame_0043 latency_ms=117.599 occurrences=4
+PIPELINE_FRAME=frame_0049 latency_ms=116.876 occurrences=4
+PIPELINE_FRAME=frame_0029 latency_ms=115.035 occurrences=4
+PIPELINE_FRAME=frame_0011 latency_ms=142.063 occurrences=4
+PIPELINE_FRAME=frame_0047 latency_ms=118.348 occurrences=4
+PIPELINE_FRAME=frame_0042 latency_ms=117.979 occurrences=4
+PIPELINE_FRAME=frame_0036 latency_ms=117.164 occurrences=4
+PIPELINE_FRAME=frame_0033 latency_ms=118.745 occurrences=4
+PIPELINE_FRAME=frame_0025 latency_ms=117.042 occurrences=4
+PIPELINE_FRAME=frame_0004 latency_ms=124.28 occurrences=4
+PIPELINE_FRAME=frame_0041 latency_ms=118.117 occurrences=4
+PIPELINE_FRAME=frame_0039 latency_ms=116.788 occurrences=4
+PIPELINE_FRAME=frame_0027 latency_ms=116.808 occurrences=4
+PIPELINE_FRAME=frame_0046 latency_ms=116.38 occurrences=4
+PIPELINE_FRAME=frame_0014 latency_ms=93.755 occurrences=4
+PIPELINE_FRAME=frame_0017 latency_ms=116.91 occurrences=4
+PIPELINE_FRAME=frame_0038 latency_ms=114.537 occurrences=4
+PIPELINE_FRAME=frame_0010 latency_ms=121.75 occurrences=4
+PIPELINE_FRAME=frame_0012 latency_ms=128.389 occurrences=4
+PIPELINE_FRAME=frame_0034 latency_ms=115.824 occurrences=4
+PIPELINE_FRAME=frame_0005 latency_ms=121.241 occurrences=4
+PIPELINE_FRAME=frame_0032 latency_ms=121.107 occurrences=4
+PIPELINE_FRAME=frame_0023 latency_ms=115.061 occurrences=4
+PIPELINE_FRAME=frame_0016 latency_ms=116.812 occurrences=4
+PIPELINE_FRAME=frame_0031 latency_ms=110.945 occurrences=4
+PIPELINE_FRAME=frame_0024 latency_ms=117.545 occurrences=4
+PIPELINE_FRAME=frame_0048 latency_ms=116.038 occurrences=4
+PIPELINE_FRAME=frame_0030 latency_ms=126.207 occurrences=4
+PIPELINE_FRAME=frame_0008 latency_ms=127.346 occurrences=4
+PIPELINE_FRAME=frame_0035 latency_ms=116.626 occurrences=4
+PIPELINE_FRAME=frame_0028 latency_ms=116.206 occurrences=4
+PIPELINE_FRAME=frame_0050 latency_ms=116.41 occurrences=4
+PIPELINE_FRAME=frame_0003 latency_ms=126.964 occurrences=4
+PIPELINE_FRAME=frame_0018 latency_ms=116.386 occurrences=4
+PIPELINE_FRAME=frame_0022 latency_ms=116.57 occurrences=4
+PIPELINE_FRAME=frame_0019 latency_ms=116.967 occurrences=4
+PIPELINE_FRAME=frame_0013 latency_ms=122.847 occurrences=4
+PIPELINE_FRAME=frame_0045 latency_ms=113.021 occurrences=4
+PIPELINE_FRAME=frame_0015 latency_ms=119.161 occurrences=4
+PIPELINE_FRAME=frame_0021 latency_ms=117.001 occurrences=4
+PIPELINE_FRAME=frame_0009 latency_ms=125.068 occurrences=4
+PIPELINE_FRAME=frame_0001 latency_ms=224.572 occurrences=4
+PIPELINE_FRAME=frame_0040 latency_ms=117.471 occurrences=4
+PIPELINE_FRAME=frame_0007 latency_ms=122.959 occurrences=4
+PIPELINE_FRAME=frame_0044 latency_ms=117.158 occurrences=4
+PIPELINE_FRAME=frame_0020 latency_ms=104.319 occurrences=4
+PIPELINE_FRAME=frame_0002 latency_ms=122.919 occurrences=4
+PIPELINE_REPEAT_OUTPUTS_PASS frames=200 unique=50
+PIPELINE_RESULT inflight=4 fps=31.040028755482638 wall_ms=6443.293 latency_p50_ms=117.606 latency_p95_ms=131.104 includes=upload_graph_readback_synchronization_pool_scheduling_guards excludes=disk_io_input_preparation warmup_per_context=3
+PIPELINE_THROUGHPUT_PASS
+CHILD_EXIT=0
+GPU_ERRORS=0
+NEW_GPU_ERRORS=0
+BOARD_STEREO_PASS
+REFERENCE_MAPS_PASS variant=loads frames=50 pixels=15360000
+ELIXIR_COMPARISON_PASS
+:ok

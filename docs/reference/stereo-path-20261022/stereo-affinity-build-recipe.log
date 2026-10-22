@@ -1,0 +1,120 @@
+Already applied 0001-reuse-all-free-tlsf-slabs.patch
+Already applied 0002-elide-proven-same-device-transfers.patch
+CMake Warning at CMakeLists.txt:19 (message):
+  Unsetting cache value for CMAKE_CXX_STANDARD
+
+
+-- Could not find nvcc, please set CUDAToolkit_ROOT.
+-- IREE HAL drivers:
+--   - local-sync
+--   - local-task
+-- IREE HAL local executable library loaders:
+--   - embedded-elf
+--   - vmvx-module
+-- IREE HAL local executable plugin mechanisms:
+-- IREE compiler input dialects:
+--   - StableHLO
+-- IREE compiler output formats:
+--   - 'vm-c': textual C source module
+--   - 'vm-bytecode': VM bytecode
+--   - 'vm-asm': VM MLIR assembly
+-- Found Python3: /usr/bin/python3 (found version "3.12.3") found components: Interpreter 
+-- Adding bundled LLVM source dependency
+-- IREE compiler target backends:
+--   - llvm-cpu
+--   - vulkan-spirv
+--   - vmvx
+-- Configuring third_party/llvm-project
+CMake Warning at third_party/llvm-project/llvm/CMakeLists.txt:4 (message):
+  Your CMake version is 3.28.3.  Starting with LLVM 24, the minimum version
+  of CMake required to build LLVM will become 3.31.0, and using an older
+  CMake will become an error.  Please upgrade your CMake to at least 3.31.0
+  now to avoid issues in the future.
+
+
+--   bolt project is disabled
+--   clang project is enabled
+--   clang-tools-extra project is disabled
+--   cross-project-tests project is disabled
+--   lld project is enabled
+--   lldb project is disabled
+--   mlir project is enabled
+--   polly project is disabled
+--   flang project is disabled
+--   libc project is disabled
+--   compiler-rt project is disabled
+--   Doxygen disabled.
+--   Found Python3: /usr/bin/python3 (found suitable version "3.12.3", minimum required is "3.0") found components: Interpreter 
+--   LLVM host triple: x86_64-unknown-linux-gnu
+--   Native target architecture is X86
+--   Threads enabled.
+--   Ninja version: 1.11.1
+--   Could NOT find OCaml (missing: OCAMLFIND OCAML_VERSION OCAML_STDLIB_PATH) 
+--   OCaml bindings disabled.
+--   LLVM default target triple: 
+--   Building with -fPIC
+--   Precompiled headers enabled.
+--   Targeting X86
+--   Targeting AArch64
+--   Not building UnicodeCharSetsGenerator because libxml2 is not available
+CMake Warning at third_party/llvm-project/lld/CMakeLists.txt:3 (message):
+  Your CMake version is 3.28.3.  Starting with LLVM 24, the minimum version
+  of CMake required to build LLVM will become 3.31.0, and using an older
+  CMake will become an error.  Please upgrade your CMake to at least 3.31.0
+  now to avoid issues in the future.
+
+
+--   LLD version: 24.0.0
+CMake Warning at third_party/llvm-project/mlir/CMakeLists.txt:4 (message):
+  Your CMake version is 3.28.3.  Starting with LLVM 24, the minimum version
+  of CMake required to build LLVM will become 3.31.0, and using an older
+  CMake will become an error.  Please upgrade your CMake to at least 3.31.0
+  now to avoid issues in the future.
+
+
+--   Searching for ocloc
+--   ocloc not found
+--   ocloc not found, MLIRXeVMTarget will not be able to use ocloc for native binary compilation.
+CMake Warning at third_party/llvm-project/clang/CMakeLists.txt:3 (message):
+  Your CMake version is 3.28.3.  Starting with LLVM 24, the minimum version
+  of CMake required to build LLVM will become 3.31.0, and using an older
+  CMake will become an error.  Please upgrade your CMake to at least 3.31.0
+  now to avoid issues in the future.
+
+
+--   Clang version: 24.0.0git
+--   Not building llvm-mt because libxml2 is not available
+-- Configuring third_party/stablehlo
+--   Adding LLVM external project stablehlo -> /var/home/marc/.cache/nx_iree/iree-v3.13.0/third_party/stablehlo
+CMake Deprecation Warning at third_party/stablehlo/CMakeLists.txt:34 (cmake_policy):
+  The OLD behavior for policy CMP0116 will be removed from a future version
+  of CMake.
+
+  The cmake-policies(7) manual explains that the OLD behaviors of all
+  policies are deprecated and that a policy should be set to OLD only under
+  specific short-term circumstances.  Projects should be ported to the NEW
+  behavior and not rely on setting a policy to OLD.
+
+
+--   Building StableHLO as an external LLVM project
+CMake Warning at third_party/stablehlo/stablehlo/integrations/cpp/builder/CMakeLists.txt:145 (message):
+  gtest not found, unittests will not be available
+
+
+-- Configuring IREE compiler plugins
+-- Registering static linked compiler plugin 'input_stablehlo' (iree::compiler::plugins::input::StableHLO::registration)
+-- Registering static linked compiler plugin 'hal_target_llvm_cpu' (iree::compiler::plugins::target::LLVMCPU::LLVMCPU)
+-- Registering static linked compiler plugin 'hal_target_local' (iree::compiler::plugins::target::Local::Local)
+-- Registering static linked compiler plugin 'hal_target_vmvx' (iree::compiler::plugins::target::VMVX::VMVX)
+-- Registering static linked compiler plugin 'hal_target_vulkan_spirv' (iree::compiler::plugins::target::VulkanSPIRV::VulkanSPIRV)
+-- Dynamically loaded compiler plugins disabled (IREE_EXPERIMENTAL_COMPILER_DYNAMIC_PLUGINS=OFF)
+-- Configuring IREE runtime plugins
+-- Runtime tracing disabled
+-- iree_allocator_system() using `IREE_ALLOCATOR_LIBC_*`
+-- IREE task topology: using sysfs (Linux)
+-- Configuring done (3.2s)
+-- Generating done (3.5s)
+-- Build files have been written to: /var/home/marc/Projects/nx_iree/iree-compiler-build
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+Select this compiler with NX_IREE_COMPILER_DIR=/var/home/marc/Projects/nx_iree/iree-compiler-build/tools

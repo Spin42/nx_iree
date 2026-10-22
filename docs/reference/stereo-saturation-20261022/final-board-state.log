@@ -1,0 +1,18 @@
+TIMED_OUT_PID_PRESENT=false
+BOOT_ID=6f672cb9-e70d-433c-8894-7231f93bf6b7
+%{"nerves_fw_active" => "b", "nerves_fw_validated" => "1"}
+{"C100_GPU_COMMAND_FILE", nil}
+{"C100_GPU_TIMEOUT_MS", nil}
+{"C100_GPU_DIAGNOSTIC", nil}
+{"STEREO_RUNTIME_ROOT", nil}
+{"STEREO_SCRIPT", nil}
+{"STEREO_SUCCESS_MARKER", nil}
+{"VIDEO_DATA", nil}
+{"VIDEO_OUTPUT", nil}
+{"VIDEO_CONCURRENCY", nil}
+{"ERL_CRASH_DUMP", "/root/erl_crash.dump"}
+governor=simple_ondemand
+min_freq=76800000
+max_freq=921600000
+GPU_ERRORS=23
+:ok

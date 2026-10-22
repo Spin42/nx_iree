@@ -1,0 +1,16 @@
+governor=simple_ondemand
+min_freq=76800000
+max_freq=921600000
+cur_freq=76800000
+BOOT_ID=6f672cb9-e70d-433c-8894-7231f93bf6b7
+FIRMWARE: %{"nerves_fw_active" => "b", "nerves_fw_validated" => "1"}
+{"STEREO_RUNTIME_ROOT", nil}
+{"STEREO_BUNDLE", nil}
+{"STEREO_SCRIPT", nil}
+{"VIDEO_DATA", nil}
+{"VIDEO_OUTPUT", nil}
+{"STEREO_SUCCESS_MARKER", nil}
+{"ERL_CRASH_DUMP", "/root/erl_crash.dump"}
+{"EVISION_RUNTIME_ROOT", nil}
+GPU_ERRORS: []
+:ok

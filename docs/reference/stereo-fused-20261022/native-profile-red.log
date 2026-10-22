@@ -1,0 +1,29 @@
+Note: Google Test filter = LocalProfileRecorderTest.ConcurrentMetadataWritesSerializeSinkCallbacks
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from LocalProfileRecorderTest
+[ RUN      ] LocalProfileRecorderTest.ConcurrentMetadataWritesSerializeSinkCallbacks
+iree-v3.13.0/runtime/src/iree/hal/local/profile_test.cc:897: Failure
+Expected equality of these values:
+  0
+  sink_.probe_overlap_count.load()
+    Which is: 63
+Concurrent sink callbacks for application/vnd.iree.hal.profile.executables
+
+iree-v3.13.0/runtime/src/iree/hal/local/profile_test.cc:897: Failure
+Expected equality of these values:
+  0
+  sink_.probe_overlap_count.load()
+    Which is: 63
+Concurrent sink callbacks for application/vnd.iree.hal.profile.executable-functions
+
+[  FAILED  ] LocalProfileRecorderTest.ConcurrentMetadataWritesSerializeSinkCallbacks (3 ms)
+[----------] 1 test from LocalProfileRecorderTest (3 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (3 ms total)
+[  PASSED  ] 0 tests.
+[  FAILED  ] 1 test, listed below:
+[  FAILED  ] LocalProfileRecorderTest.ConcurrentMetadataWritesSerializeSinkCallbacks
+
+ 1 FAILED TEST
