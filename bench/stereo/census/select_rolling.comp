@@ -1,0 +1,127 @@
+#version 450
+#extension GL_KHR_shader_subgroup_basic : require
+#extension GL_KHR_shader_subgroup_shuffle : require
+// Copyright 2016 Fixstars Corporation
+// SPDX-License-Identifier: Apache-2.0
+// Vulkan adaptation of libSGM's winner_takes_all_kernel rolling right minimum.
+layout(local_size_x = 128) in;
+layout(set = 0, binding = 0) readonly buffer Costs { uint costs[]; };
+layout(set = 0, binding = 1) writeonly buffer Left { float left_disparity[]; };
+layout(set = 0, binding = 2) writeonly buffer Right { float right_disparity[]; };
+#define CHUNKS (DISPARITIES / 32)
+#ifndef FUSE_SUM
+#define FUSE_SUM 0
+#endif
+#if FUSE_SUM
+// Upstream winner_takes_all_kernel accumulates 16 costs per lane into a
+// shared tile before reducing each pixel. Keep paired u16 scores in u32.
+#define INTERVAL (16 / CHUNKS)
+shared uint sums[4 * INTERVAL * (DISPARITIES / 2)];
+void accumulate(int x0, int y, int lane, int row) {
+  int x = x0 + lane * 16 / DISPARITIES;
+  if (x >= WIDTH || y >= HEIGHT) return;
+  int first = lane * 16 % DISPARITIES;
+  uint values[8];
+  for (int i = 0; i < 8; ++i) values[i] = 0;
+  for (int p = 0; p < PATHS; ++p) {
+    int offset = ((p * HEIGHT + y) * WIDTH + x) * (DISPARITIES / 4) + first / 4;
+    for (int i = 0; i < 4; ++i) {
+      uint word = costs[offset + i];
+      values[i * 2] += (word & 255u) | (((word >> 8) & 255u) << 16);
+      values[i * 2 + 1] += ((word >> 16) & 255u) | ((word >> 24) << 16);
+    }
+  }
+  int output_offset = (row * INTERVAL + x % INTERVAL) * (DISPARITIES / 2) + first / 2;
+  for (int i = 0; i < 8; ++i) sums[output_offset + i] = values[i];
+}
+#else
+#define INTERVAL 1
+#endif
+uint group_min(uint value) {
+  for (uint span = 16; span > 0; span /= 2) value = min(value, subgroupShuffleXor(value, span));
+  return value;
+}
+uint score(int pixel, int d) {
+#if FUSE_SUM
+  int x = pixel % WIDTH, row = (pixel / WIDTH) % 4;
+  return (sums[(row * INTERVAL + x % INTERVAL) * (DISPARITIES / 2) + d / 2] >> ((d % 2) * 16)) & 65535u;
+#else
+  return (costs[pixel * (DISPARITIES / 2) + d / 2] >> ((d % 2) * 16)) & 65535u;
+#endif
+}
+void main() {
+  int y = int(gl_WorkGroupID.x) * 4 + int(gl_LocalInvocationID.x) / 32;
+#if !FUSE_SUM
+  if (y >= HEIGHT) return;
+#endif
+  int lane = int(gl_SubgroupInvocationID % 32);
+  uint base = gl_SubgroupInvocationID - uint(lane);
+  uint right_best[CHUNKS];
+  for (int i = 0; i < CHUNKS; ++i) right_best[i] = 0xffffffffu;
+  for (int x0 = 0; x0 < WIDTH; x0 += INTERVAL) {
+#if FUSE_SUM
+    accumulate(x0,y,lane,int(gl_LocalInvocationID.x) / 32);
+    barrier();
+#endif
+    for (int x = x0; x < min(x0 + INTERVAL,WIDTH); ++x) {
+    if (y >= HEIGHT) continue;
+    int pixel = y * WIDTH + x;
+    uint packed[CHUNKS];
+    uint best = 0xffffffffu;
+    for (int i = 0; i < CHUNKS; ++i) {
+      int d = lane * CHUNKS + i;
+      packed[i] = (score(pixel,d) << 16) | uint(d);
+      if (d <= x) best = min(best, packed[i]);
+    }
+    best = group_min(best);
+    // A lane retains one minimum per right-pixel residue modulo D. Each
+    // arriving left column supplies one more candidate for those minima.
+    for (int i = 0; i < CHUNKS; ++i) {
+      int k = lane * CHUNKS + i;
+      int d = (x - k) & (DISPARITIES - 1);
+      int index = (CHUNKS - i + x) % CHUNKS;
+      // Constant array indices keep this tiny register selection out of
+      // per-thread local memory on compilers that lower indirect arrays.
+#if CHUNKS == 2
+      uint selected = index == 0 ? packed[0] : packed[1];
+#else
+      uint selected = index < 2 ? (index == 0 ? packed[0] : packed[1])
+                                : (index == 2 ? packed[2] : packed[3]);
+#endif
+      uint received = subgroupShuffle(selected, base + uint(d / CHUNKS));
+      right_best[i] = min(right_best[i], received);
+      if (d == DISPARITIES - 1) {
+        int rx = x - d;
+        if (rx >= 0) right_disparity[y * WIDTH + rx] = float(right_best[i] & 65535u);
+        right_best[i] = 0xffffffffu;
+      }
+    }
+    int winner = int(best & 65535u);
+    uint minimum = best >> 16;
+    uint second = 0xffffffffu;
+    for (int i = 0; i < CHUNKS; ++i) {
+      int d = lane * CHUNKS + i;
+      if (d <= x && abs(d - winner) > 1) second = min(second, packed[i] >> 16);
+    }
+    second = group_min(second);
+    if (lane == 0) {
+      float result = float(winner);
+      if (winner > 0 && winner + 1 < DISPARITIES && winner + 1 <= x) {
+        float lower = float(score(pixel,winner-1)), upper = float(score(pixel,winner+1));
+        float denominator = lower + upper - 2.0 * float(minimum);
+        if (denominator > 0.0) result += clamp((lower-upper)/(2.0*denominator), -0.5, 0.5);
+      }
+      left_disparity[pixel] = float(second) <= float(minimum) * UNIQUENESS ? -1.0 : result;
+    }
+    }
+#if FUSE_SUM
+    barrier();
+#endif
+  }
+  if (y >= HEIGHT) return;
+  for (int i = 0; i < CHUNKS; ++i) {
+    int k = lane * CHUNKS + i;
+    int rx = WIDTH - ((WIDTH - k) & (DISPARITIES - 1));
+    if (rx >= 0 && rx < WIDTH) right_disparity[y * WIDTH + rx] = float(right_best[i] & 65535u);
+  }
+}

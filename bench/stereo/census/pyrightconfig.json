@@ -1,0 +1,7 @@
+{
+  "include": ["*.py"],
+  "typeCheckingMode": "all",
+  "extraPaths": ["../video"],
+  "reportImplicitRelativeImport": false,
+  "reportAny": false
+}

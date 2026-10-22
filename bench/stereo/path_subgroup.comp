@@ -1,0 +1,81 @@
+#version 450
+#extension GL_KHR_shader_subgroup_basic : require
+#extension GL_KHR_shader_subgroup_arithmetic : require
+#extension GL_KHR_shader_subgroup_shuffle : require
+#if DISPARITIES < 1 || DISPARITIES > 128
+#error DISPARITIES must be in 1 to 128
+#endif
+layout(local_size_x = 32) in;
+layout(set = 0, binding = 0) readonly buffer Costs { int cost[]; };
+layout(set = 0, binding = 1) readonly buffer Penalty1 { int p1; };
+layout(set = 0, binding = 2) readonly buffer Penalty2 { int p2; };
+layout(set = 0, binding = 3) writeonly buffer Output { int output_cost[]; };
+#define CHUNKS ((DISPARITIES + 31) / 32)
+#ifndef FORCE_SHARED
+#define FORCE_SHARED 0
+#endif
+shared int fallback_previous[CHUNKS * 32];
+shared int fallback_minimum[32];
+void main() {
+  uint lane = gl_LocalInvocationID.x;
+  uint line = gl_WorkGroupID.x;
+  bool use_subgroup = false;
+  // Partial subgroups and lane mappings are implementation-dependent.
+  if (gl_NumSubgroups == 1 && gl_SubgroupSize >= 32 && FORCE_SHARED == 0) {
+    use_subgroup = subgroupMin(gl_SubgroupInvocationID == lane ? 1 : 0) == 1;
+  }
+  int previous[CHUNKS];
+  for (int chunk = 0; chunk < CHUNKS; ++chunk) previous[chunk] = 0;
+  for (uint step = 0; step < STEPS; ++step) {
+    int minimum = 2147483647;
+    for (int chunk = 0; chunk < CHUNKS; ++chunk) {
+      if (chunk * 32 + lane < DISPARITIES) minimum = min(minimum, previous[chunk]);
+    }
+    if (use_subgroup) {
+      minimum = subgroupMin(minimum);
+    } else {
+      fallback_minimum[lane] = minimum;
+      for (int chunk = 0; chunk < CHUNKS; ++chunk) fallback_previous[chunk * 32 + lane] = previous[chunk];
+      barrier();
+      for (uint span = 16; span > 0; span /= 2) {
+        if (lane < span) fallback_minimum[lane] = min(fallback_minimum[lane], fallback_minimum[lane + span]);
+        barrier();
+      }
+      minimum = fallback_minimum[0];
+    }
+    int next[CHUNKS];
+    for (int chunk = 0; chunk < CHUNKS; ++chunk) {
+      uint d = chunk * 32 + lane;
+      int lower;
+      int upper;
+      if (use_subgroup) {
+        lower = subgroupShuffle(previous[chunk], (lane + 31) % 32);
+        upper = subgroupShuffle(previous[chunk], (lane + 1) % 32);
+        if (chunk > 0) {
+          int cross_lower = subgroupShuffle(previous[chunk - 1], 31);
+          if (lane == 0) lower = cross_lower;
+        }
+        if (chunk + 1 < CHUNKS) {
+          int cross_upper = subgroupShuffle(previous[chunk + 1], 0);
+          if (lane == 31) upper = cross_upper;
+        }
+      } else {
+        lower = d > 0 ? fallback_previous[d - 1] : 1000000000;
+        upper = d + 1 < DISPARITIES ? fallback_previous[d + 1] : 1000000000;
+      }
+      // Invalid neighbors cost p2; larger normalized candidates cannot win.
+      lower = d > 0 ? min(lower - minimum, p2) : p2;
+      upper = d + 1 < DISPARITIES ? min(upper - minimum, p2) : p2;
+      next[chunk] = 0;
+      if (d < DISPARITIES) {
+        uint index = (step * LINES + line) * DISPARITIES + d;
+        int prior = min(previous[chunk] - minimum, p2);
+        int transition = min(min(prior, lower + p1), min(upper + p1, p2));
+        next[chunk] = cost[index] + transition;
+        output_cost[index] = next[chunk];
+      }
+    }
+    if (!use_subgroup) barrier();
+    for (int chunk = 0; chunk < CHUNKS; ++chunk) previous[chunk] = next[chunk];
+  }
+}

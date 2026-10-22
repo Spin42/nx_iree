@@ -1,0 +1,7 @@
+{
+  "include": ["*.py"],
+  "typeCheckingMode": "all",
+  "extraPaths": ["."],
+  "reportImplicitRelativeImport": false,
+  "reportAny": false
+}

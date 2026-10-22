@@ -1,0 +1,6 @@
+{
+  "include": ["quality.py"],
+  "typeCheckingMode": "all",
+  "extraPaths": ["../video"],
+  "reportAny": false
+}

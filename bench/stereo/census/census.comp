@@ -1,0 +1,65 @@
+#version 450
+// Copyright 2016 Fixstars Corporation
+// SPDX-License-Identifier: Apache-2.0
+// Vulkan adaptation of libSGM's symmetric_census_kernel (9x7, 31 bits).
+layout(local_size_x = 128) in;
+layout(set = 0, binding = 0) readonly buffer Left { int left_image[]; };
+layout(set = 0, binding = 1) readonly buffer Right { int right_image[]; };
+#if CLASSIC_CENSUS
+#define FEATURE_TYPE uvec2
+#else
+#define FEATURE_TYPE uint
+#endif
+layout(set = 0, binding = 2) writeonly buffer LeftFeatures { FEATURE_TYPE left_features[]; };
+layout(set = 0, binding = 3) writeonly buffer RightFeatures { FEATURE_TYPE right_features[]; };
+shared ivec2 rows[8][128];
+ivec2 load_pair(int x, int y) {
+  int pixel = clamp(y, 0, HEIGHT - 1) * WIDTH + clamp(x, 0, WIDTH - 1);
+  return ivec2(left_image[pixel], right_image[pixel]);
+}
+void main() {
+  int tid = int(gl_LocalInvocationID.x);
+  int x = int(gl_WorkGroupID.x) * 120 - 4 + tid;
+  int y0 = int(gl_WorkGroupID.y) * 16;
+  for (int i = 0; i < 7; ++i) rows[i][tid] = load_pair(x, y0 - 3 + i);
+  barrier();
+  for (int i = 0; i < 16; ++i) {
+    // The eighth row is outside this iteration's window; prepare the next one.
+    if (i + 1 < 16) rows[(7 + i) % 8][tid] = load_pair(x, y0 + 4 + i);
+    int y = y0 + i;
+    if (tid >= 4 && tid < 124 && x >= 0 && x < WIDTH && y < HEIGHT) {
+      int center = (3 + i) % 8;
+      uvec2 feature = uvec2(0);
+#if CLASSIC_CENSUS
+      uvec2 upper = uvec2(0);
+      ivec2 a = rows[center][tid];
+      for (int dy = -3; dy <= 3; ++dy) {
+        for (int dx = -4; dx <= 4; ++dx) {
+          if (dx != 0 && dy != 0) {
+            ivec2 b = rows[(center + dy + 8) % 8][tid + dx];
+            upper = (upper << 1) | (feature >> 31);
+            feature = (feature << 1) | uvec2(greaterThan(a,b));
+          }
+        }
+      }
+      left_features[y * WIDTH + x] = uvec2(feature.x,upper.x);
+      right_features[y * WIDTH + x] = uvec2(feature.y,upper.y);
+#else
+      for (int dy = -3; dy < 0; ++dy) {
+        for (int dx = -4; dx <= 4; ++dx) {
+          ivec2 a = rows[(center + dy + 8) % 8][tid + dx];
+          ivec2 b = rows[(center - dy + 8) % 8][tid - dx];
+          feature = (feature << 1) | uvec2(greaterThan(a,b));
+        }
+      }
+      for (int dx = -4; dx < 0; ++dx) {
+        ivec2 a = rows[center][tid + dx], b = rows[center][tid - dx];
+        feature = (feature << 1) | uvec2(greaterThan(a,b));
+      }
+      left_features[y * WIDTH + x] = feature.x;
+      right_features[y * WIDTH + x] = feature.y;
+#endif
+    }
+    barrier();
+  }
+}

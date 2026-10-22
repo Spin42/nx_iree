@@ -1,0 +1,245 @@
+#version 450
+#extension GL_KHR_shader_subgroup_basic : require
+#extension GL_KHR_shader_subgroup_shuffle : require
+#extension GL_KHR_shader_subgroup_shuffle_relative : require
+#extension GL_GOOGLE_include_directive : require
+// Copyright 2016 Fixstars Corporation
+// SPDX-License-Identifier: Apache-2.0
+// Vulkan adaptation of libSGM's DynamicProgramming and directional scans.
+layout(local_size_x = 128) in;
+#if CLASSIC_CENSUS
+#define FEATURE_TYPE uvec2
+#else
+#define FEATURE_TYPE uint
+#endif
+layout(set = 0, binding = 0) readonly buffer Left { FEATURE_TYPE left_features[]; };
+layout(set = 0, binding = 1) readonly buffer Right { FEATURE_TYPE right_features[]; };
+#ifndef BLOCK
+#define BLOCK 8
+#endif
+#if BLOCK >= 8
+#define PATH_WORD_TYPE uvec2
+#define PATH_PACK 8
+#else
+#define PATH_WORD_TYPE uint
+#define PATH_PACK 4
+#endif
+#if FUSE_VERTICAL
+layout(set = 0, binding = 2) readonly buffer Paths { PATH_WORD_TYPE paths[]; };
+layout(set = 0, binding = 3) writeonly buffer LeftDisparity { float left_disparity[]; };
+layout(set = 0, binding = 4) writeonly buffer Winners { uint winners[]; };
+#else
+layout(set = 0, binding = 2) writeonly buffer Paths { PATH_WORD_TYPE paths[]; };
+#endif
+#define LANES (DISPARITIES / BLOCK)
+#define LINES (128 / LANES)
+const ivec2 directions[8] = ivec2[8](ivec2(1,0), ivec2(-1,0), ivec2(0,1), ivec2(0,-1),
+                                   ivec2(1,1), ivec2(-1,1), ivec2(1,-1), ivec2(-1,-1));
+uvec2 load_left(int pixel) {
+#if CLASSIC_CENSUS
+  return left_features[pixel];
+#else
+  return uvec2(left_features[pixel],0);
+#endif
+}
+uvec2 load_right(int x, int y) {
+  bool valid = x >= 0 && x < WIDTH;
+  // Keep speculative loads in bounds while preserving zero padding.
+  int address = y * WIDTH + clamp(x,0,WIDTH - 1);
+#if CLASSIC_CENSUS
+  return mix(uvec2(0),right_features[address],bvec2(valid));
+#else
+  return uvec2(mix(0u,right_features[address],valid),0);
+#endif
+}
+uint group_min(uint value) {
+  for (uint span = LANES / 2; span > 0; span /= 2) value = min(value, subgroupShuffleXor(value, span));
+  return value;
+}
+void update_path(uint costs[BLOCK], inout uint previous[BLOCK], inout uint last_min,
+                 uint lane, uint base) {
+  uint lower = subgroupShuffle(previous[BLOCK - 1], base + (lane + LANES - 1) % LANES);
+  uint upper = subgroupShuffle(previous[0], base + (lane + 1) % LANES);
+  uint next[BLOCK];
+  uint minimum = 255;
+  for (int k = 0; k < BLOCK; ++k) {
+    uint value = min(previous[k] - last_min, uint(P2));
+    if (k > 0) value = min(value, previous[k - 1] - last_min + P1);
+    else value = min(value, mix(uint(P2), lower - last_min + P1, lane > 0));
+    if (k + 1 < BLOCK) value = min(value, previous[k + 1] - last_min + P1);
+    else value = min(value, mix(uint(P2), upper - last_min + P1, lane + 1 < LANES));
+    next[k] = value + costs[k];
+    minimum = min(minimum, next[k]);
+  }
+  last_min = group_min(minimum);
+  for (int k = 0; k < BLOCK; ++k) previous[k] = next[k];
+}
+#if FUSE_VERTICAL
+#include "select_vertical.glsl"
+#else
+void store_path(uint values[BLOCK], int path, int x, int y, uint lane) {
+  int offset = ((path * HEIGHT + y) * WIDTH + x) * (DISPARITIES / PATH_PACK) + int(lane) * (BLOCK / PATH_PACK);
+  for (int k = 0; k < BLOCK; k += PATH_PACK) {
+    uint lo = values[k] | (values[k + 1] << 8) | (values[k + 2] << 16) | (values[k + 3] << 24);
+#if PATH_PACK == 8
+    uint hi = values[k + 4] | (values[k + 5] << 8) | (values[k + 6] << 16) | (values[k + 7] << 24);
+    paths[offset + k / PATH_PACK] = uvec2(lo,hi);
+#else
+    paths[offset + k / PATH_PACK] = lo;
+#endif
+  }
+}
+#endif
+#if !FUSE_VERTICAL
+void scan(int path, ivec2 direction) {
+  int line = int(gl_WorkGroupID.x) * LINES + int(gl_LocalInvocationID.x) / LANES;
+  int count = direction.y == 0 ? HEIGHT : (direction.x == 0 ? WIDTH : WIDTH + HEIGHT - 1);
+  if (line >= count) return;
+  uint lane = gl_SubgroupInvocationID % LANES;
+  uint base = gl_SubgroupInvocationID - lane;
+  int x = direction.x > 0 ? 0 : WIDTH - 1;
+  int y = direction.y > 0 ? 0 : HEIGHT - 1;
+  if (direction.y == 0) y = line;
+  else if (direction.x == 0) x = line;
+  else if (line < WIDTH) x = line;
+  else y += direction.y * (line - WIDTH + 1);
+  uint previous[BLOCK];
+  for (int k = 0; k < BLOCK; ++k) previous[k] = 0;
+#if CACHE_HORIZONTAL
+  // libSGM's horizontal scan rolls Census values through registers. Adjacent
+  // pixels need one new feature per disparity segment, not BLOCK reloads.
+  uvec2 right_window[BLOCK];
+  if (direction.y == 0) {
+    for (int k = 0; k < BLOCK; ++k) {
+      int rx = (direction.x > 0 ? -1 : WIDTH) - int(lane) * BLOCK - k;
+      right_window[k] = load_right(rx,y);
+    }
+  }
+#endif
+  uint last_min = 0;
+  while (x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT) {
+    uvec2 feature = load_left(y * WIDTH + x);
+#if CACHE_HORIZONTAL
+    if (direction.y == 0) {
+      if (direction.x > 0) {
+        uvec2 tail = subgroupShuffle(right_window[BLOCK - 1], base + (lane + LANES - 1) % LANES);
+        for (int k = BLOCK - 1; k > 0; --k) right_window[k] = right_window[k - 1];
+        right_window[0] = mix(tail,load_right(x,y),bvec2(lane == 0));
+      } else {
+        uvec2 head = subgroupShuffle(right_window[0], base + (lane + 1) % LANES);
+        for (int k = 0; k + 1 < BLOCK; ++k) right_window[k] = right_window[k + 1];
+        head = mix(head,load_right(x - (DISPARITIES - 1),y),bvec2(lane + 1 == LANES));
+        right_window[BLOCK - 1] = head;
+      }
+    }
+#endif
+    uint costs[BLOCK];
+    for (int k = 0; k < BLOCK; ++k) {
+      int d = int(lane) * BLOCK + k;
+      int rx = x - d;
+      uvec2 other;
+#if CACHE_HORIZONTAL
+      if (direction.y == 0) other = right_window[k];
+      else
+#endif
+      other = load_right(rx,y);
+      costs[k] = bitCount(feature.x ^ other.x) + bitCount(feature.y ^ other.y);
+    }
+    update_path(costs,previous,last_min,lane,base);
+    store_path(previous,path,x,y,lane);
+    x += direction.x;
+    y += direction.y;
+  }
+}
+#endif
+#if TILE_ROWS
+// libSGM's vertical/oblique paths share the overlapping right Census window.
+// Padding the transposed tile keeps disparity-segment loads in adjacent banks.
+#define TILE_SIZE (DISPARITIES + LINES)
+#define TILE_ROWS_COUNT ((TILE_SIZE + BLOCK - 1) / BLOCK)
+shared uvec2 right_tile[2 * BLOCK * (TILE_ROWS_COUNT + 1)];
+int tile_index(int index) { return (index % BLOCK) * (TILE_ROWS_COUNT + 1) + index / BLOCK; }
+void scan_rows(int path, int dx, int dy) {
+  int first_line = int(gl_WorkGroupID.x) * LINES;
+  int count = dx == 0 ? WIDTH : WIDTH + HEIGHT - 1;
+  if (first_line >= count) return;
+  uint lane = gl_SubgroupInvocationID % LANES;
+  uint base = gl_SubgroupInvocationID - lane;
+  int local_line = int(gl_LocalInvocationID.x) / LANES;
+  int right_base = LINES - 1 - local_line + int(lane) * BLOCK;
+  int right_column = right_base % BLOCK;
+  int right_row = right_base / BLOCK;
+  uint previous[BLOCK];
+  for (int k = 0; k < BLOCK; ++k) previous[k] = 0;
+  uint last_min = 0;
+  for (int step = 0; step < HEIGHT; ++step) {
+    int y = dy > 0 ? step : HEIGHT - 1 - step;
+    int first_x = first_line - (dx > 0 ? HEIGHT - 1 : 0) + dx * step;
+    for (int i = int(gl_LocalInvocationID.x); i < TILE_SIZE; i += 128) {
+      uvec2 feature = load_right(first_x + LINES - 1 - i,y);
+      right_tile[tile_index(i)] = feature;
+      if (i / BLOCK > 0)
+        right_tile[(i % BLOCK + BLOCK) * (TILE_ROWS_COUNT + 1) + i / BLOCK - 1] = feature;
+    }
+    barrier();
+    int x = first_x + local_line;
+    if (x >= 0 && x < WIDTH && first_line + local_line < count) {
+      uvec2 feature = load_left(y * WIDTH + x);
+      uint costs[BLOCK];
+      for (int k = 0; k < BLOCK; ++k) {
+        uvec2 other = right_tile[(right_column + k) * (TILE_ROWS_COUNT + 1) + right_row];
+        costs[k] = bitCount(feature.x ^ other.x) + bitCount(feature.y ^ other.y);
+      }
+      update_path(costs,previous,last_min,lane,base);
+#if FUSE_VERTICAL
+      select_pixel(previous,x,y,lane,base);
+#else
+      store_path(previous,path,x,y,lane);
+#endif
+    }
+    barrier();
+  }
+}
+#endif
+void main() {
+#if FUSE_VERTICAL
+  scan_rows(2,0,1);
+#else
+  int path = int(gl_WorkGroupID.y);
+#if SPECIALIZE_DIRECTIONS
+  // Constant direction parameters allow the compiler to remove generic
+  // two-dimensional scan arithmetic, as with libSGM's CUDA templates.
+  switch (path) {
+    case 0: scan(0,ivec2(1,0)); break;
+    case 1: scan(1,ivec2(-1,0)); break;
+#if PATHS >= 3
+#if TILE_ROWS
+    case 2: scan_rows(2,0,1); break;
+#if PATHS >= 4
+    case 3: scan_rows(3,0,-1); break;
+#endif
+#if PATHS == 8
+    case 4: scan_rows(4,1,1); break;
+    case 5: scan_rows(5,-1,1); break;
+    case 6: scan_rows(6,1,-1); break;
+    case 7: scan_rows(7,-1,-1); break;
+#endif
+#else
+    case 2: scan(2,ivec2(0,1)); break;
+#if PATHS >= 4
+    case 3: scan(3,ivec2(0,-1)); break;
+#endif
+#if PATHS == 8
+    case 4: scan(4,ivec2(1,1)); break;
+    case 5: scan(5,ivec2(-1,1)); break;
+    case 6: scan(6,ivec2(1,-1)); break;
+    case 7: scan(7,ivec2(-1,-1)); break;
+#endif
+#endif
+#endif
+  }
+#else
+  scan(path,directions[path]);
+#endif
+#endif
+}

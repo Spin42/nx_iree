@@ -1,0 +1,80 @@
+#version 450
+#extension GL_KHR_shader_subgroup_basic : require
+#extension GL_KHR_shader_subgroup_shuffle : require
+// Copyright 2016 Fixstars Corporation
+// SPDX-License-Identifier: Apache-2.0
+// Parallel libSGM left-winner selection, retaining cost/index for projection.
+layout(local_size_x = 128) in;
+layout(set = 0, binding = 0) readonly buffer Paths { uint paths[]; };
+layout(set = 0, binding = 1) writeonly buffer Left { float left_disparity[]; };
+layout(set = 0, binding = 2) writeonly buffer Winners { uint winners[]; };
+#define CHUNKS (DISPARITIES / SELECT_LANES)
+uint group_min(uint value) {
+  for (uint span = SELECT_LANES / 2; span > 0; span /= 2) value = min(value, subgroupShuffleXor(value, span));
+  return value;
+}
+uint score(int pixel, int d) {
+  uint total = 0;
+  for (int p = 0; p < PATHS; ++p) {
+    uint word = paths[(p * HEIGHT * WIDTH + pixel) * (DISPARITIES / 4) + d / 4];
+    total += (word >> ((d % 4) * 8)) & 255u;
+  }
+  return total;
+}
+void main() {
+  int pixel = int(gl_WorkGroupID.x) * (128 / SELECT_LANES) + int(gl_LocalInvocationID.x) / SELECT_LANES;
+  if (pixel >= WIDTH * HEIGHT) return;
+  int lane = int(gl_SubgroupInvocationID % SELECT_LANES);
+  int x = pixel % WIDTH;
+  uint values[CHUNKS];
+#if CHUNKS >= 4
+  // libSGM loads adjacent packed path costs per lane before reducing winners.
+  // Each byte is unpacked once, rather than issuing a load per candidate.
+  for (int i = 0; i < CHUNKS; ++i) values[i] = 0;
+  for (int p = 0; p < PATHS; ++p) {
+    int offset = (p * HEIGHT * WIDTH + pixel) * (DISPARITIES / 4) + lane * (CHUNKS / 4);
+    for (int i = 0; i < CHUNKS; i += 4) {
+      uint word = paths[offset + i / 4];
+      values[i] += word & 255u;
+      values[i + 1] += (word >> 8) & 255u;
+      values[i + 2] += (word >> 16) & 255u;
+      values[i + 3] += word >> 24;
+    }
+  }
+#else
+  for (int i = 0; i < CHUNKS; ++i) values[i] = score(pixel,lane + i * SELECT_LANES);
+#endif
+  uint best = 0xffffffffu;
+  for (int i = 0; i < CHUNKS; ++i) {
+#if CHUNKS >= 4
+    int d = lane * CHUNKS + i;
+#else
+    int d = lane + i * SELECT_LANES;
+#endif
+    if (d <= x) best = min(best,(values[i] << 16) | uint(d));
+  }
+  best = group_min(best);
+  int winner = int(best & 65535u);
+  uint minimum = best >> 16;
+  uint second = 0xffffffffu;
+  for (int i = 0; i < CHUNKS; ++i) {
+#if CHUNKS >= 4
+    int d = lane * CHUNKS + i;
+#else
+    int d = lane + i * SELECT_LANES;
+#endif
+    if (d <= x && abs(d - winner) > 1) second = min(second,values[i]);
+  }
+  second = group_min(second);
+  if (lane == 0) {
+    bool accepted = float(second) > float(minimum) * UNIQUENESS;
+    float result = float(winner);
+    if (winner > 0 && winner + 1 < DISPARITIES && winner + 1 <= x) {
+      float lower = float(score(pixel,winner-1)), upper = float(score(pixel,winner+1));
+      float denominator = lower + upper - 2.0 * float(minimum);
+      if (denominator > 0.0) result += clamp((lower-upper)/(2.0*denominator),-0.5,0.5);
+    }
+    left_disparity[pixel] = accepted ? result : -1.0;
+    winners[pixel] = accepted ? best : 0xffffffffu;
+  }
+}

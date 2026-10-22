@@ -1,0 +1,30 @@
+#version 450
+layout(local_size_x = 128) in;
+layout(set = 0, binding = 0) readonly buffer Left { int left_image[]; };
+layout(set = 0, binding = 1) readonly buffer Right { int right_image[]; };
+layout(set = 0, binding = 2) writeonly buffer Cost { uint cost[]; };
+#define WORDS ((DISPARITIES + 1) / 2)
+void main() {
+  uint index = gl_GlobalInvocationID.x;
+  if (index >= WIDTH * HEIGHT * WORDS) return;
+  int d = 2 * int(index % WORDS);
+  int x = int(index / WORDS) % WIDTH;
+  int y = int(index / WORDS) / WIDTH;
+  ivec2 other_x = ivec2(x + SIDE * d, x + SIDE * (d + 1));
+  ivec2 total = ivec2(0);
+  for (int dy = -1; dy <= 1; ++dy) {
+    int row = clamp(y + dy, 0, HEIGHT - 1) * WIDTH;
+    for (int dx = -1; dx <= 1; ++dx) {
+      int a = row + clamp(x + dx, 0, WIDTH - 1);
+      ivec2 b = row + clamp(other_x + dx, 0, WIDTH - 1);
+#if SIDE == -1
+      total += abs(ivec2(left_image[a]) - ivec2(right_image[b.x], right_image[b.y]));
+#else
+      total += abs(ivec2(right_image[a]) - ivec2(left_image[b.x], left_image[b.y]));
+#endif
+    }
+  }
+  uint lower = other_x.x < 0 || other_x.x >= WIDTH ? 65535u : uint(total.x);
+  uint upper = d + 1 >= DISPARITIES || other_x.y < 0 || other_x.y >= WIDTH ? 65535u : uint(total.y);
+  cost[index] = lower | (upper << 16);
+}

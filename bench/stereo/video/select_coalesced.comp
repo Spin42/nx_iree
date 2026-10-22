@@ -1,0 +1,82 @@
+#version 450
+#extension GL_KHR_shader_subgroup_basic : require
+#extension GL_KHR_shader_subgroup_arithmetic : require
+#ifndef PIXELS_PER_GROUP
+#define PIXELS_PER_GROUP 1
+#endif
+layout(local_size_x = 32 * PIXELS_PER_GROUP) in;
+#if PACKED
+layout(set = 0, binding = 0) readonly buffer Costs { uint cost[]; };
+int load_cost(uint pixel, uint d) {
+  uint word = cost[pixel * ((DISPARITIES + 1) / 2) + d / 2];
+  int value = int((word >> (16 * (d % 2))) & 65535u);
+  return value >= 32768 ? 8000000 + value - 32768 : value;
+}
+#else
+layout(set = 0, binding = 0) readonly buffer Costs { int cost[]; };
+int load_cost(uint pixel, uint d) { return cost[pixel * DISPARITIES + d]; }
+#endif
+layout(set = 0, binding = 1) writeonly buffer Disparity { float disparity[]; };
+#define CHUNKS ((DISPARITIES + 31) / 32)
+#ifndef FORCE_SHARED
+#define FORCE_SHARED 0
+#endif
+shared int scratch[32 * PIXELS_PER_GROUP];
+int reduce_minimum(int value, bool use_subgroup) {
+  if (use_subgroup) return subgroupMin(value);
+  uint lane = gl_LocalInvocationID.x % 32;
+  uint base = (gl_LocalInvocationID.x / 32) * 32;
+  scratch[base + lane] = value;
+  barrier();
+  for (uint span = 16; span > 0; span /= 2) {
+    if (lane < span) scratch[base + lane] = min(scratch[base + lane], scratch[base + lane + span]);
+    barrier();
+  }
+  int result = scratch[base];
+  barrier();
+  return result;
+}
+void main() {
+  uint lane = gl_LocalInvocationID.x % 32;
+  uint local_pixel = gl_LocalInvocationID.x / 32;
+#if PIXELS_PER_GROUP == 1
+  bool use_subgroup = gl_NumSubgroups == 1 && gl_SubgroupSize >= 32 && FORCE_SHARED == 0;
+#else
+  bool use_subgroup = gl_NumSubgroups == PIXELS_PER_GROUP && gl_SubgroupSize == 32 && FORCE_SHARED == 0;
+  if (use_subgroup) {
+    lane = gl_SubgroupInvocationID;
+    local_pixel = gl_SubgroupID;
+  }
+#endif
+  uint pixel = gl_WorkGroupID.x * PIXELS_PER_GROUP + local_pixel;
+  int values[CHUNKS];
+  int best = 2147483647;
+  for (uint chunk = 0; chunk < CHUNKS; ++chunk) {
+    uint d = chunk * 32 + lane;
+    values[chunk] = pixel < WIDTH * HEIGHT && d < DISPARITIES ? load_cost(pixel, d) : 2147483647;
+    best = min(best, values[chunk]);
+  }
+  best = reduce_minimum(best, use_subgroup);
+  int winner = DISPARITIES;
+  for (uint chunk = 0; chunk < CHUNKS; ++chunk) {
+    uint d = chunk * 32 + lane;
+    if (d < DISPARITIES && values[chunk] == best) winner = min(winner, int(d));
+  }
+  winner = reduce_minimum(winner, use_subgroup);
+  int second = 2147483647;
+  for (uint chunk = 0; chunk < CHUNKS; ++chunk) {
+    uint d = chunk * 32 + lane;
+    if (d < DISPARITIES && abs(int(d) - winner) > 1) second = min(second, values[chunk]);
+  }
+  second = reduce_minimum(second, use_subgroup);
+  if (lane == 0 && pixel < WIDTH * HEIGHT) {
+    float result = float(winner);
+    if (winner > 0 && winner + 1 < DISPARITIES) {
+      float lower = float(load_cost(pixel, winner - 1));
+      float upper = float(load_cost(pixel, winner + 1));
+      float denominator = lower + upper - 2.0 * float(best);
+      if (denominator > 0.0) result += clamp((lower - upper) / (2.0 * denominator), -0.5, 0.5);
+    }
+    disparity[pixel] = float(second) <= float(best) * 1.1 ? -1.0 : result;
+  }
+}
