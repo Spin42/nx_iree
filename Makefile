@@ -21,11 +21,18 @@ all: clone_iree install_runtime nx_iree
 endif
 
 .PHONY: clone_iree
-clone_iree: $(NX_IREE_SOURCE_DIR)
+clone_iree: $(NX_IREE_SOURCE_DIR) $(NX_IREE_SOURCE_DIR)/.nx_iree_patches_applied
 	@echo "Cloned IREE into $(NX_IREE_SOURCE_DIR)"
 
 $(NX_IREE_SOURCE_DIR):
 	./scripts/clone_iree.sh $(IREE_GIT_REV) $(NX_IREE_SOURCE_DIR)
+
+IREE_PATCH_FILES = $(wildcard patches/iree/*.patch)
+IREE_PATCH_STAMP = $(NX_IREE_SOURCE_DIR)/.nx_iree_patches_applied
+
+$(IREE_PATCH_STAMP): $(IREE_PATCH_FILES) scripts/apply_iree_patches.sh | $(NX_IREE_SOURCE_DIR)
+	bash scripts/apply_iree_patches.sh "$(NX_IREE_SOURCE_DIR)" "$(abspath patches/iree)"
+	touch "$@"
 
 # Nerves sets CROSSCOMPILE (the toolchain prefix) when building for a device.
 # Cross builds get their own build, install and cache directories so they
@@ -174,7 +181,7 @@ $(IREE_HOST_TOOLS_BIN)/iree-c-embed-data: $(NX_IREE_SOURCE_DIR)
 		-DIREE_HAL_DRIVER_DEFAULTS=OFF
 	$(HOST_ENV) cmake --build $(IREE_HOST_TOOLS_DIR) --target iree-flatcc-cli iree-c-embed-data
 
-$(IREE_INSTALL_LIB): $(NX_IREE_SOURCE_DIR) $(CMAKE_SOURCES) \
+$(IREE_INSTALL_LIB): $(NX_IREE_SOURCE_DIR) $(IREE_PATCH_STAMP) $(CMAKE_SOURCES) \
 		$(if $(CROSS_NAME),$(IREE_HOST_TOOLS_BIN)/iree-c-embed-data)
 	$(EMCMAKE) cmake -G Ninja -B $(IREE_CMAKE_BUILD_DIR) \
 		-DCMAKE_BUILD_TYPE=$(IREE_CMAKE_CONFIG)\

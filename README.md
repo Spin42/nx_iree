@@ -31,7 +31,7 @@ Build settings, all optional:
 | `NX_IREE_VERSION` | `3.13.0` | IREE compiler wheel version |
 | `NX_IREE_GIT_REV` | `v3.13.0` | IREE runtime git revision |
 | `NX_IREE_SOURCE_DIR` | `~/.cache/nx_iree/iree-<rev>` | IREE checkout |
-| `NX_IREE_COMPILER_DIR` | `cache/iree` | where the compiler wheel is unpacked |
+| `NX_IREE_COMPILER_DIR` | downloaded wheel in `cache/iree` | existing compiler tools or unpacked wheel directory to use |
 
 ## Running defn functions
 
@@ -91,6 +91,25 @@ told otherwise; for another device pass its triple and CPU, for example
 `--iree-llvmcpu-target-triple=aarch64-linux-gnu --iree-llvmcpu-target-cpu=cortex-a57`.
 Functions compiled for calls on the CPU use the host CPU's features.
 
+`NxIREE.Serving.new/1` wraps a loaded export in the existing `Nx.Serving`
+scheduler without compilation on the device:
+
+```elixir
+serving = NxIREE.Serving.new(model) |> Nx.Serving.streaming()
+{:ok, _pid} = Nx.Serving.start_link(name: MyServing, serving: serving)
+batches = Stream.map(inputs, fn {a, b} -> Nx.Batch.stack([{a, b}]) end)
+results = Nx.Serving.batched_run(MyServing, batches)
+```
+
+Each entry is one complete invocation, so this adapter sets the maximum
+batch size to one. Stream results are `{:batch, output, metadata}` with a
+leading axis of size one; outputs stay on the device. Host inputs are
+uploaded for the invocation, while caller-owned resident inputs are borrowed.
+Reshape and squeeze use independent IREE buffer views without compilation,
+GPU dispatch or tensor copies. Input-stream submission waits for the previous
+invocation; applications must also consume results promptly. This provides
+neither a global queue bound across clients nor a camera deadline guarantee.
+
 ## Module cache
 
 Unchanged Nx code, Bumblebee servings included, runs on a device without
@@ -143,6 +162,19 @@ provide a Vulkan loader and driver (for example Mesa's NVK on NVIDIA Tegra).
 
 ## Vulkan notes
 
+For application-authored compute kernels, `NxIREE.Vulkan.export/4` imports
+SPIR-V into the normal export/load/run API with device-resident tensors.
+See [custom Vulkan kernels](docs/vulkan-kernels.md) and the
+[portable stereo benchmark](bench/stereo/README.md).
+
+To use a locally built compiler, set `NX_IREE_COMPILER_DIR` to the directory
+containing `iree-compile` (for an IREE CMake build, its `tools/` directory).
+A wheel's `iree/` directory also works. Mix selects it even when a compiler
+was already installed; unsetting the variable restores the downloaded
+compiler on the next build. Use a separate `:iree_module_cache` directory
+when comparing compiler builds so previously compiled modules are not reused.
+This setting is only for the host; Nerves cross builds omit the compiler.
+
   * Without a `--iree-vulkan-target`, NxIREE compiles for IREE's baseline
     profile plus 8-bit storage: on the plain baseline IREE misreads `u8`/`s8`
     tensors that vectorized dispatches read, such as attention masks.
@@ -150,15 +182,17 @@ provide a Vulkan loader and driver (for example Mesa's NVK on NVIDIA Tegra).
     compile transformers in IREE 3.13: two embedding gathers added and then
     reduced, as in every BERT and GPT embedding layer, hit a SPIR-V
     legalization error. Their kernels also assume the architecture's subgroup
-    size, so they are wrong on other GPUs. A capability list compiles these
-    models and is correct everywhere it is supported, for example on NVK:
-    `--iree-vulkan-target-features=spirv:v1.3,cap:Shader,cap:StorageBuffer8BitAccess,cap:Int8,ext:SPV_KHR_8bit_storage,cap:GroupNonUniform,cap:GroupNonUniformArithmetic,cap:GroupNonUniformShuffle,cap:GroupNonUniformBallot,cap:Int64,cap:Int16,cap:Float16,cap:StorageBuffer16BitAccess,ext:SPV_KHR_16bit_storage`.
-  * `iree_tuning: :maxwell_matmul` (a `NxIREE.Compiler` and `NxIREE.export/3`
-    option) applies a matmul tuning spec shipped with nx_iree: 64x64x8
-    workgroup tiles without multi-buffering. On the Jetson Nano's GM20B
-    under NVK it takes a 1024 matmul from 34-42 to 99 GFLOPS and DistilBERT
-    from 346 to 145 ms per batch of 4. The spec is named, not given by
-    path, so module cache keys match between host and device.
+    size, so they are wrong on other GPUs. An explicit capability list must
+    match the selected device. Device libraries can supply that list, such
+    as `C100GPU.Target.compiler_flags/0` from `c100_gpu` for the C100.
+  * `iree_tuning: {ProviderModule, :spec_name}` (a `NxIREE.Compiler` and
+    `NxIREE.export/3` option) selects a transform-dialect spec from a library
+    implementing `NxIREE.Tuning.fetch/1`. The callback returns
+    `{:ok, mlir_text, supported_backends}` or `:error`. Cache keys contain
+    the provider, spec name and SHA-256 of the text instead of a host path.
+    Device-specific providers belong in separate libraries; the C100's
+    Maxwell matmul provider is `{C100GPU.Tuning, :maxwell_matmul}` in
+    [`c100_gpu`](../c100_gpu).
   * Command buffer memoization is off by default for GPU targets
     (`--iree-hal-memoization=false`): IREE 3.13 replays the first call's
     dynamic slice offsets from memoized Vulkan command buffers.
@@ -175,3 +209,11 @@ IREE compiles sort, scatter and slice updates in place on their arguments.
 While compiling, NxIREE finds the arguments a module may write and passes
 copies of those inputs, so caller tensors are never modified; read-only
 inputs, such as model weights, are passed without copies.
+
+The [native VGA stereo measurement](docs/reference/stereo-vga30-20261022/README.md)
+uses the existing Nx.Serving adapter and Evision input conversion: 31.3
+prepared-pair GPU FPS and paced 30 Hz network replay at 640×480 per eye/D64.
+Four contexts sustain the replay with normal governors and otherwise idle
+CPUs, at about 124 ms median processing latency. This is bounded diagnostic
+replay evidence; camera capture and standard Evision GPU SGBM integration
+remain open.

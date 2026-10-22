@@ -1,0 +1,68 @@
+diff --git a/runtime/src/iree/hal/memory/tlsf_pool.c b/runtime/src/iree/hal/memory/tlsf_pool.c
+index fbebfbf..63100e7 100644
+--- a/runtime/src/iree/hal/memory/tlsf_pool.c
++++ b/runtime/src/iree/hal/memory/tlsf_pool.c
+@@ -771,6 +771,24 @@ static iree_status_t iree_hal_tlsf_pool_acquire_reservation(
+                               selected_result == IREE_HAL_POOL_ACQUIRE_OK_FRESH;
+   }
+ 
++  // The bounded candidate cache may omit reusable slabs. Search the remaining
++  // slabs before growing the pool or reporting that growth is required.
++  for (uint16_t slab_index = 0; slab_index < pool->slab_count &&
++                                iree_status_is_ok(status) &&
++                                !has_selected_allocation;
++       ++slab_index) {
++    bool already_searched = slab_index == preferred_slab_index;
++    for (uint8_t i = 0; i < pool->reuse_candidate_slab_count; ++i) {
++      already_searched |= slab_index == pool->reuse_candidate_slab_indices[i];
++    }
++    if (already_searched) continue;
++    status = iree_hal_tlsf_pool_try_acquire_from_slab(
++        pool, slab_index, size, requester_frontier,
++        /*record_reuse_miss=*/true, &selected_allocation, &selected_result);
++    has_selected_allocation = selected_result == IREE_HAL_POOL_ACQUIRE_OK ||
++                              selected_result == IREE_HAL_POOL_ACQUIRE_OK_FRESH;
++  }
++
+   if (iree_status_is_ok(status) && !has_selected_allocation) {
+     if (iree_all_bits_set(flags, IREE_HAL_POOL_RESERVE_FLAG_DISALLOW_GROWTH)) {
+       growth_required = true;
+diff --git a/runtime/src/iree/hal/memory/tlsf_pool_test.cc b/runtime/src/iree/hal/memory/tlsf_pool_test.cc
+index 7053e98..994842a 100644
+--- a/runtime/src/iree/hal/memory/tlsf_pool_test.cc
++++ b/runtime/src/iree/hal/memory/tlsf_pool_test.cc
+@@ -308,6 +308,34 @@ TEST_F(TLSFPoolTest, ReserveGrowsForLivePressure) {
+   iree_hal_pool_release_reservation(pool_, &first_reservation, NULL);
+ }
+ 
++TEST_F(TLSFPoolTest, ReserveReusesAllReleasedSlabsWithoutGrowing) {
++  constexpr size_t kSlabCount = 8;
++  iree_hal_pool_reservation_t reservations[kSlabCount];
++  iree_hal_pool_acquire_info_t reserve_info;
++  iree_hal_pool_acquire_result_t result;
++  for (auto& reservation : reservations) {
++    IREE_ASSERT_OK(iree_hal_pool_acquire_reservation(
++        pool_, 4096, 16, /*requester_frontier=*/NULL,
++        IREE_HAL_POOL_RESERVE_FLAG_NONE, &reservation, &reserve_info, &result));
++    ASSERT_EQ(result, IREE_HAL_POOL_ACQUIRE_OK_FRESH);
++  }
++  for (auto& reservation : reservations) {
++    iree_hal_pool_release_reservation(pool_, &reservation, NULL);
++  }
++
++  for (auto& reservation : reservations) {
++    IREE_ASSERT_OK(iree_hal_pool_acquire_reservation(
++        pool_, 4096, 16, /*requester_frontier=*/NULL,
++        IREE_HAL_POOL_RESERVE_FLAG_DISALLOW_GROWTH, &reservation, &reserve_info,
++        &result));
++    ASSERT_EQ(result, IREE_HAL_POOL_ACQUIRE_OK_FRESH);
++    EXPECT_LT(reservation.slab_index, kSlabCount);
++  }
++  for (auto& reservation : reservations) {
++    iree_hal_pool_release_reservation(pool_, &reservation, NULL);
++  }
++}
++
+ TEST(TLSFPool, ReleaseNodeReuseAvoidsRepeatedHostAllocation) {
+   iree_hal_test_counting_allocator_t allocator_state = {
+       /*.backing_allocator=*/iree_allocator_system(),

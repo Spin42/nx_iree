@@ -1,5 +1,34 @@
 defmodule NxIREE.MixHelpers do
   @moduledoc false
+
+  def link_compiler!(dir, priv_path) do
+    dir = Path.expand(dir)
+
+    compiler =
+      Enum.find(
+        [
+          Path.join(dir, "iree-compile"),
+          Path.join([dir, "compiler", "_mlir_libs", "iree-compile"])
+        ],
+        &File.regular?/1
+      ) || raise "iree-compile not found in NX_IREE_COMPILER_DIR=#{dir}"
+
+    File.mkdir_p!(priv_path)
+    link = Path.join(priv_path, "iree-compile")
+
+    unless File.read_link(link) == {:ok, compiler} do
+      case File.rm(link) do
+        :ok -> :ok
+        {:error, :enoent} -> :ok
+        {:error, reason} -> raise File.Error, reason: reason, action: "remove", path: link
+      end
+
+      File.ln_s!(compiler, link)
+    end
+
+    :ok
+  end
+
   def github_release_path(file, version \\ nil) do
     version = version || File.read!(Path.join(:code.priv_dir(:nx_iree), "VERSION"))
 

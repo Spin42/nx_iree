@@ -1,0 +1,139 @@
+--- a/runtime/src/iree/hal/local/profile.c
++++ b/runtime/src/iree/hal/local/profile.c
+@@ -46,7 +46,7 @@
+   // Guards event rings while producers append and flush snapshots advance.
+   iree_slim_mutex_t mutex;
+ 
+-  // Serializes flush operations while sink callbacks are being invoked.
++  // Serializes sink callbacks from metadata writes and event flushes.
+   iree_slim_mutex_t flush_mutex;
+ 
+   // Copied human-readable producer name used on emitted chunks.
+@@ -459,8 +459,11 @@
+       iree_hal_local_profile_recorder_metadata(recorder, content_type);
+   iree_const_byte_span_t iovec =
+       iree_make_const_byte_span(records, byte_length);
+-  return iree_hal_profile_sink_write(recorder->options.sink, &metadata, 1,
+-                                     &iovec);
++  iree_slim_mutex_lock(&recorder->flush_mutex);
++  iree_status_t status = iree_hal_profile_sink_write(
++      recorder->options.sink, &metadata, 1, &iovec);
++  iree_slim_mutex_unlock(&recorder->flush_mutex);
++  return status;
+ }
+ 
+ static iree_status_t iree_hal_local_profile_recorder_write_metadata(
+@@ -792,8 +795,11 @@
+   if (span.data_length == 0) return iree_ok_status();
+   iree_hal_profile_chunk_metadata_t metadata =
+       iree_hal_local_profile_recorder_metadata(recorder, content_type);
+-  return iree_hal_profile_sink_write(recorder->options.sink, &metadata, 1,
+-                                     &span);
++  iree_slim_mutex_lock(&recorder->flush_mutex);
++  iree_status_t status = iree_hal_profile_sink_write(
++      recorder->options.sink, &metadata, 1, &span);
++  iree_slim_mutex_unlock(&recorder->flush_mutex);
++  return status;
+ }
+ 
+ iree_status_t iree_hal_local_profile_recorder_record_executable_with_id(
+--- a/runtime/src/iree/hal/local/profile_test.cc
++++ b/runtime/src/iree/hal/local/profile_test.cc
+@@ -6,8 +6,11 @@
+ 
+ #include "iree/hal/local/profile.h"
+ 
++#include <atomic>
++#include <chrono>
+ #include <cstdint>
+ #include <string>
++#include <thread>
+ #include <vector>
+ 
+ #include "iree/hal/api.h"
+@@ -28,6 +31,12 @@
+   // Number of write callbacks observed.
+   int write_count = 0;
+ 
++  // Optional callback overlap probe, used instead of recording matching writes.
++  iree_string_view_t probe_content_type = iree_string_view_empty();
++  std::atomic<int> probe_active_count{0};
++  std::atomic<int> probe_write_count{0};
++  std::atomic<int> probe_overlap_count{0};
++
+   // Number of end-session callbacks observed.
+   int end_count = 0;
+ 
+@@ -182,6 +191,19 @@
+     const iree_hal_profile_chunk_metadata_t* metadata,
+     iree_host_size_t iovec_count, const iree_const_byte_span_t* iovecs) {
+   RecordingProfileSink* test_sink = RecordingProfileSinkCast(sink);
++  if (!iree_string_view_is_empty(test_sink->probe_content_type)) {
++    if (iree_string_view_equal(metadata->content_type,
++                               test_sink->probe_content_type)) {
++      if (test_sink->probe_active_count.fetch_add(1) != 0) {
++        test_sink->probe_overlap_count.fetch_add(1);
++      }
++      // Keep the callback active long enough to expose concurrent writers.
++      std::this_thread::sleep_for(std::chrono::microseconds(100));
++      test_sink->probe_write_count.fetch_add(1);
++      test_sink->probe_active_count.fetch_sub(1);
++    }
++    return iree_ok_status();
++  }
+   EXPECT_EQ(1, test_sink->begin_count);
+   EXPECT_EQ(0, test_sink->end_count);
+   EXPECT_EQ(test_sink->session_id, metadata->session_id);
+@@ -834,6 +856,52 @@
+   iree_hal_local_executable_deinitialize(&executable.base);
+ }
+ 
++TEST_F(LocalProfileRecorderTest, ConcurrentMetadataWritesSerializeSinkCallbacks) {
++  IREE_ASSERT_OK(Create(IREE_HAL_DEVICE_PROFILING_DATA_EXECUTABLE_METADATA));
++
++  FakeLocalExecutable executable;
++  iree_hal_local_executable_initialize(
++      &kFakeLocalExecutableVTable, iree_allocator_system(), &executable.base);
++  auto* base_executable =
++      reinterpret_cast<iree_hal_executable_t*>(&executable.base);
++  constexpr int kThreadCount = 8;
++  constexpr int kWritesPerThread = 8;
++  uint64_t next_executable_id = 1;
++  // Check the fixed-size record and packed function-span helpers independently.
++  for (iree_string_view_t content_type :
++       {IREE_HAL_PROFILE_CONTENT_TYPE_EXECUTABLES,
++        IREE_HAL_PROFILE_CONTENT_TYPE_EXECUTABLE_FUNCTIONS}) {
++    sink_.probe_content_type = content_type;
++    sink_.probe_write_count.store(0);
++    sink_.probe_overlap_count.store(0);
++    std::atomic<int> ready_count{0};
++    std::atomic<bool> start{false};
++    std::vector<std::thread> threads;
++    for (int i = 0; i < kThreadCount; ++i) {
++      uint64_t first_id = next_executable_id;
++      next_executable_id += kWritesPerThread;
++      threads.emplace_back([&, first_id]() {
++        ready_count.fetch_add(1);
++        while (!start.load()) std::this_thread::yield();
++        for (int j = 0; j < kWritesPerThread; ++j) {
++          IREE_EXPECT_OK(
++              iree_hal_local_profile_recorder_record_executable_with_id(
++                  recorder_, base_executable, first_id + j));
++        }
++      });
++    }
++    while (ready_count.load() != kThreadCount) std::this_thread::yield();
++    start.store(true);
++    for (auto& thread : threads) thread.join();
++    EXPECT_EQ(kThreadCount * kWritesPerThread, sink_.probe_write_count.load());
++    EXPECT_EQ(0, sink_.probe_overlap_count.load())
++        << "Concurrent sink callbacks for "
++        << std::string(content_type.data, content_type.size);
++  }
++  sink_.probe_content_type = iree_string_view_empty();
++  iree_hal_local_executable_deinitialize(&executable.base);
++}
++
+ TEST_F(LocalProfileRecorderTest, HostExecutionEnablesExecutableMetadata) {
+   IREE_EXPECT_OK(Create(IREE_HAL_DEVICE_PROFILING_DATA_HOST_EXECUTION_EVENTS));
+   EXPECT_TRUE(iree_hal_local_profile_recorder_is_enabled(

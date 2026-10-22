@@ -1,0 +1,265 @@
+--- a/runtime/src/iree/hal/buffer_transfer.c
++++ b/runtime/src/iree/hal/buffer_transfer.c
+@@ -119,6 +119,13 @@
+           source.device_buffer, IREE_HAL_MAPPING_MODE_SCOPED,
+           IREE_HAL_MEMORY_ACCESS_READ, source_offset, data_length,
+           &source_mapping);
++      if (iree_status_is_ok(status) &&
++          source_mapping.contents.data_length != 0 &&
++          !iree_all_bits_set(iree_hal_buffer_memory_type(source.device_buffer),
++                             IREE_HAL_MEMORY_TYPE_HOST_COHERENT)) {
++        status = iree_hal_buffer_mapping_invalidate_range(
++            &source_mapping, 0, IREE_HAL_WHOLE_BUFFER);
++      }
+     } else {
+       source_mapping = (iree_hal_buffer_mapping_t){
+           .contents = source.host_buffer,
+--- /dev/null
++++ b/runtime/src/iree/hal/buffer_transfer_test.cc
+@@ -0,0 +1,205 @@
++// Copyright 2026 The IREE Authors
++//
++// Licensed under the Apache License v2.0 with LLVM Exceptions.
++// See https://llvm.org/LICENSE.txt for license information.
++// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
++
++#include "iree/hal/buffer_transfer.h"
++
++#include "iree/hal/testing/mock_device.h"
++#include "iree/testing/gtest.h"
++#include "iree/testing/status_matchers.h"
++
++namespace iree {
++namespace {
++
++// Separate host/device copies model noncoherent memory: mapping alone leaves
++// stale host contents, and invalidation makes completed device writes visible.
++struct FakeBuffer {
++  iree_hal_buffer_t base;
++  uint8_t host[64] = {};
++  uint8_t device[64] = {};
++  int map_count = 0;
++  int unmap_count = 0;
++  int invalidate_count = 0;
++  int flush_count = 0;
++  iree_device_size_t invalidate_offset = 0;
++  iree_device_size_t invalidate_length = 0;
++  iree_status_code_t invalidate_status = IREE_STATUS_OK;
++  iree_status_code_t unmap_status = IREE_STATUS_OK;
++
++  explicit FakeBuffer(iree_hal_memory_type_t memory_type =
++                          IREE_HAL_MEMORY_TYPE_HOST_VISIBLE);
++  ~FakeBuffer() { iree_hal_buffer_release(&base); }
++};
++
++static void IREE_API_PTR Destroy(iree_hal_buffer_t* buffer) {}
++
++static iree_status_t IREE_API_PTR MapRange(
++    iree_hal_buffer_t* base, iree_hal_mapping_mode_t mapping_mode,
++    iree_hal_memory_access_t access, iree_device_size_t offset,
++    iree_device_size_t length, iree_hal_buffer_mapping_t* mapping) {
++  auto* buffer = reinterpret_cast<FakeBuffer*>(base);
++  ++buffer->map_count;
++  mapping->contents = iree_make_byte_span(buffer->host + offset, length);
++  return iree_ok_status();
++}
++
++static iree_status_t IREE_API_PTR UnmapRange(
++    iree_hal_buffer_t* base, iree_device_size_t offset,
++    iree_device_size_t length, iree_hal_buffer_mapping_t* mapping) {
++  auto* buffer = reinterpret_cast<FakeBuffer*>(base);
++  ++buffer->unmap_count;
++  return iree_status_from_code(buffer->unmap_status);
++}
++
++static iree_status_t IREE_API_PTR InvalidateRange(
++    iree_hal_buffer_t* base, iree_device_size_t offset,
++    iree_device_size_t length) {
++  auto* buffer = reinterpret_cast<FakeBuffer*>(base);
++  ++buffer->invalidate_count;
++  buffer->invalidate_offset = offset;
++  buffer->invalidate_length = length;
++  EXPECT_EQ(1, buffer->map_count);
++  EXPECT_EQ(0, buffer->unmap_count);
++  if (buffer->invalidate_status != IREE_STATUS_OK) {
++    return iree_status_from_code(buffer->invalidate_status);
++  }
++  memcpy(buffer->host + offset, buffer->device + offset, length);
++  return iree_ok_status();
++}
++
++static iree_status_t IREE_API_PTR FlushRange(
++    iree_hal_buffer_t* base, iree_device_size_t offset,
++    iree_device_size_t length) {
++  auto* buffer = reinterpret_cast<FakeBuffer*>(base);
++  ++buffer->flush_count;
++  memcpy(buffer->device + offset, buffer->host + offset, length);
++  return iree_ok_status();
++}
++
++static const iree_hal_buffer_vtable_t kFakeBufferVTable = {
++    /*.recycle=*/iree_hal_buffer_recycle,
++    /*.destroy=*/Destroy,
++    /*.map_range=*/MapRange,
++    /*.unmap_range=*/UnmapRange,
++    /*.invalidate_range=*/InvalidateRange,
++    /*.flush_range=*/FlushRange,
++};
++
++FakeBuffer::FakeBuffer(iree_hal_memory_type_t memory_type) {
++  iree_hal_buffer_initialize(
++      /*placement=*/{}, /*allocated_buffer=*/&base,
++      /*allocation_size=*/sizeof(host), /*byte_offset=*/0,
++      /*byte_length=*/sizeof(host), memory_type,
++      IREE_HAL_MEMORY_ACCESS_ALL,
++      IREE_HAL_BUFFER_USAGE_MAPPING_SCOPED | IREE_HAL_BUFFER_USAGE_TRANSFER,
++      &kFakeBufferVTable, &base);
++}
++
++class BufferTransferTest : public ::testing::Test {
++ protected:
++  void SetUp() override {
++    iree_hal_mock_device_options_t options;
++    iree_hal_mock_device_options_initialize(&options);
++    IREE_ASSERT_OK(iree_hal_mock_device_create(
++        &options, iree_allocator_system(), &device_));
++  }
++  void TearDown() override { iree_hal_device_release(device_); }
++  iree_hal_device_t* device_ = nullptr;
++};
++
++TEST_F(BufferTransferTest, NoncoherentSourceIsInvalidatedBeforeReadback) {
++  FakeBuffer source;
++  memset(source.host, 0x11, sizeof(source.host));
++  memset(source.device, 0x72, sizeof(source.device));
++  uint8_t target[8] = {};
++  IREE_ASSERT_OK(iree_hal_device_transfer_d2h(
++      device_, &source.base, 13, target, sizeof(target),
++      IREE_HAL_TRANSFER_BUFFER_FLAG_DEFAULT, iree_infinite_timeout()));
++  EXPECT_EQ(0, memcmp(source.device + 13, target, sizeof(target)));
++  EXPECT_EQ(1, source.invalidate_count);
++  EXPECT_EQ(13, source.invalidate_offset);
++  EXPECT_EQ(sizeof(target), source.invalidate_length);
++  EXPECT_EQ(1, source.unmap_count);
++}
++
++TEST_F(BufferTransferTest, WholeBufferReadbackInvalidatesMappedSourceTail) {
++  FakeBuffer source;
++  memset(source.device, 0x53, sizeof(source.device));
++  uint8_t target[8] = {};
++  IREE_ASSERT_OK(iree_hal_device_transfer_range(
++      device_, iree_hal_make_device_transfer_buffer(&source.base), 17,
++      iree_hal_make_host_transfer_buffer_span(target, sizeof(target)), 0,
++      IREE_HAL_WHOLE_BUFFER, IREE_HAL_TRANSFER_BUFFER_FLAG_DEFAULT,
++      iree_infinite_timeout()));
++  EXPECT_EQ(0, memcmp(source.device + 17, target, sizeof(target)));
++  EXPECT_EQ(17, source.invalidate_offset);
++  EXPECT_EQ(sizeof(source.host) - 17, source.invalidate_length);
++  EXPECT_EQ(1, source.unmap_count);
++}
++
++TEST_F(BufferTransferTest, CoherentSourceDoesNotRequireInvalidation) {
++  FakeBuffer source(IREE_HAL_MEMORY_TYPE_HOST_VISIBLE |
++                    IREE_HAL_MEMORY_TYPE_HOST_COHERENT);
++  memset(source.host, 0x29, sizeof(source.host));
++  source.invalidate_status = IREE_STATUS_ABORTED;
++  uint8_t target[8] = {};
++  IREE_ASSERT_OK(iree_hal_device_transfer_d2h(
++      device_, &source.base, 9, target, sizeof(target),
++      IREE_HAL_TRANSFER_BUFFER_FLAG_DEFAULT, iree_infinite_timeout()));
++  EXPECT_EQ(0, memcmp(source.host + 9, target, sizeof(target)));
++  EXPECT_EQ(0, source.invalidate_count);
++  EXPECT_EQ(1, source.unmap_count);
++}
++
++TEST_F(BufferTransferTest, InvalidateFailureUnmapsAndLeavesTargetUntouched) {
++  FakeBuffer source;
++  FakeBuffer target;
++  memset(target.host, 0x41, sizeof(target.host));
++  memset(target.device, 0x41, sizeof(target.device));
++  source.invalidate_status = IREE_STATUS_ABORTED;
++  source.unmap_status = IREE_STATUS_UNAVAILABLE;
++  IREE_EXPECT_STATUS_IS(
++      IREE_STATUS_ABORTED,
++      iree_hal_device_transfer_d2d(
++          device_, &source.base, 5, &target.base, 11, 8,
++          IREE_HAL_TRANSFER_BUFFER_FLAG_DEFAULT, iree_infinite_timeout()));
++  EXPECT_EQ(1, source.invalidate_count);
++  EXPECT_EQ(1, source.unmap_count);
++  EXPECT_EQ(0, target.map_count);
++  EXPECT_EQ(0, target.unmap_count);
++  EXPECT_EQ(0, target.flush_count);
++  for (uint8_t value : target.host) EXPECT_EQ(0x41, value);
++  for (uint8_t value : target.device) EXPECT_EQ(0x41, value);
++}
++
++TEST_F(BufferTransferTest, DeviceCopyInvalidatesSourceAndFlushesTarget) {
++  FakeBuffer source;
++  FakeBuffer target;
++  memset(source.device, 0x63, sizeof(source.device));
++  IREE_ASSERT_OK(iree_hal_device_transfer_d2d(
++      device_, &source.base, 7, &target.base, 19, 8,
++      IREE_HAL_TRANSFER_BUFFER_FLAG_DEFAULT, iree_infinite_timeout()));
++  EXPECT_EQ(0, memcmp(source.device + 7, target.device + 19, 8));
++  EXPECT_EQ(1, source.invalidate_count);
++  EXPECT_EQ(1, source.unmap_count);
++  EXPECT_EQ(0, target.invalidate_count);
++  EXPECT_EQ(1, target.flush_count);
++  EXPECT_EQ(1, target.unmap_count);
++}
++
++TEST_F(BufferTransferTest, HostUploadStillFlushesWithoutInvalidation) {
++  uint8_t source[8] = {1, 2, 3, 4, 5, 6, 7, 8};
++  FakeBuffer target;
++  IREE_ASSERT_OK(iree_hal_device_transfer_h2d(
++      device_, source, &target.base, 23, sizeof(source),
++      IREE_HAL_TRANSFER_BUFFER_FLAG_DEFAULT, iree_infinite_timeout()));
++  EXPECT_EQ(0, memcmp(source, target.device + 23, sizeof(source)));
++  EXPECT_EQ(0, target.invalidate_count);
++  EXPECT_EQ(1, target.flush_count);
++  EXPECT_EQ(1, target.unmap_count);
++}
++
++}  // namespace
++}  // namespace iree
+--- a/runtime/src/iree/hal/CMakeLists.txt
++++ b/runtime/src/iree/hal/CMakeLists.txt
+@@ -130,6 +130,18 @@
+ 
+ iree_cc_test(
+   NAME
++    buffer_transfer_test
++  SRCS
++    "buffer_transfer_test.cc"
++  DEPS
++    ::hal
++    iree::hal::testing::mock_device
++    iree::testing::gtest
++    iree::testing::gtest_main
++)
++
++iree_cc_test(
++  NAME
+     buffer_view_util_test
+   SRCS
+     "buffer_view_util_test.cc"
+--- a/runtime/src/iree/hal/BUILD.bazel
++++ b/runtime/src/iree/hal/BUILD.bazel
+@@ -151,6 +151,17 @@
+ )
+ 
+ iree_runtime_cc_test(
++    name = "buffer_transfer_test",
++    srcs = ["buffer_transfer_test.cc"],
++    deps = [
++        ":hal",
++        "//runtime/src/iree/hal/testing:mock_device",
++        "//runtime/src/iree/testing:gtest",
++        "//runtime/src/iree/testing:gtest_main",
++    ],
++)
++
++iree_runtime_cc_test(
+     name = "buffer_view_util_test",
+     srcs = ["buffer_view_util_test.cc"],
+     deps = [

@@ -81,6 +81,8 @@ defmodule NxIREE.MixProject do
         "CHANGELOG.md",
         "cmake",
         "c_src",
+        "scripts",
+        "patches/iree",
         "Makefile"
       ]
     ]
@@ -187,6 +189,13 @@ defmodule NxIREE.MixProject do
   defp download_and_unzip_iree_release(args) do
     nx_iree_config = nx_iree_config()
 
+    case nx_iree_config.env_dir do
+      nil -> download_default_iree_release(args, nx_iree_config)
+      dir -> NxIREE.MixHelpers.link_compiler!(dir, Path.join(Mix.Project.app_path(), "priv"))
+    end
+  end
+
+  defp download_default_iree_release(args, nx_iree_config) do
     cache_dir =
       if dir = System.get_env("NX_IREE_CACHE") do
         Path.expand(dir)
@@ -202,8 +211,10 @@ defmodule NxIREE.MixProject do
 
     priv_path = Path.join(Mix.Project.app_path(), "priv")
 
-    if File.dir?(nx_iree_config.dir) and File.exists?(Path.join(priv_path, "iree-compile")) do
-      :ok
+    compiler_dir = Path.join([nx_iree_config.dir, "compiler", "_mlir_libs"])
+
+    if File.regular?(Path.join(compiler_dir, "iree-compile")) do
+      NxIREE.MixHelpers.link_compiler!(compiler_dir, priv_path)
     else
       download_and_unzip_iree_release(cache_dir, nx_iree_config)
     end
@@ -272,12 +283,7 @@ defmodule NxIREE.MixProject do
     priv_path = Path.join(Mix.Project.app_path(), "priv")
     File.mkdir_p!(priv_path)
 
-    link_name = Path.join(priv_path, "iree-compile")
-
-    File.rm(link_name)
-    File.ln_s!(iree_compile_path, link_name)
-
-    :ok
+    NxIREE.MixHelpers.link_compiler!(Path.dirname(iree_compile_path), priv_path)
   end
 
   defp download_precompiled_nx_iree_lib() do

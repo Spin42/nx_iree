@@ -1,0 +1,517 @@
+diff --git a/compiler/src/iree/compiler/Dialect/Stream/Transforms/ElideAsyncCopies.cpp b/compiler/src/iree/compiler/Dialect/Stream/Transforms/ElideAsyncCopies.cpp
+index 7148dd7..215e3f9 100644
+--- a/compiler/src/iree/compiler/Dialect/Stream/Transforms/ElideAsyncCopies.cpp
++++ b/compiler/src/iree/compiler/Dialect/Stream/Transforms/ElideAsyncCopies.cpp
+@@ -18,6 +18,7 @@
+ #include "iree/compiler/Dialect/Util/IR/UtilOps.h"
+ #include "llvm/ADT/TypeSwitch.h"
+ #include "llvm/Support/Debug.h"
++#include "mlir/Dialect/SCF/IR/SCF.h"
+ #include "mlir/IR/AsmState.h"
+ #include "mlir/IR/Attributes.h"
+ #include "mlir/IR/Builders.h"
+@@ -718,14 +719,13 @@ public:
+   // Such storage is caller-owned even when this SSA value is its last local
+   // use, so eliding a protective copy is only valid when the copy result is
+   // read-only.
+-  bool containsBorrowedStorage(Value value) {
++  bool containsBorrowedStorage(Value value, bool forTransferElision = false) {
+     llvm::SmallPtrSet<Value, 8> visited;
+-    return containsBorrowedStorage(value, visited);
++    return containsBorrowedStorage(value, visited, forTransferElision);
+   }
+ 
+-  // Attempts to infer the affinity of |value| by walking up its defining ops
+-  // and checking for explicit affinity annotations or default affinities.
+-  // Returns nullptr if no affinity can be determined.
++  // Infers an affinity only when all possible producers agree. In particular,
++  // loop arguments may have different initial and backedge affinities.
+   IREE::Stream::AffinityAttr tryInferValueAffinity(Value value) {
+     // Fast path: check if defining op has explicit affinity.
+     if (auto definingOp = value.getDefiningOp()) {
+@@ -737,52 +737,71 @@ public:
+       }
+     }
+ 
+-    // Walk defining ops using Explorer to find an affinity-annotated producer.
++    // Stop each producer path at its first affinity annotation, but visit all
++    // incoming paths. An unknown producer or incomplete traversal is not proof
++    // that the resource is on the same device as another known producer.
+     IREE::Stream::AffinityAttr foundAffinity;
+-    explorer.walkDefiningOps(
++    bool hasUnknownOrConflictingAffinity = false;
++    auto traversalResult = explorer.walkDefiningOps(
+         value,
+         [&](OpResult result) {
+           Operation *op = result.getOwner();
+-
+-          // Check if this defining op has an explicit affinity.
+-          if (auto affinityOp =
+-                  dyn_cast<IREE::Stream::AffinityOpInterface>(op)) {
+-            if (auto affinity = affinityOp.getResultAffinityAttr()) {
+-              // Found explicit affinity, stop.
+-              foundAffinity = affinity;
++          IREE::Stream::AffinityAttr affinity;
++          auto affinityOp = dyn_cast<IREE::Stream::AffinityOpInterface>(op);
++          if (affinityOp) {
++            affinity = affinityOp.getResultAffinityAttr();
++          }
++          if (!affinity) {
++            // Only scf.if's explicit yields fully cover region result paths
++            // here. Other regions may bypass their terminators (zero-trip
++            // loops) or have multiple exit blocks the explorer cannot cover.
++            if (isa<RegionBranchOpInterface>(op) && !isa<scf::IfOp>(op)) {
++              hasUnknownOrConflictingAffinity = true;
+               return WalkResult::interrupt();
+             }
++            // These operations forward resources; their default placement
++            // does not establish the affinity of every incoming resource.
++            if (isa<CallOpInterface, scf::IfOp,
++                    IREE::Util::GlobalLoadOpInterface>(op)) {
++              return WalkResult::advance();
++            }
++            if (auto tiedOp = dyn_cast<IREE::Util::TiedOpInterface>(op)) {
++              if (tiedOp.getTiedResultOperand(result)) {
++                return WalkResult::advance();
++              }
++            }
++            // Only resource producers with affinity semantics inherit a
++            // placement default. Opaque forwarding ops such as arith.select
++            // may combine resources with different affinities.
++            if (affinityOp) {
++              affinity = IREE::Stream::AffinityAttr::lookup(op);
++              if (!affinity) {
++                affinity = tryLookupDefaultAffinity(op);
++              }
++            }
+           }
+-
+-          // Check op for explicit affinity attribute.
+-          if (auto affinityAttr = IREE::Stream::AffinityAttr::lookup(op)) {
+-            foundAffinity = affinityAttr;
++          if (!affinity || (foundAffinity && foundAffinity != affinity)) {
++            hasUnknownOrConflictingAffinity = true;
+             return WalkResult::interrupt();
+           }
+-
+-          // Keep searching for explicit affinity.
+-          return WalkResult::advance();
++          foundAffinity = affinity;
++          return WalkResult::skip();
+         },
+         TraversalBehavior::DEFAULT);
+-    if (foundAffinity) {
+-      return foundAffinity;
++    if (hasUnknownOrConflictingAffinity ||
++        traversalResult == TraversalResult::INCOMPLETE) {
++      return nullptr;
+     }
+-
+-    // No explicit affinity found anywhere in the producer chain.
+-    // Fall back to default affinity at the value's location.
+-    if (auto definingOp = value.getDefiningOp()) {
+-      return tryLookupDefaultAffinity(definingOp);
+-    } else if (auto arg = dyn_cast<BlockArgument>(value)) {
+-      return tryLookupDefaultAffinity(arg.getParentBlock()->getParentOp());
+-    }
+-    return nullptr;
++    return foundAffinity;
+   }
+ 
+ private:
+   bool containsBorrowedStorage(Value value,
+-                               llvm::SmallPtrSetImpl<Value> &visited) {
++                               llvm::SmallPtrSetImpl<Value> &visited,
++                               bool forTransferElision) {
+     if (!visited.insert(value).second) {
+-      return true;
++      // The original walk still examines all incoming paths to this value.
++      return false;
+     }
+ 
+     bool foundBorrowedStorage = false;
+@@ -794,7 +813,10 @@ private:
+           // A non-consuming import borrows externally-owned storage. A
+           // consuming import transfers ownership to the stream program.
+           if (auto importOp = dyn_cast<IREE::Stream::TensorImportOp>(op)) {
+-            foundBorrowedStorage = !importOp.getConsume();
++            if (importOp.getConsume()) {
++              return WalkResult::skip();
++            }
++            foundBorrowedStorage = true;
+             return WalkResult::interrupt();
+           }
+ 
+@@ -808,8 +830,8 @@ private:
+             auto resultType =
+                 cast<IREE::Stream::ResourceType>(result.getType());
+             if (sourceType.getLifetime() == resultType.getLifetime()) {
+-              foundBorrowedStorage =
+-                  containsBorrowedStorage(transferOp.getSource(), visited);
++              foundBorrowedStorage = containsBorrowedStorage(
++                  transferOp.getSource(), visited, forTransferElision);
+             }
+             return foundBorrowedStorage ? WalkResult::interrupt()
+                                         : WalkResult::skip();
+@@ -817,8 +839,38 @@ private:
+ 
+           // Clones produce independent storage. If this clone remains, uses of
+           // its result do not mutate the original borrowed storage.
+-          if (isa<IREE::Stream::AsyncCloneOp>(op)) {
+-            return WalkResult::skip();
++          if (auto cloneOp = dyn_cast<IREE::Stream::AsyncCloneOp>(op)) {
++            // Transfers must account for clones that may elide later in a
++            // caller visited after the transfer's containing function.
++            if (forTransferElision) {
++              foundBorrowedStorage = containsBorrowedStorage(
++                  cloneOp.getSource(), visited, forTransferElision);
++            }
++            return foundBorrowedStorage ? WalkResult::interrupt()
++                                        : WalkResult::skip();
++          }
++
++          // Except for scf.if's explicit yields, region results may retain an
++          // entry operand or come from an exit the explorer does not visit.
++          if (forTransferElision && isa<RegionBranchOpInterface>(op) &&
++              !isa<scf::IfOp>(op)) {
++            foundBorrowedStorage = true;
++            return WalkResult::interrupt();
++          }
++
++          // For inferred transfers, an opaque producer is not proof of owned
++          // storage. It may forward a borrowed resource through an operation
++          // that the explorer cannot follow, such as arith.select.
++          if (forTransferElision &&
++              !isa<IREE::Stream::AffinityOpInterface, CallOpInterface,
++                   scf::IfOp, IREE::Util::GlobalLoadOpInterface>(op)) {
++            if (auto tiedOp = dyn_cast<IREE::Util::TiedOpInterface>(op)) {
++              if (tiedOp.getTiedResultOperand(result)) {
++                return WalkResult::advance();
++              }
++            }
++            foundBorrowedStorage = true;
++            return WalkResult::interrupt();
+           }
+ 
+           return WalkResult::advance();
+@@ -1022,6 +1074,9 @@ static bool isSafeToElideTransferOp(
+     sourceAffinityAttr = analysis.tryInferValueAffinity(source);
+   }
+   auto resultAffinityAttr = transferOp.getResultAffinityAttr();
++  const bool hasInferredSameAffinity = !transferOp.getSourceAffinityAttr() &&
++                                       sourceAffinityAttr &&
++                                       sourceAffinityAttr == resultAffinityAttr;
+ 
+   // Track whether topology analysis allows elision.
+   bool topologyAllowsElision = false;
+@@ -1051,14 +1106,26 @@ static bool isSafeToElideTransferOp(
+   // Different affinity without topology info = real transfer operation.
+   // These must be preserved as they represent data movement and we don't have
+   // topology information to determine if they're needed.
+-  if (!topologyAllowsElision && transferOp.getSourceAffinityAttr() !=
+-                                    transferOp.getResultAffinityAttr()) {
++  if (!topologyAllowsElision &&
++      transferOp.getSourceAffinityAttr() != resultAffinityAttr &&
++      !hasInferredSameAffinity) {
+     LLVM_DEBUG(llvm::dbgs()
+                << "  - transfer changes affinity and no topology info; cannot "
+                   "elide\n");
+     return false;
+   }
+ 
++  // Inferred device equality alone does not prove storage ownership. A copy
++  // protecting borrowed input must remain if the result can be mutated.
++  if (!topologyAllowsElision && hasInferredSameAffinity &&
++      analysis.containsBorrowedStorage(source, /*forTransferElision=*/true) &&
++      !analysis.isNeverMutated(result)) {
++    LLVM_DEBUG(llvm::dbgs()
++               << "  - inferred same-device transfer protects borrowed "
++                  "storage; cannot elide\n");
++    return false;
++  }
++
+   // Same affinity = either no-op (same type) or lifetime change.
+   // Only elide if this is truly a no-op or if we can prove it's safe.
+   const bool isSameType =
+diff --git a/compiler/src/iree/compiler/Dialect/Stream/Transforms/test/elide_async_copies_scf.mlir b/compiler/src/iree/compiler/Dialect/Stream/Transforms/test/elide_async_copies_scf.mlir
+index c09ab2b..511dc77 100644
+--- a/compiler/src/iree/compiler/Dialect/Stream/Transforms/test/elide_async_copies_scf.mlir
++++ b/compiler/src/iree/compiler/Dialect/Stream/Transforms/test/elide_async_copies_scf.mlir
+@@ -1,5 +1,277 @@
+ // RUN: iree-opt --split-input-file --iree-stream-elide-async-copies --cse %s | FileCheck %s
+ 
++// An omitted source affinity on a loop argument is not a device transfer when
++// both the initial value and the backedge are produced on the destination.
++// CHECK-LABEL: @scf_for_inferred_same_device_transfer
++util.func public @scf_for_inferred_same_device_transfer(%size: index, %count: index) -> !stream.resource<*> {
++  %c0 = arith.constant 0 : index
++  %c1 = arith.constant 1 : index
++  %value = arith.constant 123 : i32
++  %initial = stream.async.splat on(#hal.device.promise<@dev_a>) %value : i32 -> !stream.resource<*>{%size}
++  // CHECK: scf.for {{.*}} iter_args(%[[ITER:[^ ]+]]
++  %result = scf.for %i = %c0 to %count step %c1 iter_args(%iter = %initial) -> !stream.resource<*> {
++    // CHECK-NOT: stream.async.transfer
++    %transfer = stream.async.transfer %iter : !stream.resource<*>{%size} -> to(#hal.device.promise<@dev_a>) !stream.resource<*>{%size}
++    // CHECK: stream.async.fill on(#hal.device.promise<@dev_a>) %{{.+}}, %[[ITER]]
++    %fill = stream.async.fill on(#hal.device.promise<@dev_a>) %value, %transfer[%c0 to %size for %size] : i32 -> %transfer as !stream.resource<*>{%size}
++    // CHECK: scf.yield
++    scf.yield %fill : !stream.resource<*>
++  }
++  util.return %result : !stream.resource<*>
++}
++
++// -----
++
++// Every incoming producer must agree, including the loop's initial value.
++// CHECK-LABEL: @scf_for_mixed_device_transfer
++util.func public @scf_for_mixed_device_transfer(%size: index, %count: index) -> !stream.resource<*> {
++  %c0 = arith.constant 0 : index
++  %c1 = arith.constant 1 : index
++  %value = arith.constant 123 : i32
++  %initial = stream.async.splat on(#hal.device.promise<@dev_b>) %value : i32 -> !stream.resource<*>{%size}
++  %result = scf.for %i = %c0 to %count step %c1 iter_args(%iter = %initial) -> !stream.resource<*> {
++    // CHECK: stream.async.transfer
++    %transfer = stream.async.transfer %iter : !stream.resource<*>{%size} -> to(#hal.device.promise<@dev_a>) !stream.resource<*>{%size}
++    %fill = stream.async.fill on(#hal.device.promise<@dev_a>) %value, %transfer[%c0 to %size for %size] : i32 -> %transfer as !stream.resource<*>{%size}
++    scf.yield %fill : !stream.resource<*>
++  }
++  util.return %result : !stream.resource<*>
++}
++
++// -----
++
++// An external argument has unknown affinity even if the backedge is known.
++// CHECK-LABEL: @scf_for_unknown_device_transfer
++util.func public @scf_for_unknown_device_transfer(%initial: !stream.resource<*>, %size: index, %count: index) -> !stream.resource<*> {
++  %c0 = arith.constant 0 : index
++  %c1 = arith.constant 1 : index
++  %value = arith.constant 123 : i32
++  %result = scf.for %i = %c0 to %count step %c1 iter_args(%iter = %initial) -> !stream.resource<*> {
++    // CHECK: stream.async.transfer
++    %transfer = stream.async.transfer %iter : !stream.resource<*>{%size} -> to(#hal.device.promise<@dev_a>) !stream.resource<*>{%size}
++    %fill = stream.async.fill on(#hal.device.promise<@dev_a>) %value, %transfer[%c0 to %size for %size] : i32 -> %transfer as !stream.resource<*>{%size}
++    scf.yield %fill : !stream.resource<*>
++  }
++  util.return %result : !stream.resource<*>
++}
++
++// -----
++
++// An annotated backedge cannot hide an unannotated initial producer.
++// CHECK-LABEL: @scf_for_unannotated_producer_transfer
++util.func public @scf_for_unannotated_producer_transfer(%size: index, %count: index) -> !stream.resource<*> {
++  %c0 = arith.constant 0 : index
++  %c1 = arith.constant 1 : index
++  %value = arith.constant 123 : i32
++  %initial = stream.async.splat %value : i32 -> !stream.resource<*>{%size}
++  %result = scf.for %i = %c0 to %count step %c1 iter_args(%iter = %initial) -> !stream.resource<*> {
++    // CHECK: stream.async.transfer
++    %transfer = stream.async.transfer %iter : !stream.resource<*>{%size} -> to(#hal.device.promise<@dev_a>) !stream.resource<*>{%size}
++    %next = stream.async.fill on(#hal.device.promise<@dev_a>) %value, %transfer[%c0 to %size for %size] : i32 -> %transfer as !stream.resource<*>{%size}
++    scf.yield %next : !stream.resource<*>
++  }
++  util.return %result : !stream.resource<*>
++}
++
++// -----
++
++// A zero-trip loop returns its initial value even when the yield does not
++// depend on the iter_arg. Walking only region terminators misses that path.
++// CHECK-LABEL: @scf_for_result_preserves_zero_trip_affinity
++util.func public @scf_for_result_preserves_zero_trip_affinity(%size: index, %count: index) -> !stream.resource<*> {
++  %c0 = arith.constant 0 : index
++  %c1 = arith.constant 1 : index
++  %value = arith.constant 123 : i32
++  %initial = stream.async.splat on(#hal.device.promise<@dev_b>) %value : i32 -> !stream.resource<*>{%size}
++  %result = scf.for %i = %c0 to %count step %c1 iter_args(%iter = %initial) -> !stream.resource<*> {
++    %next = stream.async.splat on(#hal.device.promise<@dev_a>) %value : i32 -> !stream.resource<*>{%size}
++    scf.yield %next : !stream.resource<*>
++  }
++  // CHECK: stream.async.transfer
++  %transfer = stream.async.transfer %result : !stream.resource<*>{%size} -> to(#hal.device.promise<@dev_a>) !stream.resource<*>{%size}
++  util.return %transfer : !stream.resource<*>
++}
++
++// -----
++
++// A module default does not establish the affinity of a resource forwarded
++// by an operation without resource affinity semantics.
++module attributes {stream.affinity.default = #hal.device.promise<@dev_a>} {
++// CHECK-LABEL: @inferred_transfer_preserves_unknown_select_affinity
++util.func public @inferred_transfer_preserves_unknown_select_affinity(%size: index, %cond: i1) -> !stream.resource<*> {
++  %value = arith.constant 123 : i32
++  %a = stream.async.splat on(#hal.device.promise<@dev_a>) %value : i32 -> !stream.resource<*>{%size}
++  %b = stream.async.splat on(#hal.device.promise<@dev_b>) %value : i32 -> !stream.resource<*>{%size}
++  %selected = arith.select %cond, %a, %b : !stream.resource<*>
++  // CHECK: stream.async.transfer
++  %transfer = stream.async.transfer %selected : !stream.resource<*>{%size} -> to(#hal.device.promise<@dev_a>) !stream.resource<*>{%size}
++  util.return %transfer : !stream.resource<*>
++}
++}
++
++// -----
++
++// If the clone elides first, the transfer must still protect the borrowed
++// tensor import from writes, even when the import has no other local use.
++// CHECK-LABEL: @scf_for_inferred_transfer_preserves_borrowed_copy
++util.func public @scf_for_inferred_transfer_preserves_borrowed_copy(%buffer: !util.buffer, %count: index) -> !stream.resource<external> {
++  %c0 = arith.constant 0 : index
++  %c1 = arith.constant 1 : index
++  %size = arith.constant 4 : index
++  %value = arith.constant 123 : i32
++  %initial = stream.tensor.import on(#hal.device.promise<@dev_a>) %buffer : !util.buffer -> tensor<1xi32> in !stream.resource<external>{%size}
++  %result = scf.for %i = %c0 to %count step %c1 iter_args(%iter = %initial) -> !stream.resource<external> {
++    %clone = stream.async.clone on(#hal.device.promise<@dev_a>) %iter : !stream.resource<external>{%size} -> !stream.resource<external>{%size}
++    // CHECK: %[[COPY:.+]] = stream.async.transfer
++    %transfer = stream.async.transfer %clone : !stream.resource<external>{%size} -> to(#hal.device.promise<@dev_a>) !stream.resource<external>{%size}
++    // CHECK: stream.async.fill on(#hal.device.promise<@dev_a>) %{{.+}}, %[[COPY]]
++    %fill = stream.async.fill on(#hal.device.promise<@dev_a>) %value, %transfer[%c0 to %size for %size] : i32 -> %transfer as !stream.resource<external>{%size}
++    scf.yield %fill : !stream.resource<external>
++  }
++  util.return %result : !stream.resource<external>
++}
++
++// -----
++
++// A borrowed alias returned alongside the updated value must remain unmodified.
++// CHECK-LABEL: @inferred_transfer_preserves_borrowed_alias
++util.func public @inferred_transfer_preserves_borrowed_alias(%buffer: !util.buffer) -> (!stream.resource<external>, !stream.resource<external>) {
++  %c0 = arith.constant 0 : index
++  %size = arith.constant 4 : index
++  %value = arith.constant 123 : i32
++  // CHECK: %[[IMPORTED:.+]] = stream.tensor.import
++  %initial = stream.tensor.import on(#hal.device.promise<@dev_a>) %buffer : !util.buffer -> tensor<1xi32> in !stream.resource<external>{%size}
++  // CHECK: %[[COPY:.+]] = stream.async.transfer %[[IMPORTED]]
++  %transfer = stream.async.transfer %initial : !stream.resource<external>{%size} -> to(#hal.device.promise<@dev_a>) !stream.resource<external>{%size}
++  // CHECK: %[[FILLED:.+]] = stream.async.fill on(#hal.device.promise<@dev_a>) %{{.+}}, %[[COPY]]
++  %fill = stream.async.fill on(#hal.device.promise<@dev_a>) %value, %transfer[%c0 to %size for %size] : i32 -> %transfer as !stream.resource<external>{%size}
++  // CHECK: util.return %[[FILLED]], %[[IMPORTED]]
++  util.return %fill, %initial : !stream.resource<external>, !stream.resource<external>
++}
++
++// -----
++
++// A consuming import on one incoming path cannot hide a borrowed import on
++// another path when deciding whether the inferred transfer is protective.
++// CHECK-LABEL: @inferred_transfer_preserves_mixed_import_ownership
++util.func public @inferred_transfer_preserves_mixed_import_ownership(%borrowed: !util.buffer, %owned: !util.buffer, %cond: i1) -> !stream.resource<external> {
++  %c0 = arith.constant 0 : index
++  %size = arith.constant 4 : index
++  %value = arith.constant 123 : i32
++  %resource = scf.if %cond -> !stream.resource<external> {
++    %import = stream.tensor.import on(#hal.device.promise<@dev_a>) %borrowed : !util.buffer -> tensor<1xi32> in !stream.resource<external>{%size}
++    scf.yield %import : !stream.resource<external>
++  } else {
++    %import = stream.tensor.import on(#hal.device.promise<@dev_a>) consume %owned : !util.buffer -> tensor<1xi32> in !stream.resource<external>{%size}
++    scf.yield %import : !stream.resource<external>
++  }
++  // CHECK: %[[COPY:.+]] = stream.async.transfer
++  %transfer = stream.async.transfer %resource : !stream.resource<external>{%size} -> to(#hal.device.promise<@dev_a>) !stream.resource<external>{%size}
++  // CHECK: stream.async.fill on(#hal.device.promise<@dev_a>) %{{.+}}, %[[COPY]]
++  %fill = stream.async.fill on(#hal.device.promise<@dev_a>) %value, %transfer[%c0 to %size for %size] : i32 -> %transfer as !stream.resource<external>{%size}
++  util.return %fill : !stream.resource<external>
++}
++
++// -----
++
++// The callee is visited before its caller. A clone in the caller may still
++// elide later, so it cannot establish ownership for a mutating transfer here.
++// CHECK-LABEL: @inferred_transfer_before_borrowed_caller
++util.func private @inferred_transfer_before_borrowed_caller(%resource: !stream.resource<external>, %size: index) -> !stream.resource<external> {
++  %c0 = arith.constant 0 : index
++  %value = arith.constant 123 : i32
++  // CHECK: %[[COPY:.+]] = stream.async.transfer
++  %transfer = stream.async.transfer %resource : !stream.resource<external>{%size} -> to(#hal.device.promise<@dev_a>) !stream.resource<external>{%size}
++  // CHECK: stream.async.fill on(#hal.device.promise<@dev_a>) %{{.+}}, %[[COPY]]
++  %fill = stream.async.fill on(#hal.device.promise<@dev_a>) %value, %transfer[%c0 to %size for %size] : i32 -> %transfer as !stream.resource<external>{%size}
++  util.return %fill : !stream.resource<external>
++}
++// CHECK-LABEL: @borrowed_caller_with_elidable_clone
++util.func public @borrowed_caller_with_elidable_clone(%buffer: !util.buffer) -> !stream.resource<external> {
++  %size = arith.constant 4 : index
++  %import = stream.tensor.import on(#hal.device.promise<@dev_a>) %buffer : !util.buffer -> tensor<1xi32> in !stream.resource<external>{%size}
++  %clone = stream.async.clone on(#hal.device.promise<@dev_a>) %import : !stream.resource<external>{%size} -> !stream.resource<external>{%size}
++  %result = util.call @inferred_transfer_before_borrowed_caller(%clone, %size) : (!stream.resource<external>, index) -> !stream.resource<external>
++  util.return %result : !stream.resource<external>
++}
++
++// -----
++
++// An opaque forwarding operation cannot establish ownership underneath a clone
++// that may elide later in a caller.
++// CHECK-LABEL: @inferred_transfer_before_unknown_caller
++util.func private @inferred_transfer_before_unknown_caller(%resource: !stream.resource<external>, %size: index) -> !stream.resource<external> {
++  %c0 = arith.constant 0 : index
++  %value = arith.constant 123 : i32
++  // CHECK: %[[COPY:.+]] = stream.async.transfer
++  %transfer = stream.async.transfer %resource : !stream.resource<external>{%size} -> to(#hal.device.promise<@dev_a>) !stream.resource<external>{%size}
++  // CHECK: stream.async.fill on(#hal.device.promise<@dev_a>) %{{.+}}, %[[COPY]]
++  %fill = stream.async.fill on(#hal.device.promise<@dev_a>) %value, %transfer[%c0 to %size for %size] : i32 -> %transfer as !stream.resource<external>{%size}
++  util.return %fill : !stream.resource<external>
++}
++// CHECK-LABEL: @unknown_caller_with_elidable_clone
++util.func public @unknown_caller_with_elidable_clone(%borrowed: !util.buffer, %owned: !util.buffer, %cond: i1) -> !stream.resource<external> {
++  %size = arith.constant 4 : index
++  %a = stream.tensor.import on(#hal.device.promise<@dev_a>) %borrowed : !util.buffer -> tensor<1xi32> in !stream.resource<external>{%size}
++  %b = stream.tensor.import on(#hal.device.promise<@dev_a>) consume %owned : !util.buffer -> tensor<1xi32> in !stream.resource<external>{%size}
++  %selected = arith.select %cond, %a, %b : !stream.resource<external>
++  %clone = stream.async.clone on(#hal.device.promise<@dev_a>) %selected : !stream.resource<external>{%size} -> !stream.resource<external>{%size}
++  %result = util.call @inferred_transfer_before_unknown_caller(%clone, %size) : (!stream.resource<external>, index) -> !stream.resource<external>
++  util.return %result : !stream.resource<external>
++}
++
++// -----
++
++// The same zero-trip path may retain borrowed storage beneath a clone in a
++// caller visited after the callee's mutating transfer.
++// CHECK-LABEL: @inferred_transfer_before_zero_trip_caller
++util.func private @inferred_transfer_before_zero_trip_caller(%resource: !stream.resource<external>, %size: index) -> !stream.resource<external> {
++  %c0 = arith.constant 0 : index
++  %value = arith.constant 123 : i32
++  // CHECK: %[[COPY:.+]] = stream.async.transfer
++  %transfer = stream.async.transfer %resource : !stream.resource<external>{%size} -> to(#hal.device.promise<@dev_a>) !stream.resource<external>{%size}
++  // CHECK: stream.async.fill on(#hal.device.promise<@dev_a>) %{{.+}}, %[[COPY]]
++  %fill = stream.async.fill on(#hal.device.promise<@dev_a>) %value, %transfer[%c0 to %size for %size] : i32 -> %transfer as !stream.resource<external>{%size}
++  util.return %fill : !stream.resource<external>
++}
++// CHECK-LABEL: @zero_trip_caller_with_elidable_clone
++util.func public @zero_trip_caller_with_elidable_clone(%borrowed: !util.buffer, %owned: !util.buffer, %count: index) -> !stream.resource<external> {
++  %c0 = arith.constant 0 : index
++  %c1 = arith.constant 1 : index
++  %size = arith.constant 4 : index
++  %initial = stream.tensor.import on(#hal.device.promise<@dev_a>) %borrowed : !util.buffer -> tensor<1xi32> in !stream.resource<external>{%size}
++  %owned_import = stream.tensor.import on(#hal.device.promise<@dev_a>) consume %owned : !util.buffer -> tensor<1xi32> in !stream.resource<external>{%size}
++  %loop = scf.for %i = %c0 to %count step %c1 iter_args(%iter = %initial) -> !stream.resource<external> {
++    scf.yield %owned_import : !stream.resource<external>
++  }
++  %clone = stream.async.clone on(#hal.device.promise<@dev_a>) %loop : !stream.resource<external>{%size} -> !stream.resource<external>{%size}
++  %result = util.call @inferred_transfer_before_zero_trip_caller(%clone, %size) : (!stream.resource<external>, index) -> !stream.resource<external>
++  util.return %result : !stream.resource<external>
++}
++
++// -----
++
++// Existing topology-based elision of a read-only imported resource is separate
++// from the new inferred-affinity optimization and retains its behavior.
++module attributes {
++  stream.topology = #hal.device.topology<links = [
++    (@dev_a -> @dev_a = {unified_memory = true})
++  ]>
++} {
++// CHECK-LABEL: @topology_elision_of_readonly_import_is_unchanged
++util.func public @topology_elision_of_readonly_import_is_unchanged(%buffer: !util.buffer) -> !stream.resource<external> {
++  %size = arith.constant 4 : index
++  // CHECK: %[[IMPORTED:.+]] = stream.tensor.import
++  %import = stream.tensor.import on(#hal.device.promise<@dev_a>) %buffer : !util.buffer -> tensor<1xi32> in !stream.resource<external>{%size}
++  // CHECK-NOT: stream.async.transfer
++  %transfer = stream.async.transfer %import : !stream.resource<external>{%size} -> to(#hal.device.promise<@dev_a>) !stream.resource<external>{%size}
++  // CHECK: util.return %[[IMPORTED]]
++  util.return %transfer : !stream.resource<external>
++}
++}
++
++// -----
++
+ // Tests scf.if with conditional in-place fill (no clone needed).
+ // The resource can be conditionally mutated without cloning since it's the last use.
+ 

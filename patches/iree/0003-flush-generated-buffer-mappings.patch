@@ -1,0 +1,13 @@
+--- a/runtime/src/iree/hal/buffer_view_util.c
++++ b/runtime/src/iree/hal/buffer_view_util.c
+@@ -296,6 +296,10 @@
+   // Generate using the callback directly into the buffer.
+   if (iree_status_is_ok(status)) {
+     status = callback(&buffer_mapping, user_data);
++    if (iree_status_is_ok(status)) {
++      status = iree_hal_buffer_mapping_flush_range(
++          &buffer_mapping, 0, content_size);
++    }
+   }
+ 
+   status =

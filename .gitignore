@@ -26,8 +26,14 @@ nx_iree-*.tar
 /tmp/
 
 /iree-runtime/
+/iree-compiler-build/
 /cache/
 
 /priv/iree-compile
 /priv/iree-runtime
 /priv/libnx_iree.so
+
+/bench/_build/
+/bench/deps/
+/bench/stereo/opencv/_build/
+/bench/stereo/opencv/deps/
