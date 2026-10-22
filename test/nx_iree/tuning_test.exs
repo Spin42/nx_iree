@@ -1,54 +1,79 @@
 defmodule NxIREE.TuningTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
-  @vulkan ["--iree-hal-target-backends=vulkan-spirv"]
-  @t Nx.template({128, 128}, :f32)
+  defmodule Provider do
+    @behaviour NxIREE.Tuning
 
-  defp exported(opts) do
-    NxIREE.export(&Nx.dot/2, [@t, @t], [iree_compiler_flags: @vulkan] ++ opts)
-    |> :erlang.binary_to_term()
+    @text """
+    module attributes {transform.with_named_sequence, iree_codegen.tuning_spec_with_default_entrypoint} {
+      transform.named_sequence @match(%op: !transform.any_op {transform.readonly}) -> !transform.any_op {
+        transform.yield %op : !transform.any_op
+      }
+      transform.named_sequence @apply_op_config(%op: !transform.any_op {transform.readonly}) {
+        transform.yield
+      }
+      transform.named_sequence @__kernel_config(%variant_op: !transform.any_op {transform.consumed}) -> !transform.any_op
+          attributes {iree_codegen.tuning_spec_entrypoint} {
+        %res = transform.foreach_match in %variant_op
+          @match -> @apply_op_config
+          : (!transform.any_op) -> !transform.any_op
+        transform.yield %res : !transform.any_op
+      }
+    }
+    """
+
+    @impl true
+    def fetch(:example), do: {:ok, Process.get(:tuning_text, @text), ["vulkan-spirv"]}
+    def fetch(_), do: :error
   end
 
-  test "a tuned export records the spec's name, not its file" do
-    tuned = exported(iree_tuning: :maxwell_matmul)
-    plain = exported([])
+  test "exports retain a content-addressed provider marker instead of a host path" do
+    template = Nx.template({4}, :f32)
 
-    assert "--nx-iree-tuning=maxwell_matmul" in tuned.compilation_flags
-    refute Enum.any?(tuned.compilation_flags, &(&1 =~ "transform-dialect-library"))
-    refute tuned.bytecode == plain.bytecode
-  end
-
-  test "unknown specs and non-Vulkan backends raise" do
-    assert_raise ArgumentError, ~r/unknown :iree_tuning :nope/, fn ->
-      exported(iree_tuning: :nope)
-    end
-
-    assert_raise ArgumentError, ~r/vulkan-spirv backend, got llvm-cpu/, fn ->
-      NxIREE.export(&Nx.dot/2, [@t, @t],
-        iree_compiler_flags: ["--iree-hal-target-backends=llvm-cpu"],
-        iree_tuning: :maxwell_matmul
+    exported =
+      NxIREE.export(&Nx.add(&1, &1), [template],
+        iree_compiler_flags: ["--iree-hal-target-backends=vulkan-spirv"],
+        iree_tuning: {Provider, :example}
       )
+      |> :erlang.binary_to_term()
+
+    marker = NxIREE.Tuning.flag({Provider, :example}, "vulkan-spirv")
+    assert is_binary(exported.bytecode) and byte_size(exported.bytecode) > 0
+    assert marker in exported.compilation_flags
+    refute Enum.any?(exported.compilation_flags, &(&1 =~ "transform-dialect-library"))
+
+    ["--iree-codegen-transform-dialect-library=" <> path] = NxIREE.Tuning.resolve([marker])
+    {:ok, text, _} = Provider.fetch(:example)
+    assert File.read!(path) == text
+  end
+
+  test "changing a provider's spec content changes the cache marker" do
+    before = NxIREE.Tuning.flag({Provider, :example}, "vulkan-spirv")
+    {:ok, text, _} = Provider.fetch(:example)
+    Process.put(:tuning_text, text <> "\n")
+    after_change = NxIREE.Tuning.flag({Provider, :example}, "vulkan-spirv")
+    refute before == after_change
+
+    assert_raise ArgumentError, ~r/changed after selection/, fn ->
+      NxIREE.Tuning.resolve([before])
     end
   end
 
-  test "a tuned matmul matches the CPU on a Vulkan device" do
-    case NxIREE.list_devices("vulkan") do
-      {:ok, [gpu | _]} ->
-        a = Nx.iota({128, 128}, type: :f32, backend: Nx.BinaryBackend) |> Nx.divide(1000)
+  test "unknown specs, invalid providers, and unsupported backends raise" do
+    assert_raise ArgumentError, ~r/unknown :iree_tuning/, fn ->
+      NxIREE.Tuning.flag({Provider, :nope}, "vulkan-spirv")
+    end
 
-        got =
-          Nx.Defn.jit(&Nx.dot/2,
-            compiler: NxIREE.Compiler,
-            iree_runtime_options: [device: gpu],
-            iree_tuning: :maxwell_matmul
-          ).(a, a)
-          |> Nx.backend_transfer(Nx.BinaryBackend)
+    assert_raise ArgumentError, ~r/must implement NxIREE.Tuning.fetch/, fn ->
+      NxIREE.Tuning.flag({String, :example}, "vulkan-spirv")
+    end
 
-        want = Nx.dot(a, a)
-        assert Nx.subtract(got, want) |> Nx.abs() |> Nx.reduce_max() |> Nx.to_number() < 1.0e-2
+    assert_raise ArgumentError, ~r/supports .*vulkan-spirv.*got llvm-cpu/, fn ->
+      NxIREE.Tuning.flag({Provider, :example}, "llvm-cpu")
+    end
 
-      _ ->
-        :ok
+    assert_raise ArgumentError, ~r/expected :iree_tuning to be/, fn ->
+      NxIREE.Tuning.flag(:example, "vulkan-spirv")
     end
   end
 end

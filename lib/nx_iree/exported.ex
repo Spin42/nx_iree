@@ -22,6 +22,7 @@ defmodule NxIREE.Exported do
   def decode(binary) do
     Code.ensure_loaded(Nx.Tensor)
     Code.ensure_loaded(Nx.TemplateBackend)
+    Code.ensure_loaded(Nx.Type)
     :erlang.binary_to_term(binary, [:safe])
   end
 

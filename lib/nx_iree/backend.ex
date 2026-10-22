@@ -70,6 +70,15 @@ defmodule NxIREE.Backend do
   end
 
   @impl true
+  def reshape(out, %Nx.Tensor{data: data}) do
+    {:ok, ref} = NxIREE.Native.reshape_buffer(data.ref, Tuple.to_list(out.shape))
+    %{out | data: %{data | ref: ref}}
+  end
+
+  @impl true
+  def squeeze(out, tensor, _axes), do: reshape(out, tensor)
+
+  @impl true
   def backend_copy(tensor, module, backend_options) do
     data = to_binary(tensor, -1)
 
@@ -248,8 +257,6 @@ defmodule NxIREE.Backend do
       {:iota, [:axis, :backend_options], []},
       {:as_type, [:tensor], [:tensor]},
       {:bitcast, [:tensor], [:tensor]},
-      {:reshape, [:tensor], [:tensor]},
-      {:squeeze, [:tensor, :axes], [:tensor]},
       {:broadcast, [:tensor, :shape, :axes], [:tensor]},
       {:transpose, [:tensor, :axes], [:tensor]},
       {:pad, [:tensor, :pad_value, :padding_config], [:tensor, :pad_value]},

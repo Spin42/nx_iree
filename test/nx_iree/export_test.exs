@@ -26,6 +26,13 @@ defmodule NxIREE.ExportTest do
     assert host(out) |> Nx.to_flat_list() == [5.0, 15.0]
   end
 
+  test "uploads reject byte lengths that disagree with shape and type" do
+    assert {:error, reason} =
+             NxIREE.Native.allocate_buffer(<<1, 2, 3>>, cpu().ref, [2], ~c"s32")
+
+    assert to_string(reason) =~ "input byte length"
+  end
+
   test "skips arguments the function does not use" do
     model =
       roundtrip(fn a, _unused, c -> Nx.multiply(a, c) end, [

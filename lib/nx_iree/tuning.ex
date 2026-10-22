@@ -1,59 +1,83 @@
 defmodule NxIREE.Tuning do
-  @moduledoc false
+  @moduledoc """
+  Behaviour for libraries that supply IREE transform-dialect tuning specs.
 
-  # Tuning specs selected by name with the compiler's :iree_tuning option.
-  # The flags carry a marker naming the spec, so module cache keys do not
-  # depend on where the spec file lives; the marker becomes IREE's
-  # transform-dialect library flag only for the compiler invocation.
-  #
-  #   * :maxwell_matmul - 64x64x8 workgroup tiles, 16x8 threads, no
-  #     multi-buffering for M x N x K matmuls on SPIR-V. On the Jetson Nano's
-  #     GM20B it takes a 1024 matmul from 34-42 to 99 GFLOPS and DistilBERT
-  #     from 346 to 145 ms per batch of 4.
+  Pass the provider and spec name to NxIREE.Compiler or NxIREE.export/3:
 
-  @specs %{maxwell_matmul: "maxwell_matmul.mlir"}
+      iree_tuning: {ProviderModule, :spec_name}
 
-  for {_name, file} <- @specs, do: @external_resource(Path.join([__DIR__, "tuning", file]))
+  The provider returns the spec text and supported compiler backends.
+  Cache keys include the text's SHA-256 digest, independently of its location
+  on the host.
+  """
 
-  @texts Map.new(@specs, fn {name, file} ->
-           {name, File.read!(Path.join([__DIR__, "tuning", file]))}
-         end)
+  @callback fetch(atom()) :: {:ok, String.t(), [String.t()]} | :error
 
   @marker "--nx-iree-tuning="
 
-  @doc """
-  The flag that selects `name`, raising for unknown names or backends.
-  """
-  def flag(name, backend) do
-    unless Map.has_key?(@texts, name) do
+  @doc false
+  def flag({provider, name}, backend) when is_atom(provider) and is_atom(name) do
+    {text, backends} = fetch!(provider, name)
+
+    unless backend in backends do
       raise ArgumentError,
-            "unknown :iree_tuning #{inspect(name)}, expected one of #{inspect(Map.keys(@texts))}"
+            ":iree_tuning #{inspect({provider, name})} supports #{inspect(backends)}, got #{backend}"
     end
 
-    unless backend == "vulkan-spirv" do
-      raise ArgumentError, ":iree_tuning applies to the vulkan-spirv backend, got #{backend}"
-    end
-
-    @marker <> Atom.to_string(name)
+    @marker <>
+      Enum.join(
+        [
+          URI.encode_www_form(Atom.to_string(provider)),
+          URI.encode_www_form(Atom.to_string(name)),
+          digest(text)
+        ],
+        ":"
+      )
   end
 
-  @doc """
-  Replaces tuning markers in `flags` with IREE's flag for the spec's file.
-  """
+  def flag(value, _backend) do
+    raise ArgumentError,
+          "expected :iree_tuning to be {ProviderModule, :spec_name}, got #{inspect(value)}"
+  end
+
+  @doc false
   def resolve(flags) do
     Enum.map(flags, fn
-      @marker <> name ->
-        "--iree-codegen-transform-dialect-library=" <> spec_file(String.to_existing_atom(name))
+      @marker <> marker ->
+        [provider, name, expected_digest] = String.split(marker, ":", parts: 3)
+        provider = provider |> URI.decode_www_form() |> String.to_existing_atom()
+        name = name |> URI.decode_www_form() |> String.to_existing_atom()
+        {text, _backends} = fetch!(provider, name)
+
+        unless digest(text) == expected_digest do
+          raise ArgumentError, "tuning spec #{inspect({provider, name})} changed after selection"
+        end
+
+        "--iree-codegen-transform-dialect-library=" <> spec_file(text, expected_digest)
 
       flag ->
         flag
     end)
   end
 
-  defp spec_file(name) do
-    text = Map.fetch!(@texts, name)
-    digest = :crypto.hash(:sha256, text) |> Base.encode16(case: :lower) |> binary_part(0, 16)
-    path = Path.join(System.tmp_dir!(), "nx_iree-#{name}-#{digest}.mlir")
+  defp fetch!(provider, name) do
+    unless Code.ensure_loaded?(provider) and function_exported?(provider, :fetch, 1) do
+      raise ArgumentError, "#{inspect(provider)} must implement NxIREE.Tuning.fetch/1"
+    end
+
+    case provider.fetch(name) do
+      {:ok, text, backends} when is_binary(text) and is_list(backends) ->
+        {text, backends}
+
+      :error ->
+        raise ArgumentError, "unknown :iree_tuning #{inspect({provider, name})}"
+    end
+  end
+
+  defp digest(text), do: :crypto.hash(:sha256, text) |> Base.encode16(case: :lower)
+
+  defp spec_file(text, digest) do
+    path = Path.join(System.tmp_dir!(), "nx_iree-tuning-#{digest}.mlir")
 
     unless File.exists?(path) do
       tmp = path <> ".#{System.unique_integer([:positive])}"

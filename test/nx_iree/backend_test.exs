@@ -20,6 +20,57 @@ defmodule NxIREE.BackendTest do
              {Nx.type(expected), Nx.shape(expected), Nx.to_flat_list(expected)}
   end
 
+  test "reshape and squeeze keep independent resident views without compilation" do
+    source = Nx.iota({2, 3}, type: :s32)
+    expected = Nx.to_binary(source)
+    previous = Nx.Defn.default_options()
+    Nx.Defn.default_options(iree_compiler_flags: ["--invalid-metadata-compile"])
+
+    try do
+      reshaped = Nx.reshape(source, {1, 3, 2})
+      squeezed = Nx.squeeze(reshaped, axes: [0])
+      assert reshaped.data.ref != source.data.ref
+      assert squeezed.data.ref != reshaped.data.ref
+      assert Nx.shape(source) == {2, 3}
+      assert Nx.shape(reshaped) == {1, 3, 2}
+      assert Nx.shape(squeezed) == {3, 2}
+      assert reshaped.data.device == source.data.device
+
+      Nx.backend_deallocate(reshaped)
+      assert Nx.to_binary(source) == expected
+      Nx.backend_deallocate(source)
+      assert Nx.to_binary(squeezed) == expected
+      Nx.backend_deallocate(squeezed)
+    after
+      Nx.Defn.default_options(previous)
+    end
+  end
+
+  test "reshaped views carry their new dimensions into native computations" do
+    source = Nx.iota({2, 3}, type: :f32)
+    reshaped = Nx.reshape(source, {3, 2})
+    device = NxIREE.Device.fetch!(source.data.device_uri)
+
+    assert jit(&Nx.sum(&1, axes: [1]), device).(reshaped) |> Nx.to_flat_list() == [1.0, 5.0, 9.0]
+    assert Nx.to_flat_list(source) == [0.0, 1.0, 2.0, 3.0, 4.0, 5.0]
+
+    scalar = Nx.tensor([7], type: :u8) |> Nx.squeeze()
+    assert Nx.shape(scalar) == {}
+    assert Nx.to_number(scalar) == 7
+  end
+
+  test "native reshape rejects invalid shapes and released buffers" do
+    source = Nx.tensor([1, 2], backend: {NxIREE.Backend, device: cpu()})
+
+    for shape <- [[3], [-2], [9_223_372_036_854_775_807, 3], ["2"], :invalid] do
+      assert {:error, _} = NxIREE.Native.reshape_buffer(source.data.ref, shape)
+    end
+
+    assert {:error, _} = NxIREE.Native.reshape_buffer(:invalid, [2])
+    Nx.backend_deallocate(source)
+    assert {:error, _} = NxIREE.Native.reshape_buffer(source.data.ref, [2])
+  end
+
   # IREE's memoized command buffers kept the first call's offsets on Vulkan
   test "dynamic slices follow their offsets across calls on the default device" do
     ref = Nx.iota({4, 6}, type: :f32, backend: Nx.BinaryBackend)

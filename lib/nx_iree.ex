@@ -266,8 +266,8 @@ defmodule NxIREE do
   ## Options
 
     * `:iree_compiler_flags` - flags for `iree-compile`. They must name the
-      target with `--iree-hal-target-backends`, e.g. `vulkan-spirv` plus
-      `--iree-vulkan-target=pascal` for a Jetson Nano.
+      target with `--iree-hal-target-backends`, e.g. `vulkan-spirv`, with
+      a target or capability list supported by the destination device.
 
   ## Examples
 
