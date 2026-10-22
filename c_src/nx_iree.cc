@@ -329,6 +329,29 @@ static bool is_deallocated(iree::runtime::IREETensor* tensor) {
   return tensor == nullptr || (tensor->buffer_view == nullptr && tensor->data == nullptr);
 }
 
+DECLARE_NIF(begin_profiling_nif) {
+  iree_hal_device_t **device;
+  std::string path;
+  if (!get<iree_hal_device_t*>(env, argv[0], device) ||
+      !get_string(env, argv[1], path) || path.empty() ||
+      path.find('\0') != std::string::npos) {
+    return error(env, "invalid profiling device or path");
+  }
+  auto status = begin_profiling(*device, path);
+  if (!is_ok(status)) return error(env, get_status_message(status).c_str());
+  return ok(env);
+}
+
+DECLARE_NIF(end_profiling_nif) {
+  iree_hal_device_t **device;
+  if (!get<iree_hal_device_t*>(env, argv[0], device)) {
+    return error(env, "invalid profiling device");
+  }
+  auto status = end_profiling(*device);
+  if (!is_ok(status)) return error(env, get_status_message(status).c_str());
+  return ok(env);
+}
+
 DECLARE_NIF(read_buffer_nif) {
   iree_hal_device_t** device;
   iree::runtime::IREETensor** input;
@@ -407,15 +430,24 @@ DECLARE_NIF(allocate_buffer) {
     return error(env, "invalid type");
   }
 
-  auto input = new iree::runtime::IREETensor(binary.data, binary.size, dims, type);
-
-  auto status = input->upload(*device);
+  auto [status, input] = upload_tensor(*device, binary.data, binary.size, dims, type);
   if (!is_ok(status)) {
-    delete input;
     return error(env, get_status_message(status).c_str());
   }
 
   return ok(env, make<iree::runtime::IREETensor*>(env, input));
+}
+
+DECLARE_NIF(reshape_buffer) {
+  iree::runtime::IREETensor** input;
+  std::vector<int64_t> dims;
+  if (!get<iree::runtime::IREETensor*>(env, argv[0], input) ||
+      !get_list(env, argv[1], dims)) {
+    return error(env, "invalid reshape input or dimensions");
+  }
+  auto [status, output] = reshape_tensor(*input, dims);
+  if (!is_ok(status)) return error(env, get_status_message(status).c_str());
+  return ok(env, make<iree::runtime::IREETensor*>(env, output));
 }
 
 DECLARE_NIF(deallocate_buffer) {
@@ -611,10 +643,14 @@ static ErlNifFunc funcs[] = {
     {"list_devices", 3, list_devices},
     {"list_drivers", 1, list_drivers},
     {"deallocate_buffer", 1, deallocate_buffer},
-    {"allocate_buffer", 4, allocate_buffer},
+    {"reshape_buffer", 2, reshape_buffer, ERL_NIF_DIRTY_JOB_CPU_BOUND},
+    // Allocation and readback transfers may wait for device progress.
+    {"allocate_buffer", 4, allocate_buffer, ERL_NIF_DIRTY_JOB_IO_BOUND},
     {"serialize_tensor", 1, serialize_tensor},
     {"deserialize_tensor", 1, deserialize_tensor},
-    {"read_buffer", 3, read_buffer_nif},
+    {"read_buffer", 3, read_buffer_nif, ERL_NIF_DIRTY_JOB_IO_BOUND},
+    {"begin_profiling", 2, begin_profiling_nif, ERL_NIF_DIRTY_JOB_IO_BOUND},
+    {"end_profiling", 1, end_profiling_nif, ERL_NIF_DIRTY_JOB_IO_BOUND},
     {"call_io", 6, call_nif, ERL_NIF_DIRTY_JOB_IO_BOUND},
     {"call_cpu", 6, call_nif, ERL_NIF_DIRTY_JOB_CPU_BOUND},
     {"load_module", 4, load_module_nif, ERL_NIF_DIRTY_JOB_IO_BOUND},

@@ -5,6 +5,8 @@
 #include <iree/base/threading/numa.h>
 #include <iree/hal/api.h>
 #include <iree/hal/drivers/init.h>
+#include <iree/hal/utils/profile_file.h>
+#include <iree/io/file_handle.h>
 #include <iree/modules/hal/debugging.h>
 #include <iree/vm/bytecode/module.h>
 #include <iree/tooling/device_util.h>
@@ -117,20 +119,85 @@ void iree::runtime::IREETensor::deallocate() {
   }
 }
 
-iree_status_t
-iree::runtime::IREETensor::upload(iree_hal_device_t *target_device) {
-  if (buffer_view != nullptr) {
-    return iree_ok_status();
+static iree_status_t upload_buffer_view(
+    iree_hal_device_t *target_device, iree_const_byte_span_t data,
+    const std::vector<iree_hal_dim_t> &dims, iree_hal_element_type_t type,
+    iree_hal_buffer_view_t **out_view) {
+  iree_device_size_t expected_size = 0;
+  IREE_RETURN_IF_ERROR(iree_hal_buffer_compute_view_size(
+      dims.size(), dims.data(), type, IREE_HAL_ENCODING_TYPE_DENSE_ROW_MAJOR,
+      &expected_size));
+  if (expected_size != data.data_length) {
+    return iree_make_status(IREE_STATUS_INVALID_ARGUMENT,
+                            "input byte length does not match shape and type");
   }
-
-  IREE_RETURN_IF_ERROR(iree_hal_buffer_view_allocate_buffer_copy(
+  // Let IREE use a high-performance mapping on shared-memory devices and
+  // retain its staged-transfer fallback for other allocators.
+  return iree_hal_buffer_view_generate_buffer(
       target_device, iree_hal_device_allocator(target_device), dims.size(),
       dims.data(), type, IREE_HAL_ENCODING_TYPE_DENSE_ROW_MAJOR,
       (iree_hal_buffer_params_t){
           .usage = IREE_HAL_BUFFER_USAGE_DEFAULT,
           .type = IREE_HAL_MEMORY_TYPE_DEVICE_LOCAL,
       },
-      data_byte_span(), &buffer_view));
+      [](iree_hal_buffer_mapping_t *mapping, void *user_data) {
+        auto *data = static_cast<iree_const_byte_span_t *>(user_data);
+        if (data->data_length > 0) {
+          std::memcpy(mapping->contents.data, data->data, data->data_length);
+        }
+        return iree_ok_status();
+      },
+      &data, out_view);
+}
+
+std::pair<iree_status_t, iree::runtime::IREETensor *>
+upload_tensor(iree_hal_device_t *device, const void *data, size_t size,
+              const std::vector<int64_t> &dims, iree_hal_element_type_t type) {
+  std::vector<iree_hal_dim_t> shape(dims.begin(), dims.end());
+  iree_hal_buffer_view_t *view = nullptr;
+  auto status = upload_buffer_view(
+      device, iree_make_const_byte_span(data, size), shape, type, &view);
+  if (!iree_status_is_ok(status)) return {status, nullptr};
+  return {iree_ok_status(), new iree::runtime::IREETensor(view, type, device)};
+}
+
+std::pair<iree_status_t, iree::runtime::IREETensor *>
+reshape_tensor(iree::runtime::IREETensor *input,
+               const std::vector<int64_t> &dims) {
+  if (!input || !input->buffer_view) {
+    return {iree_make_status(IREE_STATUS_INVALID_ARGUMENT,
+                             "reshape requires a live device buffer"), nullptr};
+  }
+  for (auto dim : dims) {
+    if (dim < 0) {
+      return {iree_make_status(IREE_STATUS_INVALID_ARGUMENT,
+                               "negative reshape dimension"), nullptr};
+    }
+  }
+  std::vector<iree_hal_dim_t> shape(dims.begin(), dims.end());
+  iree_device_size_t count = 0;
+  auto status = iree_hal_buffer_view_compute_element_count(
+      shape.size(), shape.data(), &count);
+  if (!iree_status_is_ok(status)) return {status, nullptr};
+  if (count != iree_hal_buffer_view_element_count(input->buffer_view)) {
+    return {iree_make_status(IREE_STATUS_INVALID_ARGUMENT,
+                             "reshape element count does not match input"), nullptr};
+  }
+  iree_hal_buffer_view_t *view = nullptr;
+  status = iree_hal_buffer_view_create(
+      iree_hal_buffer_view_buffer(input->buffer_view), shape.size(), shape.data(),
+      input->type, iree_hal_buffer_view_encoding_type(input->buffer_view),
+      iree_allocator_system(), &view);
+  if (!iree_status_is_ok(status)) return {status, nullptr};
+  return {iree_ok_status(),
+          new iree::runtime::IREETensor(view, input->type, input->device)};
+}
+
+iree_status_t
+iree::runtime::IREETensor::upload(iree_hal_device_t *target_device) {
+  if (buffer_view != nullptr) return iree_ok_status();
+  IREE_RETURN_IF_ERROR(upload_buffer_view(
+      target_device, data_byte_span(), dims, type, &buffer_view));
 
   device = target_device;
   std::free(data);
@@ -733,6 +800,34 @@ iree_status_t read_buffer(iree_hal_device_t *device,
       IREE_HAL_TRANSFER_BUFFER_FLAG_DEFAULT, iree_infinite_timeout());
 
   return status;
+}
+
+iree_status_t begin_profiling(iree_hal_device_t *device,
+                             const std::string &path) {
+  iree_io_file_handle_t *file = nullptr;
+  iree_hal_profile_sink_t *sink = nullptr;
+  auto status = iree_io_file_handle_create(
+      IREE_IO_FILE_MODE_WRITE | IREE_IO_FILE_MODE_SEQUENTIAL_SCAN |
+          IREE_IO_FILE_MODE_SHARE_READ,
+      iree_make_cstring_view(path.c_str()), 0, iree_allocator_system(), &file);
+  if (iree_status_is_ok(status)) {
+    status = iree_hal_profile_file_sink_create(file, iree_allocator_system(), &sink);
+  }
+  iree_io_file_handle_release(file);
+  if (iree_status_is_ok(status)) {
+    iree_hal_device_profiling_options_t options = {};
+    options.data_families = IREE_HAL_DEVICE_PROFILING_DATA_DISPATCH_EVENTS |
+        IREE_HAL_DEVICE_PROFILING_DATA_DEVICE_QUEUE_EVENTS |
+        IREE_HAL_DEVICE_PROFILING_DATA_QUEUE_EVENTS;
+    options.sink = sink;
+    status = iree_hal_device_profiling_begin(device, &options);
+  }
+  iree_hal_profile_sink_release(sink);
+  return status;
+}
+
+iree_status_t end_profiling(iree_hal_device_t *device) {
+  return iree_hal_device_profiling_end(device);
 }
 
 std::string get_status_message(iree_status_t status) {

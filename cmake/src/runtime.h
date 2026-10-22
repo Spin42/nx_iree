@@ -113,6 +113,12 @@ iree_hal_element_type_t nx_type_to_iree_type(std::string type_string);
 iree_vm_instance_t* create_instance();
 iree_hal_driver_registry_t* get_driver_registry();
 iree_hal_device_t* create_device(iree_hal_driver_registry_t* registry, const std::string& device_uri);
+std::pair<iree_status_t, iree::runtime::IREETensor*>
+upload_tensor(iree_hal_device_t* device, const void* data, size_t size,
+              const std::vector<int64_t>& dims, iree_hal_element_type_t type);
+
+std::pair<iree_status_t, iree::runtime::IREETensor*>
+reshape_tensor(iree::runtime::IREETensor* input, const std::vector<int64_t>& dims);
 
 std::pair<iree_status_t, std::optional<std::vector<iree::runtime::IREETensor*>>>
 call(iree_vm_instance_t* i, iree_hal_device_t*, std::string, unsigned char*, size_t, std::vector<iree::runtime::IREETensor*>, std::vector<bool>);
@@ -126,6 +132,8 @@ std::pair<iree_status_t, std::optional<std::vector<iree::runtime::IREETensor*>>>
 call_loaded(iree::runtime::LoadedModule*, std::string, std::vector<iree::runtime::IREETensor*>, std::vector<bool>);
 
 iree_status_t read_buffer(iree_hal_device_t* device, iree_hal_buffer_view_t* buffer_view, void* output_buffer, size_t num_bytes);
+iree_status_t begin_profiling(iree_hal_device_t* device, const std::string& path);
+iree_status_t end_profiling(iree_hal_device_t* device);
 std::string get_status_message(iree_status_t status);
 
 iree_status_t register_all_drivers(iree_hal_driver_registry_t*);
