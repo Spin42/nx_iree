@@ -81,7 +81,7 @@ kernel structure helps.
 
 ## What the fix work in this repository addresses
 
-`patches/mesa/0013` (order only conflicting memory operations) together with
+`c100_gpu/patches/mesa/0013` (order only conflicting memory operations) together with
 IREE pipeline depth 1 through `bench/tuning/matmul_spec.py` targets causes 1
 and 2: offline, a 64x64x16 tile drops from 240 to 128 GPRs and issues its
 loads ahead of the FMAs. The model predicts ~107-118 GFLOPS for the best
@@ -97,5 +97,6 @@ plausible range. No published cuBLAS SGEMM figure for the Nano was found.
 
 Analysis scripts and notes (cycle model `smsim.py`,
 loop/bank-conflict analysis `loopstats.py`, NAK dependency analysis
-`nakdeps.py`, prior-art notes with sources) are in `../dev/analysis/`;
-reproducing the board kernels offline: `../dev/mesa-host-build-orig.sh` and `../dev/measured-sass.sh`.
+`nakdeps.py`, prior-art notes with sources) are in `c100_gpu/dev/analysis/`;
+reproducing the board kernels offline: `c100_gpu/dev/mesa-host-build-orig.sh`
+and `c100_gpu/dev/measured-sass.sh`.

@@ -1,29 +1,19 @@
-# Exports the Jetson test functions with NxIREE.export/3 for a Vulkan target:
+# Exports test functions with NxIREE.export/3 for a Vulkan target:
 #
-#   * nvk (default) - a capability list NVK provides on the Nano; compiles
-#     every model in real_models.exs
-#   * generic - IREE's baseline profile plus 8-bit storage
+#   * generic (default) - IREE's baseline profile plus 8-bit storage
+#   * nvk - the C100 capability list supplied by the c100_gpu library
 #   * any named IREE target, e.g. pascal (its 32-wide subgroups match the
 #     Maxwell GPU, but it fails to compile BERT- and GPT-style models)
 #
-#   NXIREE_VULKAN_TARGET=nvk NXIREE_FLAGS="..." AOT_OUT=jetson-modules.bin mix run aot.exs
+#   NXIREE_VULKAN_TARGET=generic NXIREE_FLAGS="..." AOT_OUT=vulkan-modules.bin mix run aot.exs
 Logger.configure(level: :warning)
 
-target = System.get_env("NXIREE_VULKAN_TARGET", "nvk")
-out = System.get_env("AOT_OUT", "jetson-modules.bin")
-
-nvk_features =
-  Enum.join(
-    ~w(spirv:v1.3 cap:Shader cap:StorageBuffer8BitAccess cap:Int8 ext:SPV_KHR_8bit_storage
-       cap:GroupNonUniform cap:GroupNonUniformArithmetic cap:GroupNonUniformShuffle
-       cap:GroupNonUniformBallot cap:Int64 cap:Int16 cap:Float16 cap:StorageBuffer16BitAccess
-       ext:SPV_KHR_16bit_storage),
-    ","
-  )
+target = System.get_env("NXIREE_VULKAN_TARGET", "generic")
+out = System.get_env("AOT_OUT", "vulkan-modules.bin")
 
 target_flags =
   case target do
-    "nvk" -> ["--iree-vulkan-target-features=#{nvk_features}"]
+    "nvk" -> C100GPU.Target.compiler_flags()
     "generic" -> []
     named -> ["--iree-vulkan-target=#{named}"]
   end

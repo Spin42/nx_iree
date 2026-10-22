@@ -12,7 +12,7 @@ compiler flags (for example `--iree-vulkan-target=rdna3`) come from
 | `latency.exs` | per-call latency of a tiny function (`OP=sum` for a reduction) |
 | `sweep.exs` | reduction time against size, host and device-resident inputs |
 | `pjrt.exs` | EXLA through IREE's Vulkan PJRT plugin (`../patches/iree-pjrt-exla.patch`) |
-| `aot.exs` | compiles the Jetson test modules ahead of time |
+| `aot.exs` | compiles test modules ahead of time for an explicit Vulkan target |
 | `real_models.exs` | pretrained BERT, DistilBERT, GPT-2, ResNet-50 and ViT servings against EXLA (`docs/real-models.md`) |
 | `offline_cache.exs` | a serving run from the module cache in a VM without EXLA |
 
@@ -36,10 +36,14 @@ unless the flags choose a `--iree-vulkan-target`; device targets such as
 | `bert_dump.exs` | writes BERT-tiny's StableHLO and Vulkan bytecode to `OUT` for standalone runs |
 | `sort_inplace_check.exs` | that sort, argsort and a fused sort leave their device input untouched |
 
-## Jetson
+## Device-specific benchmarks
 
-`aot.exs` writes `jetson-modules.bin` for `NXIREE_VULKAN_TARGET` (default
-`pascal`). `jetson/run.exs` loads those modules on the board with a
-cross-built `libnx_iree.so`, and `jetson/board_run.exs` runs it in a separate
-BEAM from the board's main node with the GPU clock pinned
-(`NXIREE_PIN_HZ`, default 921.6 MHz).
+`aot.exs` writes `vulkan-modules.bin` for `NXIREE_VULKAN_TARGET` (default
+`generic`). The explicit `nvk` target obtains C100 capabilities from the
+separate [`c100_gpu`](../../c100_gpu) library. Set `AOT_OUT` to choose the
+output file.
+
+The C100/Jetson runners and DistilBERT exporter now live in
+`c100_gpu/bench/jetson/`; the current board harness lives in
+`c100_gpu/scripts/stereo_board_run.exs`. The old clock-pinning harness is
+retained there only as historical material.
