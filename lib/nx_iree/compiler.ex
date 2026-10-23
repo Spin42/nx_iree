@@ -176,16 +176,45 @@ defmodule NxIREE.Compiler do
     hooks = Keyword.get(exla_opts, :hooks, %{})
     fun = fn vars -> fun.(vars) |> NxIREE.Compiler.HostCalls.strip!(hooks) end
 
-    %{mlir_module: mlir_module, output_container: output_container, used_inputs: used_inputs} =
-      EXLA.to_mlir_module(fun, vars, exla_opts)
+    # EXLA's own cache is keyed without the target, which decides whether
+    # NxIREE.Vulkan.Kernel blocks lower to dispatches; NxIREE caches modules itself
+    {%{mlir_module: mlir_module, output_container: output_container, used_inputs: used_inputs},
+     kernels} =
+      NxIREE.Vulkan.Kernel.lowering(target_backend(flags), fn ->
+        EXLA.to_mlir_module(fun, vars, Keyword.put(exla_opts, :cache, false))
+      end)
 
     module =
-      NxIREE.compile(mlir_module, flags,
-        output_container: output_container
-      )
+      with_kernel_directory(kernels, fn directory ->
+        mlir_module
+        |> NxIREE.Vulkan.MLIR.inline_kernels(kernels, directory)
+        |> NxIREE.compile(flags, output_container: output_container)
+      end)
 
     {%{module | compilation_flags: flags, used_inputs: Enum.sort(used_inputs)},
      callback_pid_size()}
+  end
+
+  defp target_backend(flags) do
+    Enum.find_value(flags, fn
+      "--iree-hal-target-backends=" <> backend -> backend
+      _ -> nil
+    end)
+  end
+
+  defp with_kernel_directory([], fun), do: fun.(nil)
+
+  defp with_kernel_directory(_kernels, fun) do
+    directory =
+      Path.join(System.tmp_dir!(), "nx_iree-kernels-#{System.unique_integer([:positive])}")
+
+    File.mkdir_p!(directory)
+
+    try do
+      fun.(directory)
+    after
+      File.rm_rf(directory)
+    end
   end
 
   # EXLA emits StableHLO, and NxIREE.call/3 invokes modules synchronously
