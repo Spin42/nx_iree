@@ -16,6 +16,12 @@ compiler flags (for example `--iree-vulkan-target=rdna3`) come from
 | `real_models.exs` | pretrained BERT, DistilBERT, GPT-2, ResNet-50 and ViT servings against EXLA (`docs/real-models.md`) |
 | `offline_cache.exs` | a serving run from the module cache in a VM without EXLA |
 
+Vendor-neutral Vulkan workloads with their own READMEs: `yolo/` (YOLOv5
+through IREE, with preprocessing, compile/run scripts and a per-family
+tuning spec generator), `stereo/` (Census SGBM graphs and GLSL shaders) and
+`vulkan/` (memory streaming). Device-specific tuning and board runners live
+in the device's library, such as `../c100_gpu`.
+
 ## Vulkan i8 masks
 
 IREE 3.13's SPIR-V backend misreads an i8 tensor that a batch matmul

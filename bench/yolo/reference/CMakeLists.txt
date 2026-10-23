@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 3.16)
+project(yolo_reference CXX)
+set(CMAKE_CXX_STANDARD 17)
+find_package(OpenCV 4.8 REQUIRED COMPONENTS core imgproc dnn imgcodecs)
+add_executable(yolo_dump yolo_dump.cpp)
+target_link_libraries(yolo_dump ${OpenCV_LIBS})
