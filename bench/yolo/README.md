@@ -9,20 +9,23 @@ tuning lives with the device's own library (for example
 | --- | --- |
 | `to_fp32.py` | converts an fp16 export to fp32 |
 | `pad_yolov5_onnx.py` | pads the stem to 4 input channels and the detect heads to 256 output channels; outputs unchanged |
-| `compile.sh` | compiles with im2col convolutions and channels-last layout for a `--iree-vulkan-target` preset, optionally with a tuning spec |
-| `run.sh` | checks the output against a reference within 0.05, then times it with `iree-benchmark-module` |
+| `compile.sh` | compiles with im2col convolutions and channels-last layout for a `--iree-vulkan-target` preset, optionally with a tuning spec; `F16=1` keeps everything, accumulators included, in f16 |
+| `run.sh` | checks the output against a reference (f32 within 0.05, f16 at the detection level), then times it with `iree-benchmark-module` |
+| `compare.py` | detection-level comparison of an output with the f32 reference |
 | `family_spec.py` | writes a tuning spec that overrides selected matmul or generic op families only |
 | `reference/` | `yolo_dump`: the input blob and OpenCV DNN's output for an image, the independent reference |
 
 ## Steps
 
 ```sh
-python3 to_fp32.py yolov5s.onnx yolov5s-fp32.onnx           # only for fp16 exports
+python3 to_fp32.py yolov5s.onnx yolov5s-fp32.onnx           # for the f32 path only
 python3 pad_yolov5_onnx.py yolov5s-fp32.onnx yolov5s-padded.onnx
 iree-import-onnx yolov5s-padded.onnx -o yolov5s.mlir
 ./compile.sh yolov5s.mlir yolov5s.vmfb <preset> [spec.mlir]
 yolo_dump yolov5s-fp32.onnx bus.jpg bus-blob.bin bus-expected.bin   # once, on any machine
 ./run.sh yolov5s.vmfb bus-blob.bin bus-expected.bin [vulkan://<n>]
+# fp16: pad and import the fp16 export, F16=1 ./compile.sh ..., then
+# ELEM=f16 ./run.sh yolov5s.vmfb bus-blob-f16.bin bus-expected.bin
 ```
 
 `--device=vulkan` takes the first Vulkan device, which on a desktop with an
@@ -41,9 +44,20 @@ the development host and copied to the board with the module.
   RADV and on NVK, with IREE 3.11 and 3.13, so it is a compiler bug, not a
   driver one. Channels-last alone fixes correctness but the direct
   convolutions remain slow (about 300 ms per layer on a Maxwell GPU).
-* **fp32.** The fp16 export exceeds 48 KB of workgroup memory in several
-  dispatches; devices with more shared memory may accept it, so try fp16
-  again on a new GPU.
+* **fp16 needs f16 accumulators.** The ONNX importer lowers f16
+  convolutions with f32 accumulators (`matmul_..._f16xf16xf32`), so a GPU
+  with packed fp16 arithmetic still runs f32 FMAs and pays for the
+  conversions; on the GM20B this made the fp16 export slower than fp32.
+  `F16=1` adds `--iree-input-demote-f32-to-f16`, which keeps the
+  accumulators in f16 as TensorRT's fp16 mode does, and the matmuls then
+  compile to packed f16 FMAs. Accuracy stays at the detection level (the
+  same candidates and classes for the bus image) while box coordinates move
+  by a few pixels, so check f16 modules with `ELEM=f16 run.sh` (it uses
+  `compare.py`). Mobile GPUs (Adreno, Mali) and Maxwell/Pascal Tegra run
+  fp16 at twice the f32 rate, so this is the first thing to try there. The
+  `turing` and `rdna3` presets cannot compile the f16 graph (their
+  cooperative-matrix path rejects the stem); use `pascal` or another preset
+  without cooperative matrices.
 * **Padding.** The stem's im2col matmul has K = 6x6x3 = 108 and the detect
   heads have N = 255; neither divides into the vector widths the SPIR-V
   matmul pipeline needs, so both fall back to a scalar path. Padding in the
@@ -56,8 +70,9 @@ the development host and copied to the board with the module.
 
 | GPU (driver) | Fastest preset | ms per frame | Other presets |
 | --- | --- | ---: | --- |
-| GM20B, Jetson Nano (NVK) | `turing` | 738, 589 with C100 spec | `pascal` +5 %, `rdna*` +50 %, `valhall4` +60 %, `adreno` wrong output |
-| RX 7800 XT (RADV) | `rdna3` | 8.3 | `turing` 9.6; unpadded `rdna3` 9.6 |
+| GM20B, Jetson Nano (NVK), fp16 + `F16=1` | `pascal` | 706, 458 with C100 f16 spec | fp16 without `F16=1`: 886 |
+| GM20B, Jetson Nano (NVK), fp32 | `turing` | 738, 589 with C100 spec | `pascal` +5 %, `rdna*` +50 %, `valhall4` +60 %, `adreno` wrong output |
+| RX 7800 XT (RADV), fp32 | `rdna3` | 8.3 | `turing` 9.6; unpadded `rdna3` 9.6; fp16 + `F16=1` with `pascal` 10.8 |
 | Ryzen 7800X3D integrated, 2 CUs (RADV) | `rdna3` | 199 | `turing` 296; unpadded `rdna3` 227 |
 
   The `adreno` preset's wrong output was measured on NVK, not on Adreno
@@ -78,8 +93,9 @@ the development host and copied to the board with the module.
 3. Override one family at a time with `family_spec.py` and keep only the
    rules that win on the board. On the GM20B, the defaults for most families
    were already the best, and applying one configuration to every matmul was
-   much slower than the defaults. The gains came from two families with an
-   8x4 output block per thread on small workgroups:
+   much slower than the defaults. The gains came from small workgroups with
+   an 8x4 output block per thread in f32 (two families) and an 8x8 block in
+   f16 (four families), for example:
 
 ```sh
 python3 family_spec.py spec.mlir "0=400:16,128,32:32,2" "1=32:64,32,16:8,16"

@@ -21,6 +21,7 @@ shapes = {v.name: [d.dim_value for d in v.type.tensor_type.shape.dim] for v in g
 inits = {t.name: t for t in graph.initializer}
 image = graph.input[0].name
 n_in, _, h_in, w_in = [d.dim_value for d in graph.input[0].type.tensor_type.shape.dim]
+image_dtype = onnx.helper.tensor_dtype_to_np_dtype(graph.input[0].type.tensor_type.elem_type)
 nodes = []
 
 for node in list(graph.node):
@@ -29,7 +30,7 @@ for node in list(graph.node):
         w4 = np.zeros((w.shape[0], 4) + w.shape[2:], w.dtype)
         w4[:, :3] = w
         inits[node.input[1]].CopyFrom(numpy_helper.from_array(w4, node.input[1]))
-        graph.initializer.append(numpy_helper.from_array(np.zeros((n_in, 1, h_in, w_in), np.float32), "pad_zero_channel"))
+        graph.initializer.append(numpy_helper.from_array(np.zeros((n_in, 1, h_in, w_in), image_dtype), "pad_zero_channel"))
         nodes.append(helper.make_node("Concat", [image, "pad_zero_channel"], ["images_padded"], axis=1, name="pad_concat"))
         node.input[0] = "images_padded"
         nodes.append(node)
