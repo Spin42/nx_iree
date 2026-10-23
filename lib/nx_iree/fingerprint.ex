@@ -38,6 +38,11 @@ defmodule NxIREE.Fingerprint do
     end
   end
 
+  # Templates, such as the output templates of NxIREE.Vulkan.Pipeline stages
+  defp canon(%T{data: %Nx.TemplateBackend{}} = t, state) do
+    {{:template, t.shape, t.type, t.names, t.vectorized_axes}, state}
+  end
+
   defp canon(%T{} = t, state) do
     digest = :crypto.hash(:sha256, Nx.to_binary(t))
     {{:tensor, t.shape, t.type, t.names, t.vectorized_axes, digest}, state}
