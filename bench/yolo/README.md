@@ -1,5 +1,14 @@
 # YOLOv5 on IREE's Vulkan backend
 
+Applications run YOLO models the Nx way: `AxonOnnx.import/1` (with nearest
+`Resize` support, the `resize-nearest` branch of `../axon_onnx`) and
+`Axon.build(model, compiler: NxIREE.Compiler)`; the unmodified YOLOv5n export
+gives the reference detections that way on EXLA and on Vulkan. This
+directory is the benchmark that measures how far IREE itself can take the
+model: it drives `iree-compile` on the ONNX graph directly with graph
+rewrites and compiler options the Nx path does not apply yet, and is the
+reference for moving them into `NxIREE.Compiler`.
+
 Vendor-neutral recipe and tools for running an ultralytics YOLOv5 ONNX
 export on any Vulkan GPU through IREE 3.13. Device-specific tuning specs live
 with the device's own library (for example `c100_gpu/priv/tuning/`); every
