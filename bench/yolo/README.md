@@ -3,7 +3,10 @@
 Applications run YOLO models the Nx way: `AxonOnnx.import/1` (with nearest
 `Resize` support, the `resize-nearest` branch of `../axon_onnx`) and
 `Axon.build(model, compiler: NxIREE.Compiler)`; the unmodified YOLOv5n export
-gives the reference detections that way on EXLA and on Vulkan. This
+gives the reference detections that way on EXLA and, in f32, on Vulkan (511 ms
+per frame on the C100). In f16 (parameters and input cast in Nx), IREE 3.13
+compiles the full graph wrongly for the GM20B, while EXLA's f16 result and
+the head-cut graph's are correct. This
 directory is the benchmark that measures how far IREE itself can take the
 model: it drives `iree-compile` on the ONNX graph directly with graph
 rewrites and compiler options the Nx path does not apply yet, and is the
