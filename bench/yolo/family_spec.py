@@ -11,19 +11,24 @@ Generic rule:  g:DIMS:WGTILES/THREADTILES:WX,WY,WZ
     Ops of rank len(WGTILES) matching DIMS get BaseVectorize with those
     workgroup and thread tile lists.
 
-DIMS is a comma list of index=value checks on the op's loop dimensions, for
-example 0=400 (M is 400) or 0=6400,1=128. The first matching rule wins.
+DIMS is a comma list of checks on the op's loop dimensions, each
+index followed by =, <, <=, > or >= and a value, for example 0=400 (M is 400),
+0<=600,1=256, or * for every op of the rule's kind. The first matching rule wins, so put * rules last.
 """
+import re
 import sys
 
 
 def checks(dims):
+    if dims == "*":
+        return ""
     out = []
     for j, check in enumerate(dims.split(",")):
-        index, value = check.split("=")
+        index, op, value = re.fullmatch(r"(\d+)(<=|>=|<|>|=)(\d+)", check).groups()
+        predicate = {"=": "eq", "<": "lt", "<=": "le", ">": "gt", ">=": "ge"}[op]
         out.append(f"""      %d{j} = transform.match.structured.dim %arg[{index}] : (!transform.any_op) -> !transform.param<i64>
       %v{j} = transform.param.constant {value} : i64 -> !transform.param<i64>
-      transform.match.param.cmpi eq %d{j}, %v{j} : !transform.param<i64>""")
+      transform.match.param.cmpi {predicate} %d{j}, %v{j} : !transform.param<i64>""")
     return "\n".join(out)
 
 

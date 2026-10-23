@@ -1,37 +1,61 @@
-"""Compare a YOLOv5 output with the reference at the detection level.
+"""Compare YOLOv5 outputs with the reference at the detection level.
 
-Usage: compare.py output.bin reference.bin [f32|f16]
+Usage: compare.py reference.bin f32|f16 output.bin
+       compare.py reference.bin f32|f16 head0.bin head1.bin head2.bin HEIGHT WIDTH
 
-Both files hold 25200 x 85 values (x, y, w, h, objectness, 80 class scores).
-The reference is f32. Passes when the candidates scoring above 0.25
-(objectness x class) agree with the reference's, apart from at most 2 %,
-and every common candidate keeps its class. fp16 accumulation moves box
-coordinates by a few pixels, so values are reported, not thresholded.
+The reference holds N x 85 f32 rows (`reference.py`). The output is either
+the full export's N x 85 tensor or the three channels-last head tensors of
+a `cut_head.py` model (255 or 256 channels), decoded with `decode.py`.
+Passes when every candidate the reference scores above 0.28 (objectness x
+class) is found above 0.25 with the same class, and nothing the reference
+scores below 0.22 is. Candidates within 0.03 of the 0.25 threshold may fall
+either side: fp16 accumulation moves scores by up to about 0.02 and box
+coordinates by a few pixels, so those values are reported, not thresholded.
 """
+import os
 import sys
 
 import numpy as np
 
-out_path, ref_path = sys.argv[1:3]
-dtype = np.float16 if (sys.argv[3] if len(sys.argv) > 3 else "f32") == "f16" else np.float32
-count = 25200 * 85
-raw = open(out_path, "rb").read()
-out = np.frombuffer(raw[-count * np.dtype(dtype).itemsize:], dtype).astype(np.float32).reshape(25200, 85)
-ref = np.fromfile(ref_path, np.float32).reshape(25200, 85)
+from decode import STRIDES, decode
+
+ref_path, elem, *outputs = sys.argv[1:]
+dtype = np.float16 if elem == "f16" else np.float32
+ref = np.fromfile(ref_path, np.float32).reshape(-1, 85)
 
 
-def candidates(o):
-    scores = o[:, 4:5] * o[:, 5:]
-    return set(np.nonzero(scores.max(1) > 0.25)[0].tolist()), scores.argmax(1)
+def load(path, count):
+    raw = open(path, "rb").read()
+    return np.frombuffer(raw[-count * np.dtype(dtype).itemsize:], dtype).astype(np.float32)
 
 
-got, got_class = candidates(out)
-want, want_class = candidates(ref)
-common = got & want
-same_class = all(got_class[i] == want_class[i] for i in common)
+if len(outputs) == 1:
+    out = load(outputs[0], ref.size).reshape(-1, 85)
+else:
+    *files, height, width = outputs
+    heads = []
+    for path, stride in zip(files, STRIDES):
+        h, w = int(height) // stride, int(width) // stride
+        channels = (os.path.getsize(path) // np.dtype(dtype).itemsize) // (h * w)
+        heads.append(load(path, h * w * channels).reshape(1, h, w, channels))
+    out = decode(heads)
+
+
+def scores(o):
+    s = o[:, 4:5] * o[:, 5:]
+    return s.max(1), s.argmax(1)
+
+
+got_score, got_class = scores(out)
+want_score, want_class = scores(ref)
+got = set(np.nonzero(got_score > 0.25)[0].tolist())
+want = set(np.nonzero(want_score > 0.25)[0].tolist())
+missing = [i for i in np.nonzero(want_score > 0.28)[0] if got_score[i] <= 0.25 or got_class[i] != want_class[i]]
+extra = [i for i in got if want_score[i] < 0.22]
 print(f"finite {np.isfinite(out).all()}, box max diff {np.abs(out[:, :4] - ref[:, :4]).max():.2f} px, "
       f"score max diff {np.abs(out[:, 4:] - ref[:, 4:]).max():.4f}")
-print(f"candidates: output {len(got)}, reference {len(want)}, common {len(common)}, same class {same_class}")
-ok = np.isfinite(out).all() and same_class and len(got ^ want) <= max(1, len(want) // 50)
+print(f"candidates above 0.25: output {len(got)}, reference {len(want)}, common {len(got & want)}; "
+      f"clear misses {len(missing)}, clear extras {len(extra)}")
+ok = bool(np.isfinite(out).all()) and not missing and not extra
 print("DETECTIONS_MATCH" if ok else "DETECTIONS_DIFFER")
 sys.exit(0 if ok else 1)

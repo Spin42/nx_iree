@@ -2,9 +2,10 @@
 
 The stem convolution gets a fourth, all-zero input channel (im2col K becomes
 6*6*4 = 144 instead of 108) and the three detect-head convolutions get a 256th
-zero output channel, sliced back to 255 behind a reshape so the detect
-reshapes stay as exported. The outputs are bit-identical to the original
-model's.
+zero output channel. In a full export it is sliced back to 255 behind a
+reshape so the Detect reshapes stay as exported; in a graph cut by
+`cut_head.py` the outputs keep 256 channels, the last one zero. Values are
+bit-identical to the original model's.
 
 Usage: pad_yolov5_onnx.py yolov5s.onnx yolov5s-padded.onnx
 """
@@ -23,6 +24,7 @@ image = graph.input[0].name
 n_in, _, h_in, w_in = [d.dim_value for d in graph.input[0].type.tensor_type.shape.dim]
 image_dtype = onnx.helper.tensor_dtype_to_np_dtype(graph.input[0].type.tensor_type.elem_type)
 nodes = []
+reshaped = {i for n in graph.node if n.op_type == "Reshape" for i in n.input}
 
 for node in list(graph.node):
     if node.op_type == "Conv" and node.input[0] == image:
@@ -40,6 +42,9 @@ for node in list(graph.node):
         inits[node.input[1]].CopyFrom(numpy_helper.from_array(np.concatenate([w, np.zeros((1,) + w.shape[1:], w.dtype)]), node.input[1]))
         inits[node.input[2]].CopyFrom(numpy_helper.from_array(np.concatenate([b, np.zeros((1,), b.dtype)]), node.input[2]))
         out = node.output[0]
+        if out not in reshaped:
+            nodes.append(node)
+            continue
         _, _, ny, nx = shapes[out]
         tag = node.name.replace("/", "_")
         node.output[0] = out + "_padded"
@@ -54,6 +59,9 @@ for node in list(graph.node):
 
 del graph.node[:]
 graph.node.extend(nodes)
+for out in graph.output:
+    out.type.tensor_type.ClearField("shape")
+del graph.value_info[:]
 model = onnx.shape_inference.infer_shapes(model)
 onnx.checker.check_model(model)
 onnx.save(model, dst)

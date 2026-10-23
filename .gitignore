@@ -37,3 +37,4 @@ nx_iree-*.tar
 /bench/deps/
 /bench/stereo/opencv/_build/
 /bench/stereo/opencv/deps/
+__pycache__/
