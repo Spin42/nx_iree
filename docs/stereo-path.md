@@ -245,10 +245,7 @@ at `/root/nxiree-stereo`; the earlier `/root/nxiree` runtime is preserved.
 Cross runtime SHA256:
 `30c77510f56f7d915a8432da1838e0f39160cd040dfe6d88527c38b6dd7bb1dc`.
 
-The system's `package/c100-gpu` now installs the unchanged `c100-limits`
-script. Buildroot installation and the running board script both hash to
-`40215f4427b6915cfff27a7e6701b9f75b1770c5932361989fba8c29e5d775a1`.
-The packaging move has not been flashed. Live `vulkaninfo` confirms the
+Live `vulkaninfo` confirms the
 8/16-bit arithmetic/storage features declared by `C100GPU.Target`.
 
 Reproduce with [bench/stereo](../bench/stereo/README.md). Captured evidence
