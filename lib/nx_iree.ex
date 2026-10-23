@@ -280,7 +280,7 @@ defmodule NxIREE do
       NxIREE.run(model, [a, b])
   """
   def export(fun, args, opts \\ []) when is_function(fun) and is_list(args) do
-    opts = Keyword.validate!(opts, iree_compiler_flags: [], iree_tuning: nil)
+    opts = Keyword.validate!(opts, iree_compiler_flags: [])
     flags = opts[:iree_compiler_flags]
 
     unless Enum.any?(flags, &String.starts_with?(&1, "--iree-hal-target-backends=")) do
@@ -292,10 +292,7 @@ defmodule NxIREE do
     templates = Enum.map(args, &Nx.Defn.Composite.traverse(&1, fn t -> Nx.to_template(t) end))
 
     {:ok, module} =
-      NxIREE.Compiler.to_bytecode(fun, templates,
-        iree_compiler_flags: flags,
-        iree_tuning: opts[:iree_tuning]
-      )
+      NxIREE.Compiler.to_bytecode(fun, templates, iree_compiler_flags: flags)
 
     inputs =
       templates

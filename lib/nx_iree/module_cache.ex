@@ -19,8 +19,12 @@ defmodule NxIREE.ModuleCache do
       Nx.Defn.compile(&MyModel.predict/2, templates, opts)
 
   Ship the directory with the device application and give the device the
-  same options. The flags must match: they are part of the key.
+  same options. The flags must match: they are part of the key. Flags that
+  name a transform-dialect library (tuning spec) enter the key by the file's
+  contents, so a spec shipped at another path on the device still matches.
   """
+
+  @spec_flag "--iree-codegen-transform-dialect-library="
 
   @doc false
   def key(expr, vars, flags) do
@@ -29,8 +33,21 @@ defmodule NxIREE.ModuleCache do
       |> Nx.Defn.Composite.flatten_list()
       |> Enum.map(&{&1.shape, &1.type, &1.names, &1.vectorized_axes})
 
-    NxIREE.Fingerprint.of({expr, templates, flags |> Enum.uniq() |> Enum.sort(), format()})
+    flags = flags |> Enum.map(&key_flag/1) |> Enum.uniq() |> Enum.sort()
+    NxIREE.Fingerprint.of({expr, templates, flags, format()})
   end
+
+  defp key_flag(@spec_flag <> path) do
+    case File.read(path) do
+      {:ok, spec} ->
+        @spec_flag <> "sha256:" <> Base.encode16(:crypto.hash(:sha256, spec), case: :lower)
+
+      {:error, reason} ->
+        raise ArgumentError, "cannot read tuning spec #{path}: #{:file.format_error(reason)}"
+    end
+  end
+
+  defp key_flag(flag), do: flag
 
   @doc false
   def path(dir, key), do: Path.join(dir, key <> ".nxiree")

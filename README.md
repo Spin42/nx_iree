@@ -185,13 +185,12 @@ This setting is only for the host; Nerves cross builds omit the compiler.
     size, so they are wrong on other GPUs. An explicit capability list must
     match the selected device. Device libraries can supply that list, such
     as `C100GPU.Target.compiler_flags/0` from `c100_gpu` for the C100.
-  * `iree_tuning: {ProviderModule, :spec_name}` (a `NxIREE.Compiler` and
-    `NxIREE.export/3` option) selects a transform-dialect spec from a library
-    implementing `NxIREE.Tuning.fetch/1`. The callback returns
-    `{:ok, mlir_text, supported_backends}` or `:error`. Cache keys contain
-    the provider, spec name and SHA-256 of the text instead of a host path.
-    Device-specific providers belong in separate libraries; the C100's
-    Maxwell matmul provider is `{C100GPU.Tuning, :maxwell_matmul}` in
+  * Tuning specs are ordinary `iree-compile` flags:
+    `--iree-codegen-transform-dialect-library=<path>` in
+    `:iree_compiler_flags`. Module-cache keys contain the spec's SHA-256
+    instead of its path, so a cache built on the host matches on a device
+    that ships the spec elsewhere. Device-specific specs belong in device
+    libraries, such as `C100GPU.Tuning.compiler_flags/1` in
     [`c100_gpu`](../c100_gpu).
   * Command buffer memoization is off by default for GPU targets
     (`--iree-hal-memoization=false`): IREE 3.13 replays the first call's

@@ -33,7 +33,6 @@ defmodule NxIREE.Compiler do
       end)
 
     {device_indexing, opts} = Keyword.pop(opts, :iree_device_indexing, false)
-    {tuning, opts} = Keyword.pop(opts, :iree_tuning)
 
     unless is_list(iree_compiler_flags) do
       raise "missing :iree_compiler_flags option"
@@ -73,11 +72,6 @@ defmodule NxIREE.Compiler do
       |> default_memoization(backend)
       |> default_cpu_target(backend, output_mode)
       |> default_f64_flags(backend)
-
-    iree_compiler_flags =
-      if tuning,
-        do: iree_compiler_flags ++ [NxIREE.Tuning.flag(tuning, backend)],
-        else: iree_compiler_flags
 
     ensure_f64_supported!(vars, iree_compiler_flags, backend)
 
@@ -186,7 +180,7 @@ defmodule NxIREE.Compiler do
       EXLA.to_mlir_module(fun, vars, exla_opts)
 
     module =
-      NxIREE.compile(mlir_module, NxIREE.Tuning.resolve(flags),
+      NxIREE.compile(mlir_module, flags,
         output_container: output_container
       )
 
