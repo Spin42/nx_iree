@@ -21,6 +21,12 @@
   * Functions jitted for the CPU use the host CPU's features.
   * `:iree_module_cache`: modules compiled on a host are found by devices
     running the same defn code without EXLA or the IREE compiler.
+  * `NxIREE.Vulkan.Kernel` and `NxIREE.Vulkan.Pipeline`: precompiled SPIR-V
+    compute shaders as `Nx.block/4`s, dispatched when compiling for Vulkan
+    and falling back to the block's default elsewhere, with specialization
+    constants.
+  * Module-cache keys contain the contents of transform-dialect tuning specs
+    passed with `--iree-codegen-transform-dialect-library`, not their paths.
   * Named io_calls without a hook are removed before lowering, so
     Bumblebee text generation compiles; host calls that would run Elixir
     code raise a clear error.

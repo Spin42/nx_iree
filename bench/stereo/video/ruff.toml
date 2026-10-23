@@ -1,8 +1,0 @@
-lint.select = ["ALL"]
-lint.ignore = [
-  "CPY001", # Follow the repository's existing copyright convention.
-  "D203", "D213", "COM812", # Conflicting docstring/formatter rules.
-  "INP001", # Standalone benchmark scripts, not a Python package.
-  "T201", # CLI results are intentionally written to stdout.
-  "TRY003", "EM101", "EM102", # Typer CLI boundary diagnostics.
-]

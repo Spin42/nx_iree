@@ -20,14 +20,18 @@ try do
     end
   end
 
+  flags = ["--iree-hal-target-backends=vulkan-spirv"]
+
   models =
     Map.new([1_048_576, 4_194_304], fn words ->
       tensor = Nx.template({words}, :u32)
+      kernel = %NxIREE.Vulkan.Kernel{spirv: File.read!(spirv), workgroups: {div(words, 128), 1, 1}}
 
-      {words,
-       NxIREE.Vulkan.export(File.read!(spirv), [tensor], tensor,
-         workgroups: {div(words, 128), 1, 1}
-       )}
+      stream = fn x ->
+        Nx.block(kernel, [x], tensor, fn _kernel, x -> Nx.bitwise_xor(x, 0x5A5A5A5A) end)
+      end
+
+      {words, NxIREE.export(stream, [tensor], iree_compiler_flags: flags)}
     end)
 
   File.write!(System.fetch_env!("VULKAN_BUNDLE"), :erlang.term_to_binary(models))

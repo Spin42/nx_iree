@@ -1,5 +1,10 @@
 # Portable Vulkan stereo work, 2026-10-22
 
+The stereo matcher is now the [`nx_stereo`](../../nx_stereo) library, an
+`NxIREE.Vulkan.Pipeline` of the shaders this work produced. This page records
+the work that led there; `bench/stereo` and `NxIREE.Vulkan.export/4`, which
+it refers to, are in nx_iree's history up to commit cae4115.
+
 The target is stereo SGBM on the OKdo C100 through Elixir and Vulkan,
 without CUDA, approaching the board's NVIDIA performance. Runtime and
 compiler improvements must apply to general Vulkan workloads. The host's

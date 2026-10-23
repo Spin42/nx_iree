@@ -91,24 +91,9 @@ told otherwise; for another device pass its triple and CPU, for example
 `--iree-llvmcpu-target-triple=aarch64-linux-gnu --iree-llvmcpu-target-cpu=cortex-a57`.
 Functions compiled for calls on the CPU use the host CPU's features.
 
-`NxIREE.Serving.new/1` wraps a loaded export in the existing `Nx.Serving`
-scheduler without compilation on the device:
-
-```elixir
-serving = NxIREE.Serving.new(model) |> Nx.Serving.streaming()
-{:ok, _pid} = Nx.Serving.start_link(name: MyServing, serving: serving)
-batches = Stream.map(inputs, fn {a, b} -> Nx.Batch.stack([{a, b}]) end)
-results = Nx.Serving.batched_run(MyServing, batches)
-```
-
-Each entry is one complete invocation, so this adapter sets the maximum
-batch size to one. Stream results are `{:batch, output, metadata}` with a
-leading axis of size one; outputs stay on the device. Host inputs are
-uploaded for the invocation, while caller-owned resident inputs are borrowed.
-Reshape and squeeze use independent IREE buffer views without compilation,
-GPU dispatch or tensor copies. Input-stream submission waits for the previous
-invocation; applications must also consume results promptly. This provides
-neither a global queue bound across clients nor a camera deadline guarantee.
+`Nx.Serving` runs these functions unchanged on the device: build the serving
+with the same compiler options and an `:iree_module_cache` filled on the host
+(see below), as Bumblebee servings do.
 
 ## Module cache
 
@@ -162,10 +147,11 @@ provide a Vulkan loader and driver (for example Mesa's NVK on NVIDIA Tegra).
 
 ## Vulkan notes
 
-For application-authored compute kernels, `NxIREE.Vulkan.export/4` imports
-SPIR-V into the normal export/load/run API with device-resident tensors.
-See [custom Vulkan kernels](docs/vulkan-kernels.md) and the
-[portable stereo benchmark](bench/stereo/README.md).
+Precompiled SPIR-V compute shaders are `Nx.block/4`s
+(`NxIREE.Vulkan.Kernel`, `NxIREE.Vulkan.Pipeline`): they run as dispatches
+when the function is compiled for Vulkan and as their default Nx
+implementation everywhere else. See [custom Vulkan kernels](docs/vulkan-kernels.md)
+and [`nx_stereo`](../nx_stereo), which uses them.
 
 To use a locally built compiler, set `NX_IREE_COMPILER_DIR` to the directory
 containing `iree-compile` (for an IREE CMake build, its `tools/` directory).
@@ -210,7 +196,8 @@ copies of those inputs, so caller tensors are never modified; read-only
 inputs, such as model weights, are passed without copies.
 
 The [native VGA stereo measurement](docs/reference/stereo-vga30-20261022/README.md)
-uses the existing Nx.Serving adapter and Evision input conversion: 31.3
+used an Nx.Serving adapter for exported modules, since replaced by plain
+`Nx.Serving` with the module cache, and Evision input conversion: 31.3
 prepared-pair GPU FPS and paced 30 Hz network replay at 640×480 per eye/D64.
 Four contexts sustain the replay with normal governors and otherwise idle
 CPUs, at about 124 ms median processing latency. This is bounded diagnostic

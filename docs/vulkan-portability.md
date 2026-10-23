@@ -11,15 +11,14 @@ again, and the order to bring a new board up in.
 | Asset | Location | Requirements |
 | --- | --- | --- |
 | NxIREE compiler and runtime | `lib/`, `c_src/` | Vulkan 1.1 compute; `--iree-vulkan-target=<preset>` per device |
-| YOLOv5 recipe and tools | `bench/yolo/` | fp32 export; correctness checked against OpenCV DNN |
-| Census SGBM graph and shaders | `bench/stereo/census/` | `GL_KHR_shader_subgroup_shuffle` and `_shuffle_relative` in compute, subgroup size 16 to 128 |
+| YOLOv5 recipe and tools | `bench/yolo/` | fp16 or fp32 export; detections checked against onnxruntime |
+| Census SGM library and shaders | [`nx_stereo`](../../nx_stereo) | `GL_KHR_shader_subgroup_shuffle` and `_shuffle_relative` in compute, subgroup size 16 to 128 |
 | OpenCV `vkstereo` module | `../opencv_vkstereo` | the same shaders, any Vulkan 1.1 device; `VKSTEREO_DEVICE` picks one |
 | Matmul spec generator | `bench/tuning/matmul_spec.py`, `bench/yolo/family_spec.py` | IREE 3.13 spec syntax |
 
-The stereo shaders shuffle only within aligned groups of
-`DISPARITIES / VIDEO_DP_BLOCK` lanes (8 at D = 64) inside 128-wide
-workgroups, so any subgroup size that is a power of two between 16 and 128
-works. With D = 128 and the default block, the group is 16 lanes.
+The stereo shaders shuffle only within aligned groups of `DISPARITIES / 8`
+lanes (8 at D = 64, 16 at D = 128) inside 128-wide workgroups, so any
+subgroup size that is a power of two between 16 and 128 works.
 
 ## Tuned for the GM20B, measure again
 
@@ -30,10 +29,11 @@ works. With D = 128 and the default block, the group is 16 lanes.
   device lacks.
 * **Tuning specs.** `c100_gpu/priv/tuning/*.mlir` are GM20B numbers. Rebuild
   them from a profile with `family_spec.py`, following `bench/yolo/README.md`.
-* **Stereo layout parameters.** `VIDEO_DP_BLOCK`, `VIDEO_SELECT_LANES`, the
-  row-tiled volume (`volume_tile`) and the fusion mode were chosen from GM20B
-  memory-transaction measurements. Re-sweep them; a GPU with larger caches
-  or wider memory transactions may prefer other values.
+* **Stereo layout.** nx_stereo's eight disparities per lane and row-tiled
+  volumes were chosen from GM20B memory-transaction measurements (the
+  history is in `docs/stereo-path.md`). A GPU with larger caches or wider
+  memory transactions may prefer other values; they are compile-time macros
+  of its shaders.
 * **Allocator and transfers.** Host-cached memory with explicit
   flush/invalidate was a large win on the Jetson's shared memory. Check
   which memory types the new device exposes before assuming the same.
@@ -42,9 +42,10 @@ works. With D = 128 and the default block, the group is 16 lanes.
 
 1. `vulkaninfo`: record the driver, the subgroup size and supported stages,
    the shared-memory limit and the memory types.
-2. Run the `vkstereo` test and benchmark from `../opencv_vkstereo`. They
-   need no IREE compiler and check bit-exact output, so they validate the
-   driver's subgroup and storage-buffer behaviour first.
+2. Run `mix test --include vulkan` in `../nx_stereo` (or the `vkstereo`
+   test in `../opencv_vkstereo`, which needs no IREE). Both compare the
+   shaders with a reference, so they validate the driver's subgroup and
+   storage-buffer behaviour first.
 3. Compile and check YOLO with `bench/yolo` for each candidate preset.
 4. Profile with Tracy, then write device tuning in a library of the board's
    own, as `../c100_gpu` does for the C100.

@@ -2,8 +2,8 @@
 
 This benchmark measures completed-runtime throughput of a coalesced
 storage-buffer transform: one u32 load, XOR, and one u32 store per element.
-It uses the generic `NxIREE.Vulkan.export/4` interface and the same runtime
-path as application kernels. No device identity or clock control is embedded.
+The shader is an `NxIREE.Vulkan.Kernel` block exported with `NxIREE.export/3`,
+the same path as application kernels. No device identity or clock control is embedded.
 
 From `bench/`, set `GLSLANG` and `SPIRV_VAL` to their executable paths:
 
