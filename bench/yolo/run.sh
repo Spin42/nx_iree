@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # Check a compiled YOLOv5 module against a reference output, then time it.
 # Usage: run.sh module.vmfb blob.bin expected.bin [device]
+# The default device is the first Vulkan device; pass vulkan://<path> from
+# `iree-run-module --dump_devices=vulkan` to choose another.
 set -euo pipefail
 module=$1 blob=$2 expected=$3 device=${4:-vulkan}
 tools=${IREE_TOOLS:-}

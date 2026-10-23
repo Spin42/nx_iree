@@ -25,6 +25,11 @@ yolo_dump yolov5s-fp32.onnx bus.jpg bus-blob.bin bus-expected.bin   # once, on a
 ./run.sh yolov5s.vmfb bus-blob.bin bus-expected.bin [vulkan://<n>]
 ```
 
+`--device=vulkan` takes the first Vulkan device, which on a desktop with an
+integrated GPU is usually the integrated one. List the devices with
+`iree-run-module --dump_devices=vulkan` and pass
+`vulkan://<path>` from that list.
+
 The blob and reference are device-independent, so they can be produced on
 the development host and copied to the board with the module.
 
@@ -52,7 +57,8 @@ the development host and copied to the board with the module.
 | GPU (driver) | Fastest preset | ms per frame | Other presets |
 | --- | --- | ---: | --- |
 | GM20B, Jetson Nano (NVK) | `turing` | 738, 589 with C100 spec | `pascal` +5 %, `rdna*` +50 %, `valhall4` +60 %, `adreno` wrong output |
-| RX 7800 XT (RADV) | `rdna3` | 200 | `turing` 295; unpadded `rdna3` 224 |
+| RX 7800 XT (RADV) | `rdna3` | 8.3 | `turing` 9.6; unpadded `rdna3` 9.6 |
+| Ryzen 7800X3D integrated, 2 CUs (RADV) | `rdna3` | 199 | `turing` 296; unpadded `rdna3` 227 |
 
   The `adreno` preset's wrong output was measured on NVK, not on Adreno
   hardware. The capabilities the preset assumes do not match the GM20B, so
