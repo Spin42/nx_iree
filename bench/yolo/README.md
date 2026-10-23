@@ -47,6 +47,7 @@ path, prepare the `to_fp32.py` output and compile without `F16=1`.
 | GM20B, Jetson Nano (NVK) | 640x512 | fp16, Winograd, C100 spec | 199 |
 | GM20B, Jetson Nano (NVK) | 640x640 | fp16, Winograd, C100 spec | 242 |
 | GM20B, Jetson Nano (NVK) | 640x640 | full export, fp32, padded only, `turing` | 738 |
+| GM20B, Jetson Nano (NVK), YOLOv5n | 640x512 / 640x640 | fp16, Winograd, C100 YOLOv5s spec | 115 / 134 |
 | RX 7800 XT (RADV) | 640x512 | fp16, Winograd, no spec | 5.6 |
 | RX 7800 XT (RADV) | 640x640 | full export, fp32, padded only, `rdna3` | 8.3 |
 
