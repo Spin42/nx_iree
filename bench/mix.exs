@@ -16,8 +16,8 @@ defmodule NxIREEBench.MixProject do
 
   defp deps do
     [
-      {:nx_iree, path: ".."},
-      {:c100_gpu, path: "../../c100_gpu"},
+      {:nx_iree, path: "..", override: true},
+      {:c100_gpu, github: "mlainez/c100_gpu"},
       {:exla, "~> 1.0"},
       {:nx, "~> 1.0"},
       {:axon, "~> 0.9"},
