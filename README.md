@@ -13,7 +13,7 @@ nor the IREE compiler.
 ```elixir
 def deps do
   [
-    {:nx_iree, path: "../nx_iree"},
+    {:nx_iree, github: "Spin42/nx_iree"},
     # only needed where functions are compiled (the host)
     {:exla, "~> 1.0"}
   ]
