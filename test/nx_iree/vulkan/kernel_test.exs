@@ -48,6 +48,18 @@ defmodule NxIREE.Vulkan.KernelTest do
     end
   end
 
+  test "a block with more arguments than the function runs" do
+    sum_of_three = fn x ->
+      kernel = %NxIREE.Vulkan.Kernel{spirv: TestShaders.single(), workgroups: {4, 1, 1}}
+
+      Nx.block(kernel, [x, Nx.multiply(x, 2), Nx.add(x, 1)], Nx.template({4}, :s32), fn
+        _kernel, a, b, c -> a |> Nx.add(b) |> Nx.add(c)
+      end)
+    end
+
+    assert values(Nx.Defn.jit(sum_of_three).(@input)) == [[5, 9, 13, -15]]
+  end
+
   test "Vulkan compilation validates the kernel" do
     bad = fn x ->
       kernel = %NxIREE.Vulkan.Kernel{spirv: "not spir-v", workgroups: {4, 1, 1}}

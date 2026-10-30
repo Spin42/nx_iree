@@ -539,6 +539,8 @@ defmodule NxIREE.Compiler do
   defp filter_by_indices_list([_var | vars], i, inputs, callback),
     do: filter_by_indices_list(vars, i + 1, inputs, callback)
 
-  defp filter_by_indices_list([], _i, [], _callback),
+  # Nx counts a block's parameters as inputs of the enclosing function, so
+  # used inputs may index past its arguments; EXLA skips those too.
+  defp filter_by_indices_list([], _i, _inputs, _callback),
     do: []
 end
