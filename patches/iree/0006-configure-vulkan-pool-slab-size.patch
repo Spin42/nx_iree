@@ -1,0 +1,43 @@
+diff --git a/runtime/src/iree/hal/drivers/vulkan/allocator.c b/runtime/src/iree/hal/drivers/vulkan/allocator.c
+index 0494004..0390c03 100644
+--- a/runtime/src/iree/hal/drivers/vulkan/allocator.c
++++ b/runtime/src/iree/hal/drivers/vulkan/allocator.c
+@@ -7,6 +7,7 @@
+ #include "iree/hal/drivers/vulkan/allocator.h"
+ 
+ #include <stdio.h>
++#include <stdlib.h>
+ #include <string.h>
+ 
+ #include "iree/async/notification.h"
+@@ -31,6 +32,20 @@ static const char* IREE_HAL_VULKAN_ALLOCATOR_ID = "iree-hal-vulkan-unpooled";
+ 
+ #define IREE_HAL_VULKAN_ALLOCATOR_DEFAULT_POOL_ALIGNMENT 256ull
+ 
++// The length of the default pools' slabs: IREE_HAL_VULKAN_SLAB_SIZE bytes when
++// set, else IREE_HAL_VULKAN_ALLOCATOR_DEFAULT_POOL_RANGE_LENGTH. Allocations
++// larger than one slab, such as a call's transients packed together, bypass the
++// pools and are allocated from the device on every call.
++static iree_device_size_t iree_hal_vulkan_allocator_slab_length(void) {
++  const char* value = getenv("IREE_HAL_VULKAN_SLAB_SIZE");
++  if (value && value[0]) {
++    char* end = NULL;
++    unsigned long long length = strtoull(value, &end, 10);
++    if (end && *end == '\0' && length > 0) return (iree_device_size_t)length;
++  }
++  return IREE_HAL_VULKAN_ALLOCATOR_DEFAULT_POOL_RANGE_LENGTH;
++}
++
+ #define IREE_HAL_VULKAN_ALLOCATOR_DEFAULT_POOL_PRIORITY_OVERSIZED 0
+ 
+ #define IREE_HAL_VULKAN_ALLOCATOR_DEFAULT_POOL_PRIORITY_TLSF 1000
+@@ -586,8 +601,7 @@ static iree_status_t iree_hal_vulkan_allocator_create_pool_pair(
+       allocator, slab_options, slab_trace_name, allocator->host_allocator,
+       &out_pool_pair->slab_provider);
+ 
+-  iree_device_size_t range_length =
+-      IREE_HAL_VULKAN_ALLOCATOR_DEFAULT_POOL_RANGE_LENGTH;
++  iree_device_size_t range_length = iree_hal_vulkan_allocator_slab_length();
+   const iree_device_size_t max_allocation_size =
+       iree_hal_vulkan_allocator_max_allocation_size_for_type(allocator,
+                                                              memory_type_index);
