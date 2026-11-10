@@ -29,6 +29,14 @@ These patches target IREE revision
   the fix; all six pass afterwards, including error cleanup and unchanged
   coherent/host paths. The same C100 fixtures fail with the old runtime
   and pass with the corrected runtime.
+* `0006-configure-vulkan-pool-slab-size.patch` reads the Vulkan default
+  pools' slab size from `IREE_HAL_VULKAN_SLAB_SIZE` (bytes) when the device
+  is created, 64 MiB otherwise. The compiler packs a call's transient
+  buffers into one allocation; beyond one slab it bypasses the pools and is
+  allocated and freed on every call. Eight live 50 MB transients cost
+  43 ms a call on an Intel GPU and 105 ms on an Adreno 623 with 64 MiB
+  slabs, about 1 ms with 512 MiB ones. Set it before the runtime creates
+  its devices, for example from a release's `config/runtime.exs`.
 
 Runtime source builds apply the patches automatically through the Makefile.
 The apply helper accepts an already-applied patch and rejects conflicting
