@@ -36,14 +36,17 @@ $(IREE_PATCH_STAMP): $(IREE_PATCH_FILES) scripts/apply_iree_patches.sh | $(NX_IR
 
 # Nerves sets CROSSCOMPILE (the toolchain prefix) when building for a device.
 # Cross builds get their own build, install and cache directories so they
-# coexist with the host build.
+# coexist with the host build. Devices that share a toolchain prefix still
+# differ in CPU, which their toolchain compiles for: the directories also
+# carry MIX_TARGET.
 ifneq ($(strip $(CROSSCOMPILE)),)
 IREE_BUILD_TARGET = cross
 CROSS_NAME := $(notdir $(CROSSCOMPILE))
-IREE_CMAKE_BUILD_DIR ?= $(abspath iree-runtime/$(CROSS_NAME)/iree-build)
-IREE_RUNTIME_BUILD_DIR ?= $(abspath iree-runtime/$(CROSS_NAME)/build)
-IREE_INSTALL_DIR ?= $(abspath iree-runtime/$(CROSS_NAME)/install)
-NX_IREE_CACHE_DIR = cache/$(CROSS_NAME)
+CROSS_DIR := $(CROSS_NAME)$(if $(strip $(MIX_TARGET)),-$(strip $(MIX_TARGET)))
+IREE_CMAKE_BUILD_DIR ?= $(abspath iree-runtime/$(CROSS_DIR)/iree-build)
+IREE_RUNTIME_BUILD_DIR ?= $(abspath iree-runtime/$(CROSS_DIR)/build)
+IREE_INSTALL_DIR ?= $(abspath iree-runtime/$(CROSS_DIR)/install)
+NX_IREE_CACHE_DIR = cache/$(CROSS_DIR)
 else
 NX_IREE_CACHE_DIR = cache
 endif
