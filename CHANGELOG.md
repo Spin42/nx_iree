@@ -44,6 +44,8 @@
     and backend operations run on their inputs' device.
   * f64 stays f64 on the CPU and raises a clear error on Vulkan.
   * Reading or passing a deallocated tensor raises instead of crashing.
+  * Nerves targets that share a toolchain prefix get their own runtime build,
+    compiled for their own CPU, instead of reusing another target's.
 
 ## v0.0.1 (2024-10-04)
 
