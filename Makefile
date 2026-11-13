@@ -283,6 +283,7 @@ else
 nx_iree: $(NX_IREE_RUNTIME_CACHE_LIB) $(NX_IREE_SO)
 
 $(NX_IREE_CACHE_SO): $(OBJECTS)
+	@ mkdir -p $(dir $@)
 	$(CXX) -shared -o $@ $^ $(NIF_LDFLAGS)
 
 # Refresh the runtime the NIF links and loads whenever it is rebuilt
