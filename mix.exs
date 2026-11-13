@@ -151,7 +151,7 @@ defmodule NxIREE.MixProject do
     # Matches NX_IREE_CACHE_DIR in the Makefile
     cache =
       if cross_compiling?(),
-        do: Path.join([__DIR__, "cache", Path.basename(System.get_env("CROSSCOMPILE"))]),
+        do: Path.join([__DIR__, "cache", cross_dir()]),
         else: Path.join(__DIR__, "cache")
 
     %{
@@ -165,6 +165,16 @@ defmodule NxIREE.MixProject do
       nx_iree_so_path: Path.join(cache, "libnx_iree.so"),
       nx_iree_tar_gz_path: Path.join(cache, "libnx_iree.tar.gz")
     }
+  end
+
+  # Matches CROSS_DIR in the Makefile: the toolchain prefix, then the Nerves target
+  defp cross_dir do
+    toolchain = Path.basename(System.get_env("CROSSCOMPILE"))
+
+    case String.trim(System.get_env("MIX_TARGET", "")) do
+      "" -> toolchain
+      target -> "#{toolchain}-#{target}"
+    end
   end
 
   # Nerves sets CROSSCOMPILE when building for a device
