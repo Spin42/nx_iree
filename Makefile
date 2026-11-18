@@ -184,8 +184,15 @@ $(IREE_HOST_TOOLS_BIN)/iree-c-embed-data: $(NX_IREE_SOURCE_DIR)
 		-DIREE_HAL_DRIVER_DEFAULTS=OFF
 	$(HOST_ENV) cmake --build $(IREE_HOST_TOOLS_DIR) --target iree-flatcc-cli iree-c-embed-data
 
+# CMake drops a cache made with other compilers and configures again without the -D values
+IREE_COMPILERS = $(CC) $(CXX)
+IREE_COMPILERS_STAMP = $(IREE_CMAKE_BUILD_DIR)/.nx_iree_compilers
+
 $(IREE_INSTALL_LIB): $(NX_IREE_SOURCE_DIR) $(IREE_PATCH_STAMP) $(CMAKE_SOURCES) \
 		$(if $(CROSS_NAME),$(IREE_HOST_TOOLS_BIN)/iree-c-embed-data)
+	@ if [ "$$(cat $(IREE_COMPILERS_STAMP) 2>/dev/null)" != "$(IREE_COMPILERS)" ]; then \
+		rm -rf $(IREE_CMAKE_BUILD_DIR) $(IREE_RUNTIME_BUILD_DIR) ; \
+	fi
 	$(EMCMAKE) cmake -G Ninja -B $(IREE_CMAKE_BUILD_DIR) \
 		-DCMAKE_BUILD_TYPE=$(IREE_CMAKE_CONFIG)\
 		-DIREE_BUILD_COMPILER=OFF\
@@ -194,6 +201,7 @@ $(IREE_INSTALL_LIB): $(NX_IREE_SOURCE_DIR) $(IREE_PATCH_STAMP) $(CMAKE_SOURCES) 
 		-DNX_IREE_SOURCE_DIR=$(NX_IREE_SOURCE_DIR) \
 		-DCMAKE_CXX_FLAGS=$(CMAKE_CXX_FLAGS) \
 		$(BUILD_TARGET_FLAGS)
+	echo "$(IREE_COMPILERS)" > $(IREE_COMPILERS_STAMP)
 	cmake --build $(IREE_CMAKE_BUILD_DIR) --config $(IREE_CMAKE_CONFIG)
 	cmake --install $(IREE_CMAKE_BUILD_DIR) --config $(IREE_CMAKE_CONFIG) --prefix $(IREE_INSTALL_DIR)
 	touch $@
